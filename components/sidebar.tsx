@@ -1,5 +1,6 @@
 import react from "react";
 import { Button, buttonVariants } from "@/components/ui/ui/button";
+import { Avatar,AvatarImage,AvatarFallback } from "./ui/ui/avatar";
 import Link from "next/link";
 import {
   Home,
@@ -10,6 +11,7 @@ import {
   RefreshCcw,
   SquareCheckBig,
 } from "lucide-react";
+import SidebarCard from "./ui/ui/SidebarCard";
 
 export default function Sidebar() {
   return (
@@ -24,89 +26,23 @@ export default function Sidebar() {
         <div className="flex-1">
           <nav className="grid items-start px-2 text-sm font-medium lg:px-4">
             <div className="fixed_route">
-              <Link
-                href="/chatbot"
-                className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
-              >
-                <Bot className="h-4 w-4" />
-                ChatBot
-              </Link>
-              <Link
-                href="/home"
-                className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
-              >
-                <Home className="h-4 w-4" />
-                Home
-              </Link>
-              <Link
-                href="/community"
-                className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
-              >
-                <Users className="h-4 w-4" />
-                Community
-              </Link>
-              <Link
-                href="/your_profile"
-                className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
-              >
-                <CircleUserRound className="h-4 w-4" />
-                Your's Profile
-              </Link>
-              <Link
-                href="/developer"
-                className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
-              >
-                <CodeXml className="h-4 w-4" />
-                For Developer
-              </Link>
-              <Link
-                href="/updates"
-                className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
-              >
-                <RefreshCcw className="h-4 w-4" />
-                Updates
-              </Link>
-              <Link
-                href="/tasks"
-                className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
-              >
-                <SquareCheckBig className="h-4 w-4" />
-                Tasks
-              </Link>
+              <SidebarCard icon={<Bot className="h-4 w-4" />} link="/chatbot">ChatBot</SidebarCard>
+              <SidebarCard icon={<Home className="h-4 w-4" />} link="/home">Home</SidebarCard>
+              <SidebarCard icon={<Users className="h-4 w-4" />} link="/community">Community</SidebarCard>
+              <SidebarCard icon={<CircleUserRound className="h-4 w-4" />} link="/your_profile">Your's Profile</SidebarCard>
+              <SidebarCard icon={<CodeXml className="h-4 w-4" />} link="/devloper">For Developer</SidebarCard>
+              <SidebarCard icon={<RefreshCcw className="h-4 w-4" />} link="/updates">Updates</SidebarCard>
+              <SidebarCard icon={<SquareCheckBig className="h-4 w-4" />} link="/tasks">Tasks</SidebarCard>
             </div>
-            <div className="chat_route">
+            <div className="chat_route border-t">
               <Link
                 href="/chat"
-                className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
+                className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-[#DF5173]"
               >
                 Chat
               </Link>
-              <Link
-                href="/chat/user/parambrata"
-                className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
-              >
-                <div className="w-6 h-6 overflow-hidden rounded-full">
-                  <img
-                    className="object-cover w-full h-full"
-                    src="my_image.jpg"
-                    alt="Profile Avatar"
-                  />
-                </div>
-                Parambrata Ghosh
-              </Link>
-              <Link
-                href="/chat/group/tech_giants"
-                className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
-              >
-                <div className="w-6 h-6 overflow-hidden rounded-full">
-                  <img
-                    className="object-cover w-full h-full"
-                    src="next.svg"
-                    alt="Profile Avatar"
-                  />
-                </div>
-                Teach Giants
-              </Link>
+              <SidebarCard icon={<Avatar> <AvatarImage src="my_image.jpg"/> <AvatarFallback>PG</AvatarFallback></Avatar>} link="/chat/user/parambrata">Parambrata Ghosh</SidebarCard>
+              <SidebarCard icon={<Avatar> <AvatarImage src="next.svg"/> <AvatarFallback>TG</AvatarFallback></Avatar>} link="/chat/group/tech_giants">Teach Giants</SidebarCard>
             </div>
           </nav>
         </div>
