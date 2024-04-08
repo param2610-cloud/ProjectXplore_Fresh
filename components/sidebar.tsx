@@ -108,11 +108,11 @@ export default function Sidebar() {
       <div className="flex flex-col">
         <header className="  flex h-[50px] items-start gap-4 border-b px-4 lg:h-[50px] lg:px-6">
           <Sheet>
-            <SheetTrigger asChild>
+            <SheetTrigger asChild className="mt-[5px]">
               <Button
                 variant="outline"
                 size="icon"
-                className="shrink-0 md:hidden"
+                className="shrink-0 md:hidden "
               >
                 <Menu className="h-5 w-5" />
                 <span className="sr-only">Toggle navigation menu</span>
