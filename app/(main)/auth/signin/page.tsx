@@ -5,7 +5,7 @@ export default function page(){
     return(
         <>
         <p>Sign IN</p>
-        <Link href="/explore">Explore</Link>
+        <Link href="/community">Community</Link>
         </>
     )
 }

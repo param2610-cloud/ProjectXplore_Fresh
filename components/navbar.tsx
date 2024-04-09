@@ -6,38 +6,15 @@ import { Input } from "./ui/ui/input";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/ui/popover";
 import Link from "next/link";
 import { Avatar, AvatarFallback,AvatarImage } from "./ui/ui/avatar";
-import {
-  DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuCheckboxItem,
-  DropdownMenuRadioItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuGroup,
-  DropdownMenuPortal,
-  DropdownMenuSub,
-  DropdownMenuSubContent,
-  DropdownMenuSubTrigger,
-  DropdownMenuRadioGroup,
-} from "@radix-ui/react-dropdown-menu";
+import { notification, notifications_list } from "@/app/(head)/activity/page";
+import Activity from "./activity";
 
-const notifications = [
-  {
-    title: "Parambrata Ghosh followed you",
-    description: "5 min ago",
-  },
-  {
-    title: "Hiranmay Pore leave interest on your idea.",
-    description: "5 min ago",
-  },
-];
+
+
+
 
 export default function Navbar() {
   return (
-    // <div className="fixed top-0 left-0 right-0 bg-gray-400 z-50 shadow-md">
-
     <div className="flex-1 flex items-center justify-center h-[50px] w-full gap-6 ">
       <div className="flex-grow ">
         <form>
@@ -57,22 +34,7 @@ export default function Navbar() {
             <Bell className="h-6 w-6 md:block hidden " />
           </PopoverTrigger>
           <PopoverContent>
-            {notifications.map((notification, index) => (
-              <div
-              key={index}
-              className="mb-4 flex gap-4 items-start pb-4 last:mb-0 last:pb-0"
-              >
-                <span className="flex h-2 w-2 translate-y-1 rounded-full bg-[#DF5173]" />
-                <div className="space-y-1">
-                  <p className="text-sm font-medium leading-none">
-                    {notification.title}
-                  </p>
-                  <p className="text-sm text-muted-foreground">
-                    {notification.description}
-                  </p>
-                </div>
-              </div>
-            ))}
+            <Activity notifications={notifications_list}/>
           </PopoverContent>
         </Popover>
         <div className="md:block hidden">
