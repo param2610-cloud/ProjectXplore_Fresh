@@ -6,11 +6,20 @@ import { Input } from "./ui/ui/input";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/ui/popover";
 import Link from "next/link";
 import { Avatar, AvatarFallback,AvatarImage } from "./ui/ui/avatar";
-import { notification, notifications_list } from "@/app/(head)/activity/page";
+import { notification } from "@/app/(head)/activity/page";
 import Activity from "./activity";
 
 
-
+const notifications_list:notification[] = [
+  {
+    title: "Parambrata Ghosh followed you",
+    description: "5 min ago",
+  },
+  {
+    title: "Hiranmay Pore leave interest on your idea.",
+    description: "5 min ago",
+  },
+];
 
 
 export default function Navbar() {

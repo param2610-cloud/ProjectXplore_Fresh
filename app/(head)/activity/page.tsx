@@ -5,7 +5,7 @@ export interface notification {
     title:string;
     description:string;
 }
-export const notifications_list:notification[] = [
+ const notifications_list:notification[] = [
     {
       title: "Parambrata Ghosh followed you",
       description: "5 min ago",
