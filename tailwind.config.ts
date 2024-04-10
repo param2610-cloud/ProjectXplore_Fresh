@@ -20,6 +20,10 @@ const config = {
     extend: {
       fontFamily: {
         work_sans: ["Work Sans", 'sans-serif'],
+        cabin: ["Cabin", "sans-serif"],
+        oslo:[ "Oswald", "sans-serif"],
+        kanit:["Kanit", "sans-serif"],
+        mukta: ["Mukta", "sans-serif"]
       },
       colors: {
         border: "hsl(var(--border))",

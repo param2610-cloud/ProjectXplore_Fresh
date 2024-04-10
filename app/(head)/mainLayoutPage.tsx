@@ -31,10 +31,10 @@ const router = useRouter()
           router.push("/auth/signin")
         ) : (
           <>
-          <div className="grid sm:grid-cols-[221px_1fr] grid-cols-[0px_1fr]  grid-rows-[56px_1fr]  min-h-screen w-screen " id="main_layout_page">
+          <div className="grid sm:grid-cols-[221px_1fr] grid-cols-[0px_1fr]  grid-rows-[56px_1fr]  min-h-screen w-screen" id="main_layout_page">
             
             <Sidebar/>
-            <div id="main_content" className="row-start-2 col-start-2 overflow-x-hidden">
+            <div id="main_content" className="row-start-2 col-start-2 ">
             {children}  
             </div>
           </div>

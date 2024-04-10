@@ -1,3 +1,4 @@
+"use client";
 import react from "react";
 import { Category } from "@/components/categorybar";
 import {
@@ -8,8 +9,19 @@ import {
   CardDescription,
   CardContent,
 } from "@/components/ui/ui/card";
-import { EyeIcon, Heart, MessageSquareTextIcon } from "lucide-react";
-import { Avatar,AvatarFallback, AvatarImage } from "@/components/ui/ui/avatar";
+import {
+  EllipsisVertical,
+  EyeIcon,
+  Heart,
+  MessageSquareTextIcon,
+} from "lucide-react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/ui/avatar";
+import { Button, buttonVariants } from "@/components/ui/ui/button";
+import { ShortsCard } from "@/components/ui/ui/ShortsCard";
+import Explore_updates from "@/components/Explore_updates";
+import Explore_suggestions from "@/components/Explore_suggestions";
+import Explore_recommendations from "@/components/Explore_recommendations";
+import Explore_card from "@/components/ui/ui/Explore_card";
 
 export interface CategoryItem {
   id: number;
@@ -64,184 +76,47 @@ const categoryList: CategoryItem[] = [
 
 export default function page() {
   return (
-    <div id="parent_explore" className="min-h-full flex flex-col w-full">
-      <div
-        id="explore_heading"
-        className=" pt-12 flex justify-center sm:text-4xl text-2xl  font-work_sans font-bold"
-      >
-        Explore <p className="text-[#DF5173] pl-2">Innovation</p>
-      </div>
-      <div
-        id="desktop_category"
-        className="sm:flex hidden justify-center mt-8   "
-      >
-        <Category category={categoryList} number_of_category={8} />
-      </div>
-      <div
-        id="smartphone_category"
-        className="lg:hidden md:hidden flex justify-center mt-8   "
-      >
-        <Category category={categoryList} number_of_category={5} />
-      </div>
-      <div
-        id="contents"
-        className="lg:grid grid-cols-2 grid-rows-3 grid-cols-[75%_1fr] pt-10"
-      >
-        <div id="cards" className=" row-start-1 row-end-4 col-start-1 ">
-          <Card>
-            <CardHeader className="flex flex-row items-center gap-x-4">
-                <div id="profile_image">
-                    <Avatar>
-                        <AvatarImage src="my_image.jpg"/>
-                        <AvatarFallback>PG</AvatarFallback>
-                    </Avatar>
-                </div>
-                <div id="profile_name">
-                    Parambrata Ghosh
-                    <div id="time" className="text-sm">
-                    5 hours ago
-                </div>
-                </div>
-                
-            </CardHeader>
-            <CardDescription>
-              Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-              Dignissimos rerum inventore nulla necessitatibus eius. Omnis,
-              cumque mollitia quisquam inventore veritatis libero dolorem
-              aperiam laborum. Quaerat animi quisquam dignissimos assumenda
-              eligendi! Lorem ipsum dolor sit, amet consectetur adipisicing elit. Velit quis laborum animi sunt accusamus, voluptatum tempore! Praesentium doloribus deleniti quisquam. Doloribus impedit velit temporibus. Tempore sit ipsum veniam! Quam, sapiente.
-            </CardDescription>
-            <CardContent>
-              <div id="image" className="grid grid-cols-4 grid-rows-3">
-                <img src="1.png" alt="" className="h-20 w-36 rounded-md" />
-                <img src="2.png" alt="" className="h-20 w-36 rounded-md"/>
-                <img src="4.png" alt="" className="h-20 w-36 rounded-md"/>
-                <img src="5.png" alt="" className="h-20 w-36 rounded-md"/>
-                <img src="6.png" alt="" className="h-20 w-36 rounded-md"/>
-                <img src="7.png" alt="" className="h-20 w-36 rounded-md"/>
-                <img src="8.png" alt="" className="h-20 w-36 rounded-md"/>
-                <img src="9.png" alt="" className="h-20 w-36 rounded-md"/>
-                <img src="10.png" alt="" className="h-20 w-36 rounded-md"/>
-                <img src="11.png" alt="" className="h-20 w-36 rounded-md"/>
-                <img src="3.png" alt="" className="h-20 w-36 rounded-md"/>
-              </div>
-            </CardContent>
-            <CardFooter className="gap-8">
-                <div id="views" className="flex items-center text-gray-500">
-                    <EyeIcon className="pr-2"/> <p id="view_number" className="text-[14px]">1563</p>
-                </div>
-                <div id="like"  className="flex items-center text-gray-500">
-                    <Heart className=" pr-2"/><p className="text-[14px]">Like</p>
-                </div>
-                <div id="comments" className="flex items-center text-gray-500">
-                    <MessageSquareTextIcon className=" pr-2"/><p className="text-[14px]">Comments</p>
-                </div>
-            </CardFooter>
-          </Card>
-          <Card>
-            <CardHeader className="flex flex-row items-center gap-x-4">
-                <div id="profile_image">
-                    <Avatar>
-                        <AvatarImage src="my_image.jpg"/>
-                        <AvatarFallback>PG</AvatarFallback>
-                    </Avatar>
-                </div>
-                <div id="profile_name">
-                    Parambrata Ghosh
-                    <div id="time" className="text-sm">
-                    5 hours ago
-                </div>
-                </div>
-                
-            </CardHeader>
-            <CardDescription>
-              Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-              Dignissimos rerum inventore nulla necessitatibus eius. Omnis,
-              cumque mollitia quisquam inventore veritatis libero dolorem
-              aperiam laborum. Quaerat animi quisquam dignissimos assumenda
-              eligendi! Lorem ipsum dolor sit, amet consectetur adipisicing elit. Velit quis laborum animi sunt accusamus, voluptatum tempore! Praesentium doloribus deleniti quisquam. Doloribus impedit velit temporibus. Tempore sit ipsum veniam! Quam, sapiente.
-            </CardDescription>
-            <CardContent>
-              <div id="image" className="grid grid-cols-4 grid-rows-3">
-                <img src="1.png" alt="" className="h-20 w-36 rounded-md" />
-                <img src="2.png" alt="" className="h-20 w-36 rounded-md"/>
-                <img src="4.png" alt="" className="h-20 w-36 rounded-md"/>
-                <img src="5.png" alt="" className="h-20 w-36 rounded-md"/>
-                <img src="6.png" alt="" className="h-20 w-36 rounded-md"/>
-                <img src="7.png" alt="" className="h-20 w-36 rounded-md"/>
-                <img src="8.png" alt="" className="h-20 w-36 rounded-md"/>
-                <img src="9.png" alt="" className="h-20 w-36 rounded-md"/>
-                <img src="10.png" alt="" className="h-20 w-36 rounded-md"/>
-                <img src="11.png" alt="" className="h-20 w-36 rounded-md"/>
-                <img src="3.png" alt="" className="h-20 w-36 rounded-md"/>
-              </div>
-            </CardContent>
-            <CardFooter className="gap-8">
-                <div id="views" className="flex items-center text-gray-500">
-                    <EyeIcon className="pr-2"/> <p id="view_number" className="text-[14px]">1563</p>
-                </div>
-                <div id="like"  className="flex items-center text-gray-500">
-                    <Heart className=" pr-2"/><p className="text-[14px]">Like</p>
-                </div>
-                <div id="comments" className="flex items-center text-gray-500">
-                    <MessageSquareTextIcon className=" pr-2"/><p className="text-[14px]">Comments</p>
-                </div>
-            </CardFooter>
-          </Card>
-          <Card>
-            <CardHeader className="flex flex-row items-center gap-x-4">
-                <div id="profile_image">
-                    <Avatar>
-                        <AvatarImage src="my_image.jpg"/>
-                        <AvatarFallback>PG</AvatarFallback>
-                    </Avatar>
-                </div>
-                <div id="profile_name">
-                    Parambrata Ghosh
-                    <div id="time" className="text-sm">
-                    5 hours ago
-                </div>
-                </div>
-                
-            </CardHeader>
-            <CardDescription>
-              Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-              Dignissimos rerum inventore nulla necessitatibus eius. Omnis,
-              cumque mollitia quisquam inventore veritatis libero dolorem
-              aperiam laborum. Quaerat animi quisquam dignissimos assumenda
-              eligendi! Lorem ipsum dolor sit, amet consectetur adipisicing elit. Velit quis laborum animi sunt accusamus, voluptatum tempore! Praesentium doloribus deleniti quisquam. Doloribus impedit velit temporibus. Tempore sit ipsum veniam! Quam, sapiente.
-            </CardDescription>
-            <CardContent>
-              <div id="image" className="grid grid-cols-4 grid-rows-3">
-                <img src="1.png" alt="" className="h-20 w-36 rounded-md" />
-                <img src="2.png" alt="" className="h-20 w-36 rounded-md"/>
-                <img src="4.png" alt="" className="h-20 w-36 rounded-md"/>
-                <img src="5.png" alt="" className="h-20 w-36 rounded-md"/>
-                <img src="6.png" alt="" className="h-20 w-36 rounded-md"/>
-                <img src="7.png" alt="" className="h-20 w-36 rounded-md"/>
-                <img src="8.png" alt="" className="h-20 w-36 rounded-md"/>
-                <img src="9.png" alt="" className="h-20 w-36 rounded-md"/>
-                <img src="10.png" alt="" className="h-20 w-36 rounded-md"/>
-                <img src="11.png" alt="" className="h-20 w-36 rounded-md"/>
-                <img src="3.png" alt="" className="h-20 w-36 rounded-md"/>
-              </div>
-            </CardContent>
-            <CardFooter className="gap-8">
-                <div id="views" className="flex items-center text-gray-500">
-                    <EyeIcon className="pr-2"/> <p id="view_number" className="text-[14px]">1563</p>
-                </div>
-                <div id="like"  className="flex items-center text-gray-500">
-                    <Heart className=" pr-2"/><p className="text-[14px]">Like</p>
-                </div>
-                <div id="comments" className="flex items-center text-gray-500">
-                    <MessageSquareTextIcon className=" pr-2"/><p className="text-[14px]">Comments</p>
-                </div>
-            </CardFooter>
-          </Card>
+    <div className="grid grid-cols-[75%_1fr] ">
+      <div id="parent_explore" className="flex flex-col w-full ">
+        <div
+          id="explore_heading"
+          className=" pt-12 flex justify-center sm:text-4xl text-2xl  font-work_sans font-bold"
+        >
+          Explore <p className="text-[#DF5173] pl-2">Innovation</p>
         </div>
-        <div id="updates"></div>
-        <div id="suggestions"></div>
-        <div id="category"></div>
+        <div
+          id="desktop_category"
+          className="sm:flex hidden justify-center mt-8   "
+        >
+          <Category category={categoryList} number_of_category={8} />
+        </div>
+        <div
+          id="smartphone_category"
+          className="lg:hidden md:hidden flex justify-center mt-8   "
+        >
+          <Category category={categoryList} number_of_category={5} />
+        </div>
+        <div id="contents" className="">
+          <div id="cards" className=" ">
+            <Explore_card />
+            <Explore_card />
+          </div>
+        </div>
+      </div>
+      <div className="h-screen w-full">
+        <div className="top-14 right-0 h-full">
+          <div className="flex flex-col h-screen ">
+            <div className="flex-grow ">
+              <div id="ALL_rightbar" className="fixed">
+                <div className="pb-5">
+                  <Explore_updates />
+                </div>
+                <Explore_suggestions />
+                <Explore_recommendations />
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
