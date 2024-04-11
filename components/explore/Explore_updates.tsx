@@ -1,5 +1,5 @@
 import React from 'react'
-import { ShortsCard } from './ui/ui/ShortsCard'
+import { ShortsCard } from '../ui/ui/ShortsCard'
 import { ScrollArea, ScrollBar } from "@/components/ui/ui/scroll-area"
 
 const Explore_updates = () => {
