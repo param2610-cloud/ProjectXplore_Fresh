@@ -24,7 +24,7 @@ const notifications_list:notification[] = [
 
 export default function Navbar() {
   return (
-    <div className="flex-1 flex items-center justify-center h-[50px] w-full gap-6 ">
+    <div className="flex-1 flex items-center justify-center h-[50px] w-full gap-6 z-1000 fixed ">
       <div className="flex-grow ">
         <form>
           <div className="relative">
@@ -65,7 +65,7 @@ export default function Navbar() {
         <div className="flex-grow w-10 flex justify-center items-center">
           <Popover>
             <PopoverTrigger>
-              <Avatar className="border border-2 border-[#F9DEE4] border-solid h-10 w-10">
+              <Avatar className=" border-2 border-[#F9DEE4] border-solid h-10 w-10">
                 <AvatarImage src="my_image.jpg"/>
                 <AvatarFallback>PG</AvatarFallback>
               </Avatar>

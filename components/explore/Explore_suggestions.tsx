@@ -6,7 +6,7 @@ const Explore_suggestions = () => {
     <>
     <div id="suggestions" className="">
                   <div className="py-2 px-4">
-                    <div className="text-2xl font-kanit font-bold text-[#DF5173] ">
+                    <div className="text-[20px] leading-[25px] font-kanit font-bold text-[#DF5173] ">
                       Suggestions
                     </div>
                     <div id="1" className="my-2">

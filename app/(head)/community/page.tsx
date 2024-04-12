@@ -22,6 +22,7 @@ import Explore_updates from "@/components/explore/Explore_updates";
 import Explore_suggestions from "@/components/explore/Explore_suggestions";
 import Explore_recommendations from "@/components/explore/Explore_recommendations";
 import Explore_card from "@/components/ui/ui/Explore_card";
+import Explore_experimental_card from "@/components/ui/ui/Explore_experimental_card";
 
 export interface CategoryItem {
   id: number;
@@ -97,11 +98,13 @@ export default function page() {
           <Category category={categoryList} number_of_category={5} />
         </div>
         <div id="contents" className="">
-          <div id="cards" className=" ">
+          <div id="cards" className=" flex flex-col items-center">
+            {/* <Explore_experimental_card/> */}
             <Explore_card avatar="my_image.jpg" name="Parambrata Ghosh" time="5 hours ago" description="This is an incredible and clean style transfer. ✨A single image of The Joker was fed into ViggleAI, with extra clean-ups done in Stable Diffusion We are getting close to being able to make the AVATAR movie at home!" images={["1.png","2.png","3.png"]} likes="1.2 k" views="1.2 M "fallback="PG" className="bg-[#FFF6DF]"/>
-            <Explore_card avatar="my_image.jpg" name="Mrinmoy Mondal" time="2 mins ago" description="This is an incredible and clean style transfer. ✨A single image of The Joker was fed into ViggleAI, with extra clean-ups done in Stable Diffusion We are getting close to being able to make the AVATAR movie at home!" images={["1.png","2.png","3.png"]} likes="1.2 k" views="1.2 M "fallback="PG" className=""/>
+            <Explore_card avatar="minu.jpg" name="Mrinmoy Mondal" time="2 mins ago" description="This is an incredible and clean style transfer. ✨A single image of The Joker was fed into ViggleAI, with extra clean-ups done in Stable Diffusion We are getting close to being able to make the AVATAR movie at home!" images={["1.png","2.png","3.png"]} likes="1.2 k" views="1.2 M "fallback="PG" className=""/>
             <Explore_card avatar="minu.jpg" name="Mrinmoy Mondal" time="2 mins ago" description="This is an incredible and clean style transfer. ✨A single image of The Joker was fed into ViggleAI, with extra clean-ups done in Stable Diffusion We are getting close to being able to make the AVATAR movie at home!" images={["1.png","2.png","3.png"]} likes="1.2 k" views="1.2 M "fallback="PG" className="bg-[#FFDDDF]"/>
             <Explore_card avatar="minu.jpg" name="Mrinmoy Mondal" time="2 mins ago" description="This is an incredible and clean style transfer. ✨A single image of The Joker was fed into ViggleAI, with extra clean-ups done in Stable Diffusion We are getting close to being able to make the AVATAR movie at home!" images={["1.png","2.png","3.png"]} likes="1.2 k" views="1.2 M "fallback="PG" className="bg-[#CFFFDE]"/>
+            <Explore_card avatar="minu.jpg" name="Hiranmay Pore" time="5 mins ago" description="This is an incredible and clean style transfer. ✨A single image of The Joker was fed into ViggleAI, with extra clean-ups done in Stable Diffusion We are getting close to being able to make the AVATAR movie at home!" images={["1.png","2.png","3.png"]} likes="1.2 k" views="1.2 M "fallback="PG" className="bg-[#C7FAFE]"/>
           </div>
         </div>
       </div>

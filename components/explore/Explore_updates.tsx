@@ -6,7 +6,7 @@ const Explore_updates = () => {
   return (
     <>
                 <ScrollArea className="w-96 whitespace-nowrap rounded-md border">
-                <div className=" text-2xl font-kanit pl-6 font-bold text-[#DF5173]">
+                <div className=" text-[20px] leading-[25px] font-kanit pl-6 font-bold text-[#DF5173]">
                   Updates
                 </div>
       <div className="flex w-max space-x-4 p-4">
