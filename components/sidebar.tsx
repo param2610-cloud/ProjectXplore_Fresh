@@ -62,8 +62,8 @@ export default function Sidebar() {
                 </SidebarCard>
                 <SidebarCard
                   icon={<CodeXml className="h-4 w-4" />}
-                  link="/devloper"
-                  className={pathname.indexOf("/devloper") !== -1?"bg-[#F9DEE4] text-[#DF5173] font-bold":''}
+                  link="/developer"
+                  className={pathname.indexOf("/developer") !== -1?"bg-[#F9DEE4] text-[#DF5173] font-bold":''}
                 >
                   For Developer
                 </SidebarCard>
@@ -169,8 +169,8 @@ export default function Sidebar() {
                   </SidebarCard>
                   <SidebarCard
                     icon={<CodeXml className="h-4 w-4" />}
-                    link="/devloper"
-                    className={pathname.indexOf("/devloper") !== -1?"bg-[#F9DEE4] text-[#DF5173] font-bold":''}
+                    link="/developer"
+                    className={pathname.indexOf("/developer") !== -1?"bg-[#F9DEE4] text-[#DF5173] font-bold":''}
                     >
                     For Developer
                   </SidebarCard>

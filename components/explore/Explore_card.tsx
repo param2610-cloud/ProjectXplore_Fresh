@@ -5,8 +5,7 @@ import {
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
-} from "./carousel";
-
+} from "../ui/ui/carousel";
 import {
   Card,
   CardTitle,
@@ -14,16 +13,17 @@ import {
   CardContent,
   CardFooter,
   CardDescription,
-} from "./card";
-import { Avatar, AvatarImage, AvatarFallback } from "./avatar";
-import { Button, buttonVariants } from "./button";
+} from "../ui/ui/card";
+import { Avatar, AvatarImage, AvatarFallback } from "../ui/ui/avatar";
+import { Button, buttonVariants } from "../ui/ui/button";
 import {
   EllipsisVertical,
   EyeIcon,
   Heart,
   MessageSquareTextIcon,
 } from "lucide-react";
-import { Separator } from "./separator";
+import { Separator } from "../ui/ui/separator";
+import Commentbar from "../ui/ui/Commentbar";
 interface exploreCard {
   avatar: string;
   name: string;
@@ -48,13 +48,14 @@ const Explore_card = ({
   className,
 }: exploreCard) => {
   const [clicked, setClicked] = useState(false);
+  const [Comment, showComment] = useState(false);
   function handleClick(event: any) {
     setClicked(!clicked);
   }
   return (
     <div>
       <Card
-        className={` bg-[#DFEBFF] w-[550px] h-fit my-[50px] rounded-2xl  ${className}`}
+        className={` bg-[#DFEBFF] min-[1350px]:w-[550px] min-[1920px]:w-[650px] w-[400px] h-fit my-[50px] rounded-2xl max-[390px]:w-[350px]  ${className}`}
       >
         <CardHeader className="flex flex-row items-center gap-x-4 border-b border-black">
           <div id="profile_image">
@@ -82,28 +83,30 @@ const Explore_card = ({
           {description}
         </CardDescription>
         <CardContent>
-          <div id="image" className="flex w-full pt-3">
-            <Carousel className="z-10 relative">
+          <div className="flex w-full pt-3">
+            <Carousel className="">
               <CarouselContent>
                 {images.map((img) => {
+                  let i = 0;
                   return (
-                    <CarouselItem>
+                    <CarouselItem key={i++}>
                       <img
                         src={img}
                         alt=""
-                        className=" rounded-md object-cover"
+                        className="rounded-md object-cover"
                       />
-                      <Separator className="w-2" />
                     </CarouselItem>
                   );
                 })}
               </CarouselContent>
               <CarouselPrevious />
-              <CarouselNext />  
+              <CarouselNext />
             </Carousel>
           </div>
         </CardContent>
-        <CardFooter className="gap-8 text-sm w-[550px] flex justify-between border-t border-black items-center pt-4">
+        <CardFooter className="flex flex-col">
+          <div className="gap-8 text-sm w-[550px] max-[390px]:w-[350px] flex justify-between min-[1920px]:w-[650px] border-t border-black items-center pt-4 px-6">
+            
           <div id="views" className="flex items-center text-gray-500 ">
             <EyeIcon className="mr-[2px]" size={13} />{" "}
             <p id="view_number" className="">
@@ -115,21 +118,26 @@ const Explore_card = ({
             {clicked ? (
               <Heart
                 size={24}
-                className="text-[#FF0046] "
+                className="text-[#FF0046] ml-4"
                 fill="#FF0046"
                 onClick={handleClick}
               />
             ) : (
-              <Heart size={24} onClick={handleClick} />
+              <Heart size={24} onClick={handleClick} className="ml-4" />
             )}
           </div>
-          <div
+          <button
             id="comments"
             className="flex items-center text-gray-500 cursor-pointer"
-          >
+            onClick={() => showComment(!Comment)}
+            >
             <MessageSquareTextIcon className=" mr-2" size={17} />
             <p className="text-[14px]">Comments</p>
-          </div>
+          </button>
+            </div>
+            <div>
+          {Comment ? <Commentbar /> : ""}
+            </div>
         </CardFooter>
       </Card>
     </div>

@@ -4,9 +4,9 @@ import { Commentcard } from "./CommentCard";
 
 const Commentbar = () => {
   return (
-    <div>
+    <div className=" py-5">
       <div className="comment">
-      <Commentcard/>
+      <Commentcard Profile_Name="Elon Musk" image="Elon_Musk.jpg" Comment_string="This is so impressive" reply="yoo" time="5m"/>
       </div>
 
 

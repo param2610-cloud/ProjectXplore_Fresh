@@ -20,7 +20,7 @@ const Profile_suggestions_card = ({first_name,last_name,profile_pic,className}:P
             <AvatarImage src={profile_pic} />
             <AvatarFallback>{first_name.slice(0,1)+last_name.slice(0,1).toUpperCase}</AvatarFallback>
           </Avatar>
-          <div className=" pl-3 flex-grow flex flex-col text-[18px] font-kanit ">
+          <div className=" pl-3 flex-grow flex flex-col text-[18px] font-kanit font-medium ">
             <div className="flex items-end">{first_name}</div>
             <div className="flex items-start">{last_name}</div>
           </div>
