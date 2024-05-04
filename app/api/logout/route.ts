@@ -7,9 +7,9 @@ export async function GET(request:NextRequest) {
     const auth = getAuth(app)
     try {
       await signOut(auth);
-      return new NextResponse("Logged out successfully!", { status: 200 });
+      return NextResponse.json({ message: "Logged out successfully!" });
   } catch (error) {
       console.error("Error signing out:", error);
-      return new NextResponse("Error occurred while logging out", { status: 500 });
+      return NextResponse.json({ error: "Error occurred while logging out" });
   }
 }    
