@@ -1,12 +1,18 @@
-import {NextRequest} from 'next/server'
-import React from "react";
-import { getAuth, signOut } from "firebase/auth";
+import { NextRequest, NextResponse } from 'next/server';
+import { getAuth } from "firebase/auth";
 import { app } from "@/firebase";
-import { useRouter } from "next/navigation";
 
-
-export async function GET(request:NextRequest) {
-    const auth = getAuth(app)
-    const user = auth.currentUser
-    return user
-}    
+export async function GET(request: NextRequest) {
+    const auth = getAuth(app);
+    const user = auth.currentUser;
+    if (user) {
+        return NextResponse.json(user);
+    } else {
+        return new NextResponse(JSON.stringify({ error: 'Unauthorized access' }), {
+            status: 401,
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+    }
+}
