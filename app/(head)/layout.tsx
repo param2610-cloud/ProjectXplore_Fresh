@@ -24,7 +24,6 @@ export default function RootLayout({
       <body className={`${inter.className} p-0 m-0 w-screen overflow-x-hidden`}>
         <MainLayoutPage>
           {children}
-
         </MainLayoutPage>
       </body>
     </html>

@@ -26,7 +26,7 @@ export default function Sidebar() {
   const pathname = usePathname();
   return (
     <>
-      <div className="hidden  md:block" id="parent_sidebar_div">
+      <div className="hidden  md:block z-[999]" id="parent_sidebar_div">
         <div className=" fixed top-0 left-0 bottom-0 flex h-full max-h-screen flex-col gap-2 border-r bg-white" id="sidebar">
           <div className="flex h-[50px] items-center border-b px-4 lg:h-[50px] lg:px-6">
             <Link href="/" className="flex items-center gap-2 font-semibold">

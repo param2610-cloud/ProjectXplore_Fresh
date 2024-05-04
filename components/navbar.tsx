@@ -23,8 +23,11 @@ const notifications_list:notification[] = [
 
 
 export default function Navbar() {
+  const LogOut: React.MouseEventHandler<HTMLButtonElement> = () => {
+    fetch("/api/logout",{method:"GET"}).then((res)=>console.log(res))
+  };
   return (
-    <div className="flex-1 flex items-center justify-center h-[50px] w-full gap-6 ">
+    <div className="flex-1 flex items-center justify-center h-[50px] w-full gap-6 z-[999]">
       <div className="flex-grow ">
         <form>
           <div className="relative">
@@ -71,8 +74,8 @@ export default function Navbar() {
               </Avatar>
             </PopoverTrigger>
             <PopoverContent className="bg-[#F9DEE4]">
-              <Link href="/logout">
-                <Button className="bg-[#DF5173]">Logout</Button>
+              <Link href="/">
+                <Button className="bg-[#DF5173]" onClick={LogOut}>Logout</Button>
               </Link>
             </PopoverContent>
           </Popover>

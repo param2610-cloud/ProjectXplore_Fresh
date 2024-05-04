@@ -1,9 +1,6 @@
 "use client";
-import react, { ReactNode } from "react";
-import useUser from '@/hooks/useUser';
 import Link from 'next/link';
 import { usePathname } from "next/navigation";
-import STATES from "@/lib/utils/constants";
 
 export default function MainLayoutPage({
   children,
@@ -13,19 +10,6 @@ export default function MainLayoutPage({
 
 
 const pathname =usePathname()
-// const {User,userUid,STATE} = useUser()
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

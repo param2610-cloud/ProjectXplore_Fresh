@@ -1,17 +1,17 @@
-import {initializeApp} from "firebase/app";
-import {getAuth} from "firebase/auth"
+import { initializeApp } from "firebase/app";
+import { getAuth } from "firebase/auth";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDEmrYcQDYSFI7rO31GrZwnC73326jhlQ8",
-  authDomain: "projectxplore.firebaseapp.com",
-  projectId: "projectxplore",
-  storageBucket: "projectxplore.appspot.com",
-  messagingSenderId: "534536790819",
-  appId: "1:534536790819:web:6e04277aa25c68a346e296",
-  measurementId: "G-KDVQ7C008M"
+  apiKey: process.env.NEXT_PUBLIC_PX_API_KEY,
+  authDomain: process.env.NEXT_PUBLIC_PX_DOMAIN_KEY,
+  projectId: process.env.NEXT_PUBLIC_PX_PROJECT_ID,
+  storageBucket: process.env.NEXT_PUBLIC_PX_STORAGE_BUCKET,
+  messagingSenderId: process.env.NEXT_PUBLIC_PX_MESSEGING_SENDER_ID,
+  appId: process.env.NEXT_PUBLIC_PX_APP_ID,
+  measurementId: process.env.NEXT_PUBLIC_PX_MEASUREMENT_ID,
+};
 
-  };
-  const app = initializeApp(firebaseConfig)
-  const auth = getAuth(app)
+export const app = initializeApp(firebaseConfig);
 
-  export{ app, auth }
+
+
