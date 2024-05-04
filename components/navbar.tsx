@@ -78,9 +78,9 @@ export default function Navbar() {
               </Avatar>
             </PopoverTrigger>
             <PopoverContent className="bg-[#F9DEE4]">
-              <Link href="/">
                 <Button className="bg-[#DF5173]" onClick={LogOut}>Logout</Button>
-              </Link>
+              {/* <Link href="/">
+              </Link> */}
             </PopoverContent>
           </Popover>
         </div>
