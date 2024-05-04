@@ -24,8 +24,12 @@ const notifications_list:notification[] = [
 
 export default function Navbar() {
   const LogOut: React.MouseEventHandler<HTMLButtonElement> = () => {
-    fetch("/api/logout",{method:"GET"}).then((res)=>console.log(res))
+    fetch("/api/logout", { method: "GET" })
+      .then((res) => res.json())
+      .then((data) => console.log(data)) 
+      .catch((error) => console.error("Error logging out:", error)); 
   };
+  
   return (
     <div className="flex-1 flex items-center justify-center h-[50px] w-full gap-6 z-[999]">
       <div className="flex-grow ">
