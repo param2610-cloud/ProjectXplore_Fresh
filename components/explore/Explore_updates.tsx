@@ -17,10 +17,10 @@ const Explore_updates = ({className}:Explore_updatesProps) => {
           <figure key="1" className="shrink-0">
             <div className="overflow-hidden rounded-md pb-4">
               <ShortsCard
-                Title="Parambrata..."
+                Title="Mrinmoy..."
                 image_name="thumb1.jpg"
                 className="w-[7vw] h-[9vw] mx-3 shadow-lg shadow-[#DF5173] border border-gray-200 rounded-2xl"
-                profile_image="my_image.jpg"
+                profile_image="mrinmoy.jpg"
               />
             </div>
           </figure>
@@ -28,9 +28,9 @@ const Explore_updates = ({className}:Explore_updatesProps) => {
             <div className="overflow-hidden rounded-md pb-4">
               <ShortsCard
                 Title="Jeet..."
-                image_name="thumb1.jpg"
+                image_name="thumb2.jpg"
                 className="w-[7vw] h-[9vw] mx-3 shadow-lg shadow-[#DF5173] border border-gray-200 rounded-2xl"
-                profile_image="my_image.jpg"
+                profile_image="hiranmay.jpg"
               />
             </div>
           </figure>

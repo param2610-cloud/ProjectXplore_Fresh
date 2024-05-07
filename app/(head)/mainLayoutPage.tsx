@@ -14,12 +14,9 @@ export default function MainLayoutPage({
 }) {
 
 
-// const pathname =usePathname()
-// const {User,userUid,STATE} = useUser()
-let User=11;
-let STATE = STATES.LOADED
-const router = useRouter()
-
+  const router = useRouter()
+  const {User,STATE} = useUser()
+  console.log(User)
 
   return (
     <>

@@ -3,8 +3,10 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import useUser from "@/hooks/useUser";
 import STATES from "@/lib/utils/constants";
-import { redirect } from "next/navigation";
 import MainLayoutPage from "./mainLayoutPage";
+import { useRouter } from "next/navigation";
+
+
 
 const inter = Inter({ subsets: ["latin"] });
 

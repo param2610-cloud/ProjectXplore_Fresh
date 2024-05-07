@@ -4,12 +4,18 @@ import {app}  from "@/firebase";
 
 
 export async function GET(request:NextRequest) {
-    const auth = getAuth(app)
+  const auth = getAuth(app)
+  const user = auth.currentUser;
+
+  if (user) {
     try {
-      await signOut(auth);
-      return NextResponse.json({ message: "Logged out successfully!" });
-  } catch (error) {
-      console.error("Error signing out:", error);
-      return NextResponse.json({ error: "Error occurred while logging out" });
+      const data = await signOut(auth);
+      return NextResponse.json({ message: data });
+    } catch (error) {
+        console.error("Error signing out:", error);
+        return NextResponse.json({ error: "Error occurred while logging out" });
+    }
+  } else {
+    return NextResponse.json({ message: "User is already signed out" });
   }
 }

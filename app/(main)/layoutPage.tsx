@@ -20,11 +20,11 @@ const pathname =usePathname()
     {pathname && pathname.includes("/auth") ? (
         children
     ) : (
-        <>
+        <div className='bg-black w-screen h-screen text-white'>
             <Link href="/auth/signin">Sign In</Link>
             <Link href="/auth/signup">Sign Up</Link>
             Landing Page
-        </>
+        </div>
     )}
 </>
 

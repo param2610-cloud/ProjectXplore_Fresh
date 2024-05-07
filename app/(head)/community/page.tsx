@@ -14,7 +14,7 @@ import {
   EyeIcon,
   Heart,
   MessageSquareTextIcon,
-} from "lucide-react";  
+} from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/ui/avatar";
 import { Button, buttonVariants } from "@/components/ui/ui/button";
 import { ShortsCard } from "@/components/ui/ui/ShortsCard";
@@ -100,12 +100,64 @@ export default function page() {
         <div id="contents" className="">
           <div id="cards" className=" flex flex-col items-center">
             {/* <Explore_experimental_card/> */}
-            <Explore_card avatar="my_image.jpg" name="Parambrata Ghosh" time="5 hours ago" description="This is an incredible and clean style transfer. ✨A single image of The Joker was fed into ViggleAI, with extra clean-ups done in Stable Diffusion We are getting close to being able to make the AVATAR movie at home!" images={["1.png","2.png","3.png"]} likes="1.2 k" views="1.2 M "fallback="PG" className="bg-[#FFF6DF]"/>
-            
-            <Explore_card avatar="minu.jpg" name="Mrinmoy Mondal" time="2 mins ago" description="This is an incredible and clean style transfer. ✨A single image of The Joker was fed into ViggleAI, with extra clean-ups done in Stable Diffusion We are getting close to being able to make the AVATAR movie at home!" images={["1.png","2.png","3.png"]} likes="1.2 k" views="1.2 M "fallback="PG" className=""/>
-            <Explore_card avatar="minu.jpg" name="Mrinmoy Mondal" time="2 mins ago" description="This is an incredible and clean style transfer. ✨A single image of The Joker was fed into ViggleAI, with extra clean-ups done in Stable Diffusion We are getting close to being able to make the AVATAR movie at home!" images={["1.png","2.png","3.png"]} likes="1.2 k" views="1.2 M "fallback="PG" className="bg-[#FFDDDF]"/>
-            <Explore_card avatar="minu.jpg" name="Mrinmoy Mondal" time="2 mins ago" description="This is an incredible and clean style transfer. ✨A single image of The Joker was fed into ViggleAI, with extra clean-ups done in Stable Diffusion We are getting close to being able to make the AVATAR movie at home!" images={["1.png","2.png","3.png"]} likes="1.2 k" views="1.2 M "fallback="PG" className="bg-[#CFFFDE]"/>
-            <Explore_card avatar="minu.jpg" name="Hiranmay Pore" time="5 mins ago" description="This is an incredible and clean style transfer. ✨A single image of The Joker was fed into ViggleAI, with extra clean-ups done in Stable Diffusion We are getting close to being able to make the AVATAR movie at home!" images={["1.png","2.png","3.png"]} likes="1.2 k" views="1.2 M "fallback="PG" className="bg-[#C7FAFE]"/>
+            <Explore_card
+              avatar="my_image.jpg"
+              name="Parambrata Ghosh"
+              time="5 hours ago"
+              description="🎉🎉🎉Excited to share my latest project – a line-following robot! 
+🤖 Using Arduino Uno and IR sensor.I've programmed this little bot to track lines with precision. Check out the video to see it in action! #robotics #STEM #DIY
+ABB Robotics Robotics NVIDIA Robotics RoboRashtra Medtronic Robotic-Assisted Surgery RoboHead "
+              images={["1.png", "2.png", "3.png"]}
+              likes="1.2 k"
+              views="1.2 M "
+              fallback="PG"
+              className="bg-[#FFF6DF]"
+            />
+
+            <Explore_card
+              avatar="minu.jpg"
+              name="Mrinmoy Mondal"
+              time="2 mins ago"
+              description="This is an incredible and clean style transfer. ✨A single image of The Joker was fed into ViggleAI, with extra clean-ups done in Stable Diffusion We are getting close to being able to make the AVATAR movie at home!"
+              images={["1.png", "2.png", "3.png"]}
+              likes="1.2 k"
+              views="1.2 M "
+              fallback="PG"
+              className=""
+            />
+            <Explore_card
+              avatar="minu.jpg"
+              name="Mrinmoy Mondal"
+              time="2 mins ago"
+              description="This is an incredible and clean style transfer. ✨A single image of The Joker was fed into ViggleAI, with extra clean-ups done in Stable Diffusion We are getting close to being able to make the AVATAR movie at home!"
+              images={["1.png", "2.png", "3.png"]}
+              likes="1.2 k"
+              views="1.2 M "
+              fallback="PG"
+              className="bg-[#FFDDDF]"
+            />
+            <Explore_card
+              avatar="minu.jpg"
+              name="Mrinmoy Mondal"
+              time="2 mins ago"
+              description="This is an incredible and clean style transfer. ✨A single image of The Joker was fed into ViggleAI, with extra clean-ups done in Stable Diffusion We are getting close to being able to make the AVATAR movie at home!"
+              images={["1.png", "2.png", "3.png"]}
+              likes="1.2 k"
+              views="1.2 M "
+              fallback="PG"
+              className="bg-[#CFFFDE]"
+            />
+            <Explore_card
+              avatar="minu.jpg"
+              name="Hiranmay Pore"
+              time="5 mins ago"
+              description="This is an incredible and clean style transfer. ✨A single image of The Joker was fed into ViggleAI, with extra clean-ups done in Stable Diffusion We are getting close to being able to make the AVATAR movie at home!"
+              images={["1.png", "2.png", "3.png"]}
+              likes="1.2 k"
+              views="1.2 M "
+              fallback="PG"
+              className="bg-[#C7FAFE]"
+            />
           </div>
         </div>
       </div>
@@ -115,7 +167,7 @@ export default function page() {
             <div className="flex-grow ">
               <div id="ALL_rightbar" className="fixed">
                 <div className="pb-5">
-                  <Explore_updates className=""/>
+                  <Explore_updates className="" />
                 </div>
                 <Explore_suggestions />
                 <Explore_recommendations />

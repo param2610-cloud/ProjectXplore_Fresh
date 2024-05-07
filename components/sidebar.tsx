@@ -219,9 +219,9 @@ export default function Sidebar() {
                       </Avatar>
                     }
                     link="/chat/user/parambrata"
-                    className={pathname.indexOf("/chat/user/parambrata") !== -1?"bg-[#F9DEE4] text-[#DF5173] font-bold":''}
+                    className={pathname.indexOf("/chat/user/hiranmay") !== -1?"bg-[#F9DEE4] text-[#DF5173] font-bold":''}
                     >
-                    Parambrata Ghosh
+                    Hiranmay Pore
                   </SidebarCard>
                   <SidebarCard
                     icon={
