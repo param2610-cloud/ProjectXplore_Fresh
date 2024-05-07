@@ -28,8 +28,15 @@ export default function page() {
         //     uid = e.uid
         // })
         let data = LoginUser(email,password)
-        if(data){
-          console.log(data)
+        if((await data).error===false){
+          console.log("triggered")
+          const route = localStorage.getItem("recentRoute")
+          if(route){
+            router.push(route)
+            localStorage.removeItem("recentRoute")
+          }else{
+            router.push("/home")
+          }
         }
         // if (!error) {
         //   if (typeof window !== undefined) {
@@ -118,6 +125,9 @@ export default function page() {
                 >
                   Sign in
                 </button>
+              </div>
+              <div className="text-sm">
+                you have no account? <Link href={"/auth/signup"} className="font-medium text-primary hover:text-primary/90">Sign Up</Link>
               </div>
             </form>
           </div>

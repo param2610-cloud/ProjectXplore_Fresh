@@ -1,10 +1,13 @@
 'use client';
 import react, { useState } from "react";
 import Link from "next/link";
+import STATES from "@/lib/utils/constants";
+import { useRouter } from "next/navigation";
 
 
 export default function page() {
-    let [isLoading, SetLoading] = useState<boolean>(true)
+  const Router = useRouter()
+    let [isLoading, SetLoading] = useState(STATES.LOADING)
     let [success, setsuccess] = useState<boolean>(false)
     let [formdata,setformdata]= useState({
         name:"",
@@ -16,11 +19,27 @@ export default function page() {
         setformdata({...formdata,[e.target.name]:e.target.value})
     }
     const handleSubmit   = (e:any) => {
+        SetLoading(STATES.LOADING)
         e.preventDefault()
         fetch(`/api/signup/?name=${name}&email=${email}&password=${password}`,{
             method:"GET"
-        }).then((response) => response.json()).then((e:any)=> {
-            console.log(e)
+        }).then((response) => response.json()).then((data:any)=> {
+            console.log(data)
+            if(data.error === false){
+              setsuccess(true)
+              SetLoading(STATES.LOADED)
+              const route = localStorage.getItem("recentRoute")
+              if(route){
+                  localStorage.removeItem("recentRoute")
+                  Router.push(route)
+              }
+              else{
+                  Router.push("/")
+              }
+            }
+            else{
+                setsuccess(false)
+            }
         })
     }
   return (
