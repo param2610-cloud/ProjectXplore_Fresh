@@ -6,6 +6,8 @@ import { useRouter } from "next/navigation";
 import STATES from "@/lib/utils/constants";
 import Navbar from "@/components/navbar";
 import Sidebar from "@/components/sidebar";
+import { UserContextProvider } from "@/lib/context/Usercontext";
+import { useUserId } from "@/lib/context/Usercontext";
 
 export default function MainLayoutPage({
   children,
@@ -13,10 +15,20 @@ export default function MainLayoutPage({
   children: React.ReactNode;
 }) {
 
-
   const router = useRouter()
   const {User,STATE} = useUser()
-  console.log(User)
+  const {uid,setUid} = useUserId()
+  try {
+    useEffect(() => {
+      if (User && User.uid && STATE === STATES.LOADED) {
+        sessionStorage.setItem("uid",User.uid)
+      }
+    }, [STATE]);
+    setUid(sessionStorage.getItem('uid'))
+  } catch (error) {
+    console.log(error)
+  }
+  
 
   return (
     <>
@@ -32,7 +44,9 @@ export default function MainLayoutPage({
             
             <Sidebar/>
             <div id="main_content" className="row-start-2 col-start-2 ">
-            {children}  
+              
+                {children}  
+              
             </div>
           </div>
           </>

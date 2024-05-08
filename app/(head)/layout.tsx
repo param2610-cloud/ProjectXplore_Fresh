@@ -5,6 +5,7 @@ import useUser from "@/hooks/useUser";
 import STATES from "@/lib/utils/constants";
 import MainLayoutPage from "./mainLayoutPage";
 import { useRouter } from "next/navigation";
+import { UserContextProvider } from "@/lib/context/Usercontext";
 
 
 
@@ -24,9 +25,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.className} p-0 m-0 w-screen overflow-x-hidden`}>
+        <UserContextProvider>
         <MainLayoutPage>
           {children}
         </MainLayoutPage>
+        </UserContextProvider>
       </body>
     </html>
   );

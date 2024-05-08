@@ -37,8 +37,8 @@ const Explore_updates = ({className}:Explore_updatesProps) => {
           <figure key="1" className="shrink-0">
             <div className="overflow-hidden rounded-md pb-4">
               <ShortsCard
-                Title="Mrinmoy Mondal"
-                image_name="thumb1.jpg"
+                Title="Parthiv Panja"
+                image_name="parthiv.png"
                 className="w-[7vw] h-[9vw] mx-3 shadow-lg shadow-[#DF5173] border border-gray-200 rounded-2xl"
                 profile_image="my_image.jpg"
               />
@@ -50,7 +50,7 @@ const Explore_updates = ({className}:Explore_updatesProps) => {
                 Title="Parthiv Panja"
                 image_name="thumb1.jpg"
                 className="w-[7vw] h-[9vw] mx-3 shadow-lg shadow-[#DF5173] border border-gray-200 rounded-2xl"
-                profile_image="my_image.jpg"
+                profile_image="parthiv.png"
               />
             </div>
           </figure>

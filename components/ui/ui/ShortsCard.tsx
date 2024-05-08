@@ -15,7 +15,7 @@ export function ShortsCard({
 }: ShortsCardProps) {
   return (
     <div
-      className={`bg-cover bg-center flex items-end ${className} cursor-pointer`}
+      className={`bg-cover bg-start flex items-end ${className} cursor-pointer`}
       style={{ backgroundImage: `url(${image_name})` }}
     >
       <div
