@@ -1,11 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import useUser from "@/hooks/useUser";
-import STATES from "@/lib/utils/constants";
-import MainLayoutPage from "./mainLayoutPage";
-import { useRouter } from "next/navigation";
-import { UserContextProvider } from "@/lib/context/Usercontext";
+import Contextlayout from "./contextlayout";
 
 
 
@@ -25,11 +21,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.className} p-0 m-0 w-screen overflow-x-hidden`}>
-        <UserContextProvider>
-        <MainLayoutPage>
+       
+        <Contextlayout>
           {children}
-        </MainLayoutPage>
-        </UserContextProvider>
+        </Contextlayout>
+        
       </body>
     </html>
   );

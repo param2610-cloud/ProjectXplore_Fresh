@@ -1,10 +1,8 @@
 "use client";
 import react, { ReactNode, useEffect } from "react";
 import useUser from '@/hooks/useUser';
-import Link from 'next/link';
 import { useRouter } from "next/navigation";
 import STATES from "@/lib/utils/constants";
-import Navbar from "@/components/navbar";
 import Sidebar from "@/components/sidebar";
 import { UserContextProvider } from "@/lib/context/Usercontext";
 import { useUserId } from "@/lib/context/Usercontext";
@@ -21,10 +19,14 @@ export default function MainLayoutPage({
   try {
     useEffect(() => {
       if (User && User.uid && STATE === STATES.LOADED) {
-        sessionStorage.setItem("uid",User.uid)
+        try {
+          setUid(User.uid)
+        } catch (error) {
+          console.log(error)
+        }
       }
     }, [STATE]);
-    setUid(sessionStorage.getItem('uid'))
+   
   } catch (error) {
     console.log(error)
   }

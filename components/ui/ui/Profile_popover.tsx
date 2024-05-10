@@ -12,25 +12,26 @@ export function ProfilePopover() {
   let { uid } = useUserId();
   const [state, setload] = useState(STATES.LOADING);
   const [Data, setData] = useState<UserProfile | null>();
-  let firstString = ""
+  let firstString = "";
   useEffect(() => {
     setload(STATES.LOADING);
     try {
-      console.log(uid);
-      fetch(`/api/profile?id=${uid}`)
-        .then((res) => {
-          return res.json();
-        })
-        .then((data) => {
-          console.log("this data from popover", data);
-          setData(data);
-          setload(STATES.LOADED);
-        });
+      if (uid) {
+        fetch(`/api/profile?id=${uid}`)
+          .then((res) => {
+            return res.json();
+          })
+          .then((data) => {
+            setData(data);
+            setload(STATES.LOADED);
+          });
+      }
     } catch (error) {
       console.log(error);
     }
-  }, []);
+  }, [uid]);
   const name = Data?.Full_Name;
+  let avatar_URL: string | null = null;
   let Fallback = "";
   if (state === STATES.LOADED && typeof name === "string") {
     const parts = name.split(" ");
@@ -38,31 +39,44 @@ export function ProfilePopover() {
     const lastString =
       parts.length > 1 ? parts[parts.length - 1].charAt(0) : "";
     Fallback = firstString + lastString;
-}
-    if (state === STATES.LOADED){
-        
-    }
-  // console.log(name)
-  // console.log(Fallback)
+  }
+  if (state === STATES.LOADED) {
+    avatar_URL = typeof Data?.avatar_URL === "string" ? Data?.avatar_URL : null;
+  }
+  const Setdata = (name: any) => (name ? name : "UNKNOWN");
   return (
     <Popover>
       <PopoverTrigger>
         <Avatar className=" border-2 border-[#F9DEE4] border-solid h-10 w-10">
-          <AvatarImage src={Data?.avatar_URL} />
+          {avatar_URL !== null ? <AvatarImage src={avatar_URL} /> : undefined}
           <AvatarFallback>{Fallback}</AvatarFallback>
         </Avatar>
       </PopoverTrigger>
-      <PopoverContent className="bg-[#F9DEE4]">
-        <div>
-          <Avatar className=" border-2 border-[#F9DEE4] border-solid h-10 w-10">
-            <AvatarImage src="my_image.jpg" />
-            <AvatarFallback>{firstString}</AvatarFallback>
-          </Avatar>
+      <PopoverContent className="bg-background">
+        <div className="w-full h-full flex flex-col justify-center items-start">
+          <div className="w-full flex justify-center">
+            {Setdata(Data?.email)}
+          </div>
+          <div className="w-full flex justify-center my-5">
+            <Avatar className=" border-2 border-[#F9DEE4] border-solid h-24 w-24">
+              <AvatarImage src="my_image.jpg" />
+              <AvatarFallback>{firstString}</AvatarFallback>
+            </Avatar>
+          </div>
+          <div className="w-full flex justify-center text-2xl mb-10">
+            {"Hi, " +
+              Setdata(typeof name === "string" ? name.split(" ")[0] : "User")}
+          </div>
+              
+          <div className=" w-full flex justify-center space-x-5">
+            <div>
+              <Button>Profile Settings</Button>
+            </div>
+            <Button  onClick={LogOut}>
+              Logout
+            </Button>
+          </div>
         </div>
-        <div>{Data?.Full_Name}</div>
-        <Button className="bg-[#DF5173]" onClick={LogOut}>
-          Logout
-        </Button>
       </PopoverContent>
     </Popover>
   );
