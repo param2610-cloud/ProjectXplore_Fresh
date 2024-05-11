@@ -34,7 +34,7 @@ export default function Sidebar() {
               <span className="">ProjectXplore</span>
             </Link>
           </div>
-          <div className="flex-1">
+          <div className="flex-1" >
             <nav className="grid items-start px-2 text-sm font-medium lg:px-4">
               <div className="fixed_route">
                 <SidebarCard icon={<Bot className="h-4 w-4" />} link="/chatbot" className={pathname.indexOf("/chatbot") !== -1?"bg-[#F9DEE4] text-[#DF5173] font-bold":''}>

@@ -67,3 +67,12 @@
   }
 
 
+::-webkit-scrollbar{
+  width: 10px;
+}
+::webkit-scrollbar-track{
+  background-color: aliceblue;
+}
+::-webkit-scrollbar-thumb{
+  background-color: #d4d4d4;
+}
