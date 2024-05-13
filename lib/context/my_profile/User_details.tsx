@@ -25,14 +25,24 @@ export const UserDataContextProvider = ({ children, uid }: { children: ReactNode
         console.error("Error fetching user data:", error);
       });
   }, [uid]);
-
-  return (
-    <User_details.Provider value={user_data}>{children}</User_details.Provider>
-  );
+  if(user_data){
+    return (
+      <User_details.Provider value={user_data}>{children}</User_details.Provider>
+    );
+  }else{
+    return null 
+  }
 };
 
 export const USERDATA = () => {
-  const Context = useContext(User_details);
+  let Context = null;
+  try {
+    if(User_details){
+      Context = useContext(User_details);
+    }
+  } catch (error) {
+    console.log(error)
+  }
 
   if (!Context) {
     console.log("Error occurred in userdata context");

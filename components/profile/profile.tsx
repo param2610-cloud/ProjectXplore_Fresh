@@ -17,7 +17,7 @@ export default function Profile_main() {
             {typeof UserData?.avatar_URL === "undefined"? (
               <AvatarImage src="mrinmoy.jpg" />
             ) : (
-              <AvatarImage src={UserData?.avatar_URL} className="rounded-[50%]" sizes="100"/>
+              <AvatarImage src={UserData?.avatar_URL} className="rounded-[50%]"/>
             )}
           </Avatar>
         </div>

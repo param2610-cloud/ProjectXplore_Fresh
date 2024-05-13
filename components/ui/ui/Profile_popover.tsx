@@ -59,7 +59,7 @@ export function ProfilePopover() {
           </div>
           <div className="w-full flex justify-center my-5">
             <Avatar className=" border-2 border-[#F9DEE4] border-solid h-24 w-24">
-              <AvatarImage src="my_image.jpg" />
+            {avatar_URL !== null ? <AvatarImage src={avatar_URL} /> : undefined}
               <AvatarFallback>{firstString}</AvatarFallback>
             </Avatar>
           </div>

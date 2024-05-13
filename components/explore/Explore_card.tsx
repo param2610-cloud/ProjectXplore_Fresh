@@ -47,10 +47,10 @@ const Explore_card = ({
   views,
   className,
 }: exploreCard) => {
-  const [clicked, setClicked] = useState(false);
+  const [Heartclicked, setHeartClicked] = useState(false);
   const [Comment, showComment] = useState(false);
   function handleClick(event: any) {
-    setClicked(!clicked);
+    setHeartClicked(!Heartclicked);
   }
   return (
     <div>
@@ -115,7 +115,7 @@ const Explore_card = ({
           </div>
           <div>
             {" "}
-            {clicked ? (
+            {Heartclicked ? (
               <Heart
                 size={24}
                 className="text-[#FF0046] ml-4"
