@@ -1,11 +1,8 @@
 "use client";
 import Profile_main from "@/components/profile/profile";
-import { Button } from "@/components/ui/ui/button";
 import { useUserId } from "@/lib/context/Usercontext";
-import STATES from "@/lib/utils/constants";
-import { CircleArrowUp } from "lucide-react";
 import { UserDataContextProvider } from "@/lib/context/my_profile/User_details";
-import React, { useContext, useEffect, useState } from "react";
+import React from "react";
 import Project_details from "@/components/profile/project";
 
 

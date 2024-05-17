@@ -48,7 +48,7 @@ export default function MainLayoutPage({
             <div id="main_content" className="row-start-2 col-start-2 ">
               
                 {children}  
-              
+                
             </div>
           </div>
           </>

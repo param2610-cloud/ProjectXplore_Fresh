@@ -1,10 +1,10 @@
 import { Avatar, AvatarImage } from "@radix-ui/react-avatar";
 import { Button } from "../ui/ui/button";
-import { useContext } from "react";
 import { USERDATA } from "@/lib/context/my_profile/User_details";
-import { UserProfile } from "@/lib/interface/UserProfile";
+import { useRouter } from "next/navigation";
 
 export default function Profile_main() {
+  const router = useRouter()
   let UserData = USERDATA();
   return (
     <div id="box" className=" w-[280px] bottom-0 h-full  py-6">
@@ -25,7 +25,7 @@ export default function Profile_main() {
           {UserData?.Full_Name}
         </div>
         <div className="w-full text-center mb-8 pt-1">@param.ghos</div>
-        <Button className="w-full my-3 ">Edit Profile</Button>
+        <Button className="w-full my-3 " onClick={()=>{router.push("/settings/profile")}}>Edit Profile</Button>
         <Button className="bg-white border-black border-2 text-black w-full">
           Share
         </Button>
