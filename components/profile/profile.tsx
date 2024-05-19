@@ -6,8 +6,9 @@ import { useRouter } from "next/navigation";
 export default function Profile_main() {
   const router = useRouter()
   let UserData = USERDATA();
-  return (
-    <div id="box" className=" w-[280px] bottom-0 h-full  py-6">
+  if(UserData){
+    return (
+      <div id="box" className=" w-[280px] bottom-0 h-full  py-6">
       <div className="  w-[260px] h-full flex shadow-lg flex-col justify-center items-start ml-4 p-2 px-4">
         <div
           id="avatar"
@@ -17,7 +18,8 @@ export default function Profile_main() {
             {typeof UserData?.avatar_URL === "undefined"? (
               <AvatarImage src="mrinmoy.jpg" />
             ) : (
-              <AvatarImage src={UserData?.avatar_URL} className="rounded-[50%]"/>
+              <AvatarImage src={UserData?.avatar_URL} className="rounded-full bg-cover bg-center w-40 h-40" />
+
             )}
           </Avatar>
         </div>
@@ -71,4 +73,9 @@ export default function Profile_main() {
       </div>
     </div>
   );
+}else{
+  return(
+    <div>Loading</div>
+  )
+}
 }

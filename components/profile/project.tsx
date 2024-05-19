@@ -6,6 +6,7 @@ import { useUserId } from "@/lib/context/Usercontext";
 import React, { useEffect, useState } from "react";
 import { ProjectDetails } from "@/lib/interface/Project";
 import Projectlayout from "./projectlayout";
+import STATES from "@/lib/utils/constants";
 
 const Project_details = () => {
   const { uid } = useUserId();
@@ -15,9 +16,11 @@ const Project_details = () => {
   let [ideaTrigger, setideaTrigger] = useState<boolean>(true);
   let [myIdeaData, setmyIdeaData] = useState<ProjectDetails[] | null>(null);
   let [myCollecData, setmyCollecData] = useState<ProjectDetails[] | null>(null);
+  const [loading,setloading] = useState(STATES.LOADED)
   useEffect(() => {
     const fetchData = async () => {
       if (uid) {
+        setloading(STATES.LOADING)
         let responseIdeaData: any = await myProjectIdeafetch(uid);
         let responseCollecData: any = await myProjectCollecfetch(uid);
         if (
@@ -34,6 +37,7 @@ const Project_details = () => {
           setisError(true);
         }
       }
+      setloading(STATES.LOADED)
     };
     fetchData();
   }, [uid]);
@@ -45,17 +49,19 @@ const Project_details = () => {
       </div>
     );
   } else {
-    return (
-      <div className="flex flex-col h-full p-3 mr-4">
+    if(loading === STATES.LOADED){
+
+      return (
+        <div className="flex flex-col h-full p-3 mr-4">
         <div className="flex m-10 space-x-16">
           <div
             className={
               ideaTrigger
-                ? `text-primary border-primary border-b-2 cursor-pointer`
+              ? `text-primary border-primary border-b-2 cursor-pointer`
                 : "cursor-pointer"
             }
             onClick={() => setideaTrigger(true)}
-          >
+            >
             {"Ideas" + "(" + Ideano + ")"}
           </div>
           <div
@@ -63,9 +69,9 @@ const Project_details = () => {
               ideaTrigger
                 ? "cursor-pointer"
                 : `text-primary border-primary border-b-2 cursor-pointer`
-            }
-            onClick={() => setideaTrigger(false)}
-          >
+              }
+              onClick={() => setideaTrigger(false)}
+              >
             {"Collections" + "(" + collecno + ")"}
           </div>
         </div>
@@ -73,6 +79,12 @@ const Project_details = () => {
       </div>
     );
   }
+  else if (loading === STATES.LOADING){
+    return(
+      <div>Loading</div>
+    )
+  }
+}
 };
 
 export default Project_details;
