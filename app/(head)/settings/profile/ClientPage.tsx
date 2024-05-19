@@ -6,6 +6,7 @@ import STATES, { StorageBucketName } from "@/lib/utils/constants";
 import { ProfileImageUpdate } from "@/lib/Database/ProfileUpdate";
 import { createClient } from "@/lib/supabase/client";
 import { useToast } from "@/components/ui/ui/use-toast";
+import { useRouter } from "next/navigation";
 
 const ClientPage = () => {
   // id fetch
@@ -14,7 +15,7 @@ const ClientPage = () => {
   // hook init
   const [user_data, setuser_data] = useState<UserProfile | null>(null);
   const [loading, setloading] = useState(STATES.LOADED);
-  const [success,setsuccess] = useState<boolean>(false)
+  const [success, setsuccess] = useState<boolean>(false);
   const { toast } = useToast();
   //data fetch at startup
   useEffect(() => {
@@ -75,14 +76,22 @@ const ClientPage = () => {
       reader.readAsDataURL(file);
     }
   };
+  const router = useRouter()
+  
+  useEffect(()=>{
+    if(success===true){
+      router.refresh()
+      console.log("triggered")
+    }
+  },[success])
 
   if (loading === STATES.LOADED) {
-    console.log(preview)
     return (
       <div>
         <form
-        className="flex w-full h-full"
+          className="flex w-full h-full"
           onSubmit={async (event) => {
+            setsuccess(false)
             event.preventDefault();
             const supabase = createClient();
             //image commit
@@ -108,28 +117,33 @@ const ClientPage = () => {
                   description: "Connect with us to fix this bug.",
                 });
               } else {
-                setsuccess(true)
+                setsuccess(true);
               }
 
               // Other data
             }
-            if(user_data){
-
-              const Data3 =await supabase.from("Profile_info").update({
-                Full_Name:user_data.Full_Name,
-                date_of_birth:user_data.date_of_birth,
-              course:user_data.course
-            }).eq("id",uid)
-            if(Data3.error){
-              toast({
-                title:Data3.error.message,
-                description: "Connect with us to fix this bug.",
-              })
-            }else{
-              setsuccess(true)
+            if (user_data) {
+              const Data3 = await supabase
+                .from("Profile_info")
+                .update({
+                  Full_Name: user_data.Full_Name,
+                  date_of_birth: user_data.date_of_birth,
+                  course: user_data.course,
+                })
+                .eq("id", uid);
+              if (Data3.error) {
+                toast({
+                  title: Data3.error.message,
+                  description: "Connect with us to fix this bug.",
+                });
+              } else {
+                setsuccess(true);
+              }
             }
+            
           }
-          }}
+        }
+          
         >
           <div className="flex justify-center items-center ">
             <label>
@@ -187,7 +201,7 @@ const ClientPage = () => {
                 onChange={handleInputChange}
               />
             </label>
-          <button type="submit">Update Profile</button>
+            <button type="submit">Update Profile</button>
           </div>
         </form>
       </div>
