@@ -23,44 +23,7 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import CreateRoom from "@/components/CreateRoom";
-import Project from "@/components/Project";
-import ProjectList from "@/components/ProjectList";
-import SearchDialog from "@/components/SearchDialouge";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
-import { ComboboxDemo } from "@/components/ui/combobox";
-import {
-    Dialog,
-    DialogClose,
-    DialogContent,
-    DialogDescription,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
-} from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Popover, PopoverTrigger } from "@/components/ui/popover";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Separator } from "@/components/ui/separator";
-import {
-    Table,
-    TableBody,
-    TableCaption,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
-} from "@/components/ui/table";
+
 import { useToast } from "@/components/ui/use-toast";
 import { userAtom } from "@/lib/atoms/userAtom";
 import { domain } from "@/lib/domain";
@@ -73,6 +36,8 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import NavbarCompo from "@/components/NavbarCompo";
 import { Progress } from "@/components/ui/progress";
+import { NewsArticle } from "@/lib/interface/newsArticle";
+import { Button } from "@/components/ui/button";
 
 const roomsarray = [
     { value: "1", label: "kolkata Jawans" },
@@ -93,9 +58,10 @@ const Page = () => {
 
     const [RoomChoice, setRoomChoice] = useState<string>("1");
     const [CreateRoomClick, setCreateRoomClick] = useState<boolean>(false);
-    const [projectNumber,setprojectNumber] = useState<number>(0)
-    const [Rooms,setRooms] = useState<any>();
-    const [team,setTeam] = useState<any>();
+    const [projectNumber, setprojectNumber] = useState<number>(0);
+    const [Rooms, setRooms] = useState<any>();
+    const [team, setTeam] = useState<any>();
+    const [news, setnews] = useState<NewsArticle[]>();
     const { toast } = useToast();
 
     useEffect(() => {
@@ -132,54 +98,163 @@ const Page = () => {
             });
         }
     };
+    const newsDataFetch = async () => {
+        const response = await axios.get(
+            `${domain}/api/v1/third-party/tech-news`
+        );
+        return response;
+    };
+    useEffect(() => {
+        //startup loading
+        const fetchData = async () => {
+            try {
+                const response = await newsDataFetch();
+                setnews(response.data.data.articles);
+            } catch (error) {
+                console.log(error);
+            }
+        };
+        fetchData();
+    }, []);
+    useEffect(() => {
+        console.log(news);
+    }, [news]);
     if (loading || authenticated == false) {
         return <div>Loading</div>;
     } else if (refresh) {
         return <div>Loading</div>;
     } else {
         return (
-                        <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
-                            <div className="flex items-center">
-                                <h1 className="text-lg font-semibold md:text-2xl">
-                                    Dashboard
-                                </h1>
-                            </div>
-                            <div
-                                className="flex flex-1 items-start justify-start rounded-lg border border-dashed shadow-sm p-7 w-full h-full"
-                                x-chunk="dashboard-02-chunk-1"
-                            >
-                                <div className="flex flex-col flex-grow p-4 h-full gap-3">
-                                    <Card className="p-2">
-                                        <CardTitle className="text-lg p-1">
-                                            Project Name
-                                        </CardTitle>
-                                        <CardContent>
-                                            <Progress value={55}/>
-                                        </CardContent>
-                                    </Card>
-                                    <Card className="flex-grow p-5">
-                                        <CardTitle className="text-lg">
-                                            List
-                                        </CardTitle>
-                                    </Card>
+            <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6 lg:max-h-[calc(100vh-60px)] overflow-hidden">
+                <div className="flex items-center">
+                    <h1 className="text-lg font-semibold md:text-2xl">
+                        Dashboard
+                    </h1>
+                </div>
+                <div
+                    className="flex flex-1 items-start justify-start rounded-lg border border-dashed shadow-sm p-7 w-full h-full flex-grow lg:flex-row md:flex-col sm:flex-col"
+                    x-chunk="dashboard-02-chunk-1"
+                >
+                    <div className="flex flex-col p-4 h-full gap-3 md:w-full sm:w-full lg:flex-1">
+                        <Card className="p-2">
+                            <CardTitle className="text-lg p-1">
+                                Project Name
+                            </CardTitle>
+                            <CardContent>
+                                <Progress value={55} />
+                            </CardContent>
+                        </Card>
+                        <Card className="flex-grow py-4 px-2">
+                            <CardTitle className="text-lg">List</CardTitle>
+                            <CardContent className="py-4">
+                                <div className="border-2 border-black rounded-lg p-1">
+                                    <h1 className="text-lg font-bold">
+                                        Employee Management System
+                                    </h1>
+                                    <p className="text-gray-400 py-2 pl-2">
+                                        Lorem ipsum dolor sit amet consectetur
+                                        adipisicing elit...
+                                    </p>
+                                    <div className="flex w-full justify-between px-2">
+                                        <div className="text-red-600 font-medium">
+                                            <div className="font-bold text-blue-500">
+                                                Team Drona
+                                            </div>
+                                            <div className="pl-1">
+                                                Project Manager
+                                            </div>
+                                        </div>
+                                        <div className="text-green-500 font-medium">
+                                            Backend
+                                        </div>
+                                    </div>
                                 </div>
-                                <div className="flex flex-col flex-grow p-4">
-
-                                </div>
-                                <div className="flex flex-col flex-grow p-4">
-                                    <Card>
-                                        <CardTitle className="text-lg">
-                                            Project Name
-                                        </CardTitle>
-                                        <CardContent>
-                                            <Progress value={55}/>
-                                        </CardContent>
-                                    </Card>
-
-                                </div>
-                            </div>
-                        </main>
-            
+                            </CardContent>
+                        </Card>
+                    </div>
+                    <div className="flex flex-col p-4 h-full md:w-full sm:w-full lg:flex-1 gap-4">
+                        <Card className="w-full h-[60%] p-3 overflow-y-scroll shadow-md rounded-lg flex-grow">
+                            <CardTitle className="text-lg font-bold mb-2">
+                                What's New
+                            </CardTitle>
+                            <CardContent className="flex flex-col space-y-4">
+                                {Array.isArray(news) &&
+                                    news.map((item: NewsArticle) => (
+                                        <Link href={item.url}>
+                                            <div
+                                                key={item.title}
+                                                className="bg-gray-100 p-4 rounded-lg hover:shadow-md"
+                                            >
+                                                <h2 className=" font-bold text-black cursor-pointer">
+                                                    <Link href={item.url}>
+                                                        {item.title?.substring(
+                                                            0,
+                                                            40
+                                                        )}
+                                                    </Link>
+                                                </h2>
+                                                <p className="text-gray-600 text-sm">
+                                                    {item.content?.substring(
+                                                        0,
+                                                        100
+                                                    )}
+                                                    ...
+                                                </p>
+                                            </div>
+                                        </Link>
+                                    ))}
+                            </CardContent>
+                        </Card>
+                        <Card className="h-[40%]">
+                            <CardTitle className="p-4">Notification</CardTitle>
+                            <CardContent className="h-full w-full flex justify-center items-center">
+                                No Notification
+                            </CardContent>
+                        </Card>
+                    </div>
+                    <div className="flex flex-col p-4 md:w-full sm:w-full lg:flex-1 gap-5 h-full">
+                        <Button
+                            style={{
+                                backgroundImage: "url(bg-idea.jpg)",
+                                backgroundSize: "cover",
+                                backgroundPosition: "center",
+                                backgroundRepeat: "no-repeat",
+                            }}
+                            className="h-[4vw] flex justify-center items-center font-semibold text-2xl pt-4 pl-6"
+                        >
+                            Submit your idea
+                        </Button>
+                        <Button
+                            style={{
+                                backgroundImage: "url(bg-project.png)",
+                                backgroundSize: "cover",
+                                backgroundPosition: "center",
+                                backgroundRepeat: "no-repeat",
+                            }}
+                            className="h-[4vw] flex justify-center items-center font-bold text-2xl pt-4 pl-6 text-black"
+                        >
+                            Submit your project
+                        </Button>
+                        <Button
+                            style={{
+                                backgroundImage: "url(bg-team.jpg)",
+                                backgroundSize: "cover",
+                                backgroundPosition: "center",
+                                backgroundRepeat: "no-repeat",
+                            }}
+                            className="h-[4vw] flex justify-center items-center font-bold text-2xl pt-4 pl-6 "
+                        >
+                            Join or Create a Team
+                        </Button>
+                        <Card className="h-full w-full">
+                            <CardTitle className="p-4">Invitation & Requests</CardTitle>
+                            <CardContent className="h-full w-full flex justify-center items-center">
+                                No inviatation or request
+                            </CardContent>
+                        </Card>
+                    </div>
+                </div>
+            </main>
         );
     }
 };

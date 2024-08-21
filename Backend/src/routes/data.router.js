@@ -7,7 +7,7 @@ import { verifyJWT } from "../middlewares/auth.middleware.js";
 const router = express.Router();
 //get
 router.get("/institution-list",verifyJWT,available_institution);
-router.get("/interest-list",available_interest);
+router.get("/interest-list",verifyJWT,available_interest);
 router.get("/skill-list",verifyJWT,available_skill);
 //post
 router.post("/add-institution",verifyJWT,addInstitution)  

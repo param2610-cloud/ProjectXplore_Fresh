@@ -93,17 +93,11 @@ export default function ClientLayout({
                                 <span className="">ProjectXplore</span>
                             </Link>
                             <Popover>
-                                <PopoverTrigger className="ml-auto h-8 w-8">
-                                    <Button
-                                        variant="outline"
-                                        size="icon"
-                                        className="ml-auto h-8 w-8"
-                                    >
+                                <PopoverTrigger className="ml-auto h-8 w-8" >
                                         <Bell className="h-4 w-4" />
                                         <span className="sr-only">
                                             Toggle notifications
                                         </span>
-                                    </Button>
                                 </PopoverTrigger>
                                 <PopoverContent>
                                     {/* <Notification/> // ****** */}

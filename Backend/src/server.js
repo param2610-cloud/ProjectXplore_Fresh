@@ -24,10 +24,12 @@ app.use(cookieParser());
 //router import 
 import userRouter from './routes/user.router.js';
 import selfRouter from './routes/data.router.js'
+import thirdpartyRouter from './routes/thirdParty.router.js'
 
 //router declaration
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/self', selfRouter);
+app.use('/api/v1/third-party',thirdpartyRouter)
     
 
 
