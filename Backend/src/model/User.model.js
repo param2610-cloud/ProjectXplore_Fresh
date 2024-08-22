@@ -31,8 +31,7 @@ export const findUserById = async (id) => {
         return null
     }
     return prisma.users.findUnique({
-        where: {user_id:id},
-        select: { user_id: true, username: true, email: true, profile_picture_link:true, refreshToken: true }
+        where: {user_id:id}
     });
 };
 

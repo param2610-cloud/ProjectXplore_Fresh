@@ -8,11 +8,12 @@ import {
     generateAccessToken,
     generateRefreshToken,
     updateUserRefreshToken,
-} from "../model/User.model.js"
+} from "../model/User.model.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
+import prisma from "../db/prismaClient.js";
 
 const registerUser = asyncHandler(async (req, res, next) => {
     const { username, email, password } = req.body;
@@ -58,7 +59,7 @@ const generateTokens = async (userId) => {
 
     const user = await findUserById(userId);
     if (!user) throw new Error("User not found");
-    console.log(user)
+    console.log(user);
 
     const accessToken = generateAccessToken(user);
     const refreshToken = generateRefreshToken(user);
@@ -85,16 +86,15 @@ const loginUser = asyncHandler(async (req, res, next) => {
     if (!validateUser) {
         return next(new ApiError(403, "Password is incorrect"));
     }
-    console.log(user.user_id)
+    console.log(user.user_id);
     const { accessToken, refreshToken } = await generateTokens(user.user_id);
 
     const options = {
         httpOnly: true,
         secure: false, // HTTP for development
-        sameSite: 'Lax', // or 'Strict' based on your needs
-        maxAge: 24 * 60 * 60 * 1000 // Optional: Set expiration time
-      };
-      
+        sameSite: "Lax", // or 'Strict' based on your needs
+        maxAge: 24 * 60 * 60 * 1000, // Optional: Set expiration time
+    };
 
     return res
         .status(200)
@@ -129,9 +129,11 @@ const refreshAccessToken = asyncHandler(async (req, res, next) => {
     const incomingRefreshToken =
         req.cookies.refreshToken || req.headers["authorization"]?.substring(7);
 
-    if (!incomingRefreshToken) {
-        throw next(new ApiError(401, "Unauthorized request"));
-    }
+        if (!incomingRefreshToken) {
+            return res
+            .status(200)
+            .json(new ApiResponse(200, false, "Token is not available"));
+        }
 
     try {
         const decodedToken = jwt.verify(
@@ -170,9 +172,11 @@ const refreshAccessToken = asyncHandler(async (req, res, next) => {
 
 const validateAccessToken = asyncHandler(async (req, res, next) => {
     const incomingAccessToken = req.cookies.accessToken;
-    
+
     if (!incomingAccessToken) {
-        throw next(new ApiError(401, "Unauthorized request"));
+        return res
+        .status(200)
+        .json(new ApiResponse(200, false, "Token is not available"));
     }
 
     try {
@@ -180,10 +184,8 @@ const validateAccessToken = asyncHandler(async (req, res, next) => {
             incomingAccessToken,
             process.env.ACCESS_TOKEN_SECRET
         );
-        
-        
+
         const user = await findUserById(decodedToken.user_id);
-        
 
         if (!user) {
             throw next(new ApiError(401, "Invalid access token"));
@@ -213,11 +215,94 @@ const getUserDetails = asyncHandler(async (req, res, next) => {
         .status(200)
         .json(new ApiResponse(200, userDetails, "User found"));
 });
+const getProfileCompleted = asyncHandler(async (req, res, next) => {
+    const { userId } = req.query;
+    console.log("trigger");
+    
+    if (!userId) {
+        throw next(new ApiError(401, "No user ID found"));
+    }
+
+    const userDetails = await prisma.users.findUnique({
+        where: {user_id:userId}});
+    if (!userDetails) {
+        throw next(new ApiError(401, "No user details found"));
+    }
+    if (!userDetails.address || userDetails.date_of_birth || userDetails.full_name || userDetails.institution_id || userDetails.full_name || userDetails.phone_number || userDetails.username){
+        return res
+            .status(200)
+            .json(new ApiResponse(200, false, "Profile is not completed"));
+    }
+
+    return res
+        .status(200)
+        .json(new ApiResponse(200, true, "User found"));
+});
+import { prisma } from '../path-to-prisma-client'; // Adjust path to prisma instance
+import asyncHandler from 'express-async-handler'; // Assuming you're using asyncHandler
+import { ApiError, ApiResponse } from '../path-to-response-handlers'; // Adjust path to your ApiError & ApiResponse utilities
+
+export const submitProfileData = asyncHandler(async (req, res, next) => {
+  const { userId } = req.query; // Getting the user ID from the query params
+  const { full_name, username, mobileNumber, address, dateOfBirth, institution, skills, interest } = req.body; // Getting data from request body
+
+  // Check if userId is provided
+  if (!userId) {
+    return next(new ApiError(401, 'No user ID found')); // Throw error if userId is missing
+  }
+
+  try {
+    // Update user profile details in the database
+    const userDetails = await prisma.users.update({
+      where: { user_id: userId },
+      data: {
+        full_name,
+        username,
+        phone_number: mobileNumber, // Assuming phone_number is used in your schema
+        address,
+        date_of_birth: dateOfBirth,
+        institution_id:institution,
+        skills, // Assuming skills is stored as an array
+        interest
+      }
+    });
+
+    if (!userDetails) {
+      return next(new ApiError(401, 'No user details found')); // Throw error if user not found
+    }
+
+    // Check if the profile is complete (validate key fields)
+    if (
+      !userDetails.full_name ||
+      !userDetails.username ||
+      !userDetails.phone_number ||
+      !userDetails.address ||
+      !userDetails.date_of_birth ||
+      !userDetails.institution
+    ) {
+      return res
+        .status(200)
+        .json(new ApiResponse(200, false, 'Profile is not completed'));
+    }
+
+    // If everything is okay, respond with success
+    return res
+      .status(200)
+      .json(new ApiResponse(200, true, 'Profile updated successfully', userDetails));
+  } catch (error) {
+    console.error('Error updating user profile:', error);
+    return next(new ApiError(500, 'Internal Server Error'));
+  }
+});
+
 
 
 export {
-    getUserDetails, loginUser,
+    getUserDetails,
+    loginUser,
     logoutUser,
-    refreshAccessToken, registerUser, validateAccessToken
+    refreshAccessToken,
+    registerUser,
+    validateAccessToken,
+    getProfileCompleted,
 };
-

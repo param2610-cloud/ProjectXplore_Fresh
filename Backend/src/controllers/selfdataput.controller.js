@@ -76,7 +76,7 @@ const addSkill = asyncHandler(async (req,res,next)=>{
     if(checking[0]){
         return res
         .status(201)
-        .json(new ApiResponse(200, checking[0], "Skill already added"));
+        .json(new ApiResponse(200, checking, "Skill already added"));
     }
     const data =await prisma.skills.create({
         data:{
