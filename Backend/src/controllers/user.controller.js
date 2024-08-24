@@ -16,7 +16,7 @@ import { uploadOnCloudinary } from "../utils/cloudinary.js";
 import prisma from "../db/prismaClient.js";
 
 const registerUser = asyncHandler(async (req, res, next) => {
-    const { username, email, password } = req.body;
+    const { full_name,username, email, password } = req.body;
 
     if ([username, email, password].some((field) => field?.trim() === "")) {
         throw next(new ApiError(400, "All fields are required"));
@@ -39,6 +39,7 @@ const registerUser = asyncHandler(async (req, res, next) => {
     }
 
     const user = await createUser({
+        full_name,
         username,
         email,
         password,
@@ -228,6 +229,7 @@ const getProfileCompleted = asyncHandler(async (req, res, next) => {
     if (!userDetails) {
         throw next(new ApiError(401, "No user details found"));
     }
+    console.log(userDetails)
     if (!userDetails.address || userDetails.date_of_birth || userDetails.full_name || userDetails.institution_id || userDetails.full_name || userDetails.phone_number || userDetails.username){
         return res
             .status(200)
@@ -274,8 +276,7 @@ export const submitProfileData = asyncHandler(async (req, res, next) => {
       !userDetails.username ||
       !userDetails.phone_number ||
       !userDetails.address ||
-      !userDetails.date_of_birth ||
-      !userDetails.institution
+      !userDetails.date_of_birth 
     ) {
       return res
         .status(200)

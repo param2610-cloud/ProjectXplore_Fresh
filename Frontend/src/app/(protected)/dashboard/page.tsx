@@ -12,7 +12,7 @@ import {
     Search,
     ShoppingCart,
     Users,
-    WholeWord,
+    WholeWord,  
 } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
@@ -22,12 +22,12 @@ import {
     CardDescription,
     CardHeader,
     CardTitle,
-} from "@/components/ui/card";
+    } from "@/components/ui/card";
 
 import { useToast } from "@/components/ui/use-toast";
-import { userAtom } from "@/lib/atoms/userAtom";
-import { domain } from "@/lib/domain";
-import useAuth from "@/lib/hooks/useUser";
+import { userAtom } from "@/lib/atoms/UserAtom";
+import { Domain } from "@/lib/Domain";
+import useAuth from "@/lib/hooks/UseUser";
 import { PopoverContent } from "@radix-ui/react-popover";
 import axios from "axios";
 import { useAtom } from "jotai";
@@ -36,7 +36,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import NavbarCompo from "@/components/NavbarCompo";
 import { Progress } from "@/components/ui/progress";
-import { NewsArticle } from "@/lib/interface/newsArticle";
+import { NewsArticle } from "@/lib/interface/NewsArticle";
 import { Button } from "@/components/ui/button";
 
 const roomsarray = [
@@ -45,7 +45,18 @@ const roomsarray = [
 ];
 
 const Page = () => {
-    // Capitalized the component name
+    useEffect(() => {
+        // Startup loading
+        const fetchData = async () => {
+            try {
+                const response = await axios.get(`${Domain}/api/v1/third-party/tech-news`);
+                setnews(response.data.data.articles);
+            } catch (error) {
+                console.log(error);
+            }
+        };
+        fetchData();
+    }, []);
     const router = useRouter();
     const { loading, authenticated } = useAuth();
     const [user] = useAtom(userAtom);
@@ -53,7 +64,7 @@ const Page = () => {
         if (!loading) {
             console.log(user);
         }
-    }, [loading, authenticated]);
+    }, [loading, authenticated,user]);
     const [refresh, setrefresh] = useState<boolean>(false);
 
     const [RoomChoice, setRoomChoice] = useState<string>("1");
@@ -64,10 +75,6 @@ const Page = () => {
     const [news, setnews] = useState<NewsArticle[]>();
     const { toast } = useToast();
 
-    useEffect(() => {
-        if (CreateRoomClick) {
-        }
-    }, [CreateRoomClick]);
 
     const handleRoomValueChange = (newValue: string) => {
         setRoomChoice(newValue);
@@ -83,7 +90,7 @@ const Page = () => {
     const handleLogout = async () => {
         try {
             const response = await axios.post(
-                `${domain}/api/v1/users/logout`,
+                `${Domain}/api/v1/users/logout`,
                 {},
                 { withCredentials: true }
             );
@@ -100,25 +107,10 @@ const Page = () => {
     };
     const newsDataFetch = async () => {
         const response = await axios.get(
-            `${domain}/api/v1/third-party/tech-news`
+            `${Domain}/api/v1/third-party/tech-news`
         );
         return response;
     };
-    useEffect(() => {
-        //startup loading
-        const fetchData = async () => {
-            try {
-                const response = await newsDataFetch();
-                setnews(response.data.data.articles);
-            } catch (error) {
-                console.log(error);
-            }
-        };
-        fetchData();
-    }, []);
-    useEffect(() => {
-        console.log(news);
-    }, [news]);
     if (loading || authenticated == false) {
         return <div>Loading</div>;
     } else if (refresh) {
@@ -175,12 +167,12 @@ const Page = () => {
                     <div className="flex flex-col p-4 h-full md:w-full sm:w-full lg:flex-1 gap-4">
                         <Card className="w-full h-[60%] p-3 overflow-y-scroll shadow-md rounded-lg flex-grow">
                             <CardTitle className="text-lg font-bold mb-2">
-                                What's New
+                                What&apos;s New
                             </CardTitle>
                             <CardContent className="flex flex-col space-y-4">
                                 {Array.isArray(news) &&
                                     news.map((item: NewsArticle) => (
-                                        <Link href={item.url}>
+                                        <Link href={item.url} key={item.title}>
                                             <div
                                                 key={item.title}
                                                 className="bg-gray-100 p-4 rounded-lg hover:shadow-md"

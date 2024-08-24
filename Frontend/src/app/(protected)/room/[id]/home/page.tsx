@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useParams } from 'next/navigation';
-import { domain } from '@/lib/domain'; // Adjust the import according to your domain setup
+import { Domain } from '@/lib/Domain'; // Adjust the import according to your Domain setup
 
 const Home = () => {
   const { id } = useParams(); // Extract the room ID from the URL
@@ -14,7 +14,7 @@ const Home = () => {
     if (id) {
       const fetchRoomData = async () => {
         try {
-          const response = await axios.get(`${domain}/api/v1/room/get-room`, { params: { id } });
+          const response = await axios.get(`${Domain}/api/v1/room/get-room`, { params: { id } });
           setRoomData(response.data);
         } catch (error) {
           setError("Failed to fetch room data");

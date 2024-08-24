@@ -1,7 +1,7 @@
 import axios from "axios"
-import { domain } from "../domain"
+import { Domain } from "../Domain"
 
 export const newsDataFetch =async ()=>{
-    const response  =await axios.get(`${domain}/api/v1/third-party/tech-news`)
+    const response  =await axios.get(`${Domain}/api/v1/third-party/tech-news`)
     return response
 }

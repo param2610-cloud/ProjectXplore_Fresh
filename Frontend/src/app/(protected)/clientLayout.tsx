@@ -62,8 +62,8 @@ import {
     TableRow,
 } from "@/components/ui/table";
 import { useToast } from "@/components/ui/use-toast";
-import { userAtom } from "@/lib/atoms/userAtom";
-import useAuth from "@/lib/hooks/useUser";
+import { userAtom } from "@/lib/atoms/UserAtom";
+import useAuth from "@/lib/hooks/UseUser";
 import { PopoverContent } from "@radix-ui/react-popover";
 import axios from "axios";
 import { useAtom } from "jotai";
@@ -71,7 +71,8 @@ import { LogOut, Settings, UserCircle } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import NavbarCompo from "@/components/NavbarCompo";
-import { ProjectnumberAtom } from "@/lib/atoms/useProjectnumber";
+import { ProjectnumberAtom } from "@/lib/atoms/UseProjectnumber";
+import { Domain } from "@/lib/Domain";
 
 export default function ClientLayout({
     children,
@@ -79,6 +80,22 @@ export default function ClientLayout({
     children: React.ReactNode;
 }>) {
     const [Projectnumber] = useAtom(ProjectnumberAtom);
+    const [userid]= useAtom(userAtom)
+    const [completed,setcompleted] = useState<boolean>(false)
+    useEffect(()=>{
+        const fetchdata = async()=>{
+            const response = await axios.get(`${Domain}/api/v1/users/profile-completed`,{
+                params:{
+                    userId:userid
+                }
+            })
+            setcompleted(response.data.data)
+            console.log(response)
+        }
+        if(userid){
+            fetchdata()
+        }
+    },[userid])
     return (
         <div>
             <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
@@ -112,7 +129,8 @@ export default function ClientLayout({
                             />
                         </div>
                         <div className="mt-auto p-4">
-                            <Card x-chunk="dashboard-02-chunk-0">
+
+                            {!completed && <Card x-chunk="dashboard-02-chunk-0">
                                 <CardHeader className="p-2 pt-0 md:p-4">
                                     <CardTitle className="text-xl font-bold">
                                         Complete Your Profile
@@ -132,7 +150,7 @@ export default function ClientLayout({
                                     </Link>
 
                                 </CardContent>
-                            </Card>
+                            </Card>}
                         </div>
                     </div>
                 </div>
@@ -158,7 +176,8 @@ export default function ClientLayout({
                                     }
                                 />
                                 <div className="mt-auto">
-                                    <Card>
+
+                                    {!completed && <Card>
                                         <CardHeader>
                                             <CardTitle>
                                             Complete Your Profile
@@ -179,7 +198,7 @@ export default function ClientLayout({
                                             </Button>
                                                 </Link>
                                         </CardContent>
-                                    </Card>
+                                    </Card>}
                                 </div>
                             </SheetContent>
                         </Sheet>

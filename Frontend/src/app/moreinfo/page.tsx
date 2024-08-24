@@ -1,10 +1,10 @@
 'use client'
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { domain } from '@/lib/domain';
-import useAuth from '@/lib/hooks/useUser';
+import { Domain } from '@/lib/Domain';
+import useAuth from '@/lib/hooks/UseUser';
 import { useAtom } from 'jotai';
-import { userAtom } from '@/lib/atoms/userAtom';
+import { userAtom } from '@/lib/atoms/UserAtom';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -12,11 +12,12 @@ import { SkillSearchWithSuggestions } from '@/components/Searchbar';
 import { Textarea } from '@/components/ui/textarea';
 import { InstitutionSearchWithStudentId } from '@/components/InstitutionsearchBar';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 interface UserData {
   full_name: string;
   username: string;
-  mobileNumber: string;
+  phone_number: string;
   address: string;
   dateOfBirth: string;
   interest: string;
@@ -29,7 +30,7 @@ export default function UserForm() {
   const [formData, setFormData] = useState<UserData>({
     full_name: '',
     username: '',
-    mobileNumber: '',
+    phone_number: '',
     address: '',
     dateOfBirth: '',
     interest: '',
@@ -46,7 +47,7 @@ export default function UserForm() {
         // Fetch user data from API and set values to the form
         const fetchUserData = async () => {
             try {
-                const response = await axios.get(`${domain}/api/v1/users/getUser`,{
+                const response = await axios.get(`${Domain}/api/v1/users/getUser`,{
                     params:{
                         userId:user
                     }
@@ -55,7 +56,7 @@ export default function UserForm() {
                 if (response.data) {
                     setFormData({
                         ...formData,
-                        ...response.data, // Prefill form data with user info from the API
+                        ...response.data.data, // Prefill form data with user info from the API
                     });
                 }
                 
@@ -68,7 +69,7 @@ export default function UserForm() {
     if(!loading){
         fetchUserData();
     }
-  }, [loading]);
+  }, [loading, formData, user]);
 
   // Update form data and store in localStorage
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -90,11 +91,12 @@ export default function UserForm() {
     try {
       console.log(formData)
       
-      
-      await axios.post(`${domain}/api/v1/users/more-info`, {...formData,userId:user},{
-        withCredentials:true
-      });
-      localStorage.removeItem('formData');
+      if(user){
+        await axios.post(`${Domain}/api/v1/users/more-info`, {...formData,userId:user},{
+          withCredentials:true
+        });
+      }
+      localStorage.removeItem('userFormData');
       router.push("/dashboard")
     } catch (error) {
       console.error('Failed to submit the form:', error);
@@ -136,7 +138,7 @@ export default function UserForm() {
           className='w-full flex-grow'
             type="text"
             name="mobileNumber"
-            value={formData.mobileNumber}
+            value={formData.phone_number}
             onChange={handleChange}
             required
           />
@@ -184,6 +186,13 @@ export default function UserForm() {
         </Button>
         </div>
       </form>
+      <div className='mt-2'>
+        <Link href={"/dashboard"}>
+        <Button variant={'outline'}>
+          Back To Dashboard
+        </Button>
+        </Link>
+      </div>
     </div>
   );
 }

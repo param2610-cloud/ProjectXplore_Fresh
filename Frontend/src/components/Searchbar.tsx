@@ -4,9 +4,9 @@ import { X } from "lucide-react";
 import { Label } from "./ui/label";
 import { Button } from "./ui/button";
 import axios from "axios";
-import { domain } from "@/lib/domain";
+import { Domain } from "@/lib/Domain";
 import { useAtom } from "jotai";
-import { userAtom } from "@/lib/atoms/userAtom";
+import { userAtom } from "@/lib/atoms/UserAtom";
 
 interface Skillprops {
     skill_name: string;
@@ -25,15 +25,16 @@ const SkillSearchWithSuggestions = () => {
     // Retrieve skill data
     useEffect(() => {
         const fetchdata = async () => {
-            const response2 = await axios.get(`${domain}/api/v1/self/skill-list`, {
+            const response2 = await axios.get(`${Domain}/api/v1/self/skill-list`, {
                 withCredentials: true,
             });
-            const response3 = await axios.get(`${domain}/api/v1/users/get-skill`, {
+            const response3 = await axios.get(`${Domain}/api/v1/users/get-skill`, {
                 params: {
                     userId: userId
                 },
                 withCredentials: true
             });
+            console.log(response3)
             setselectedskillList(response3.data.data);
             setskillList(response2.data.data);
         };
@@ -76,7 +77,7 @@ const SkillSearchWithSuggestions = () => {
                 console.log(selectedSkill);
                 
                 // Skill was selected from suggestions, so send skill_id and skill_name
-                const response = await axios.post(`${domain}/api/v1/users/add-skill`, {
+                const response = await axios.post(`${Domain}/api/v1/users/add-skill`, {
                     skill_id: selectedSkill.skill_id,
                     skill_name: selectedSkill.skill_name,
                     userId: userId
@@ -88,7 +89,7 @@ const SkillSearchWithSuggestions = () => {
                 // No skill was selected, treat it as a new skill with just the name
                 if(inputValue){
 
-                    const response = await axios.post(`${domain}/api/v1/users/add-skill`, {
+                    const response = await axios.post(`${Domain}/api/v1/users/add-skill`, {
                         skill_name: inputValue,
                         skill_id:null,
                         userId:userId
@@ -113,7 +114,7 @@ const SkillSearchWithSuggestions = () => {
     const deleteSkill = async (skillId: string) => {
         try {
             if (skillId) {
-                await axios.post(`${domain}/api/v1/users/delete-skill`, {
+                await axios.post(`${Domain}/api/v1/users/delete-skill`, {
                     skillId: skillId,
                     userId: userId
                 });
@@ -128,7 +129,7 @@ const SkillSearchWithSuggestions = () => {
     // Function to refresh selected skills
     const fetchUserSkills = async () => {
         try {
-            const response = await axios.get(`${domain}/api/v1/users/get-skill`, {
+            const response = await axios.get(`${Domain}/api/v1/users/get-skill`, {
                 params: {
                     userId: userId
                 },

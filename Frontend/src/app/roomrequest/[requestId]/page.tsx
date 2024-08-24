@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import { domain } from "@/lib/domain";
+import { Domain } from "@/lib/Domain";
 
 const Page = ({ params }: { params: { requestId: string } }) => {
     const [request, setRequest] = useState<any>(null);
@@ -19,7 +19,7 @@ const Page = ({ params }: { params: { requestId: string } }) => {
 
             // Fetch request details
             axios
-                .get(`${domain}/api/v1/room/get-request`, {
+                .get(`${Domain}/api/v1/room/get-request`, {
                     params: { id: requestId },
                 })
                 .then((response) => {
@@ -29,7 +29,7 @@ const Page = ({ params }: { params: { requestId: string } }) => {
                         setRequest(response.data);
 
                         // Fetch room details
-                        return axios.get(`${domain}/api/v1/room/get-room`, {
+                        return axios.get(`${Domain}/api/v1/room/get-room`, {
                             params: { id: response.data.roomId },
                         });
                     } else {
@@ -68,10 +68,10 @@ const Page = ({ params }: { params: { requestId: string } }) => {
 
         try {
             // Add user to the room
-            await axios.post(`${domain}/api/v1/room/add-room-member`,{roomId:room.id,userId:request.receiverId})
+            await axios.post(`${Domain}/api/v1/room/add-room-member`,{roomId:room.id,userId:request.receiverId})
 
             // Delete the request
-            await axios.delete(`${domain}/api/v1/room/delete-request`, {
+            await axios.delete(`${Domain}/api/v1/room/delete-request`, {
                 params: { id: request.id },
             });
 
@@ -93,7 +93,7 @@ const Page = ({ params }: { params: { requestId: string } }) => {
 
         try {
             // Delete the request
-            await axios.delete(`${domain}/api/requests/delete-request`, {
+            await axios.delete(`${Domain}/api/requests/delete-request`, {
                 params: { id: request.id },
             });
 

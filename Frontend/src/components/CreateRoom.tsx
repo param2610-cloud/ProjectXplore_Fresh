@@ -6,9 +6,9 @@ import { Input } from "../components/ui/input";
 import { Label } from "../components/ui/label";
 import { Button } from "../components/ui/button"; 
 import axios from "axios";
-import { domain } from "../lib/domain"; 
+import { Domain } from "../lib/Domain"; 
 import { useAtom } from "jotai";
-import { userAtom } from "../lib/atoms/userAtom"; 
+import { userAtom } from "../lib/atoms/UserAtom"; 
 import { useToast } from "../components/ui/use-toast";
 
 const CreateRoomPage = () => {
@@ -22,7 +22,7 @@ const CreateRoomPage = () => {
         try {
             setLoading(true);
 
-            const response = await axios.post(`${domain}/api/v1/room/create`, {
+            const response = await axios.post(`${Domain}/api/v1/room/create`, {
                 name: roomName,
                 authorId: user,
             });
@@ -32,7 +32,7 @@ const CreateRoomPage = () => {
             const roomId = response.data.id;
 
             for (const recieveruser of selectedUsers) {
-                await axios.post(`${domain}/api/v1/room/send-email`, {
+                await axios.post(`${Domain}/api/v1/room/send-email`, {
                     senderId: user,
                     receiverId: recieveruser.id,
                     roomId,

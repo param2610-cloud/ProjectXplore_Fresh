@@ -17,7 +17,7 @@ import {
 } from "@/components/ui/table";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
-import { domain } from "@/lib/domain";
+import { Domain } from "@/lib/Domain";
 
 export interface User {
     id: number;
@@ -41,7 +41,7 @@ const SearchDialog = ({selectedUsers,setSelectedUsers}:SearchDialogProps) => {
 
     const handleSearch = async () => {
         try {
-            const response = await axios.get(`${domain}/api/v1/room/search`, {
+            const response = await axios.get(`${Domain}/api/v1/room/search`, {
                 params: { query: searchQuery },
             });
             setUsers(response.data);

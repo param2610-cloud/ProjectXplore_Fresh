@@ -4,10 +4,11 @@ import jwt from 'jsonwebtoken';
 
 const prisma = new PrismaClient();
 
-export const createUser = async ({ username, email, password, avatarUrl }) => {
+export const createUser = async ({ full_name,username, email, password, avatarUrl }) => {
     const hashedPassword = await bcrypt.hash(password, 10);
     return prisma.users.create({
         data: {
+            full_name:full_name,
             username:username,
             email:email,
             password:hashedPassword,

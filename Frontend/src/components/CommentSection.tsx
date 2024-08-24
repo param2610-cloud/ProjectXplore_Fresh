@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { domain } from "@/lib/domain";
+import { Domain } from "@/lib/Domain";
 import { HeartIcon } from "lucide-react";
 import { useAtom } from "jotai";
-import { userAtom } from "@/lib/atoms/userAtom";
+import { userAtom } from "@/lib/atoms/UserAtom";
 import { Avatar, AvatarImage } from "./ui/avatar";
 
 export default function CommentsSection({ projectId }: { projectId: string }) {
@@ -17,7 +17,7 @@ export default function CommentsSection({ projectId }: { projectId: string }) {
         const fetchComments = async () => {
             try {
                 const response = await axios.get(
-                    `${domain}/api/v1/project/comment/list`,
+                    `${Domain}/api/v1/project/comment/list`,
                     {
                         params: { projectId },
                     }
@@ -37,7 +37,7 @@ export default function CommentsSection({ projectId }: { projectId: string }) {
 
         try {
             const response = await axios.post(
-                `${domain}/api/v1/project/comment/create`,
+                `${Domain}/api/v1/project/comment/create`,
                 {
                     content: newComment,
                     authorId: user,
@@ -61,7 +61,7 @@ export default function CommentsSection({ projectId }: { projectId: string }) {
     const handleCommentLike = async (commentId: number) => {
         try {
             const response = await axios.post(
-                `${domain}/api/v1/project/comment/like`,
+                `${Domain}/api/v1/project/comment/like`,
                 {
                     userId: user,
                     commentId,
@@ -90,7 +90,7 @@ export default function CommentsSection({ projectId }: { projectId: string }) {
     const handleRemoveCommentLike = async (commentId: number) => {
         try {
             const response = await axios.post(
-                `${domain}/api/v1/project/comment/remove-likes`,
+                `${Domain}/api/v1/project/comment/remove-likes`,
                 {
                     userId: user,
                     commentId,

@@ -1,6 +1,6 @@
 "use client";
-import { userAtom } from "@/lib/atoms/userAtom";
-import { domain } from "@/lib/domain";
+import { userAtom } from "@/lib/atoms/UserAtom";
+import { Domain } from "@/lib/Domain";
 import { Label } from "@radix-ui/react-label";
 import axios from "axios";
 import { useAtom } from "jotai";
@@ -21,11 +21,11 @@ import { Textarea } from "./ui/textarea";
 import { useToast } from "./ui/use-toast";
 interface ProjectProps {
     setRefresh: React.Dispatch<React.SetStateAction<boolean>>;
-  }
-  
-  const Project: React.FC<ProjectProps> = ({ setRefresh }) => {
-    const [loading,setloading] = useState<boolean>(false)
-    const [mode,setmode] = useState()
+}
+
+const Project: React.FC<ProjectProps> = ({ setRefresh }) => {
+    const [loading, setloading] = useState<boolean>(false);
+    const [mode, setmode] = useState();
     const [user] = useAtom(userAtom);
     const userid = user?.toString();
     const [ProjectChoice, setProjectChoice] = useState<string>("1");
@@ -66,14 +66,15 @@ interface ProjectProps {
     };
     const handleSubmit = async () => {
         // if (typeof user === "string") {
-        setRefresh(true)
-            console.log("user : ",user);
-            setloading(true)
+        if (userid) {
+            setRefresh(true);
+            console.log("user : ", user);
+            setloading(true);
             const links = linkfields.map((field: any) => field.link);
             const formData = new FormData();
 
             formData.append("name", name);
-            formData.append("userId", userid); 
+            formData.append("userId", userid ? userid : "");
             formData.append("description", desc);
             formData.append("links", JSON.stringify(links));
 
@@ -83,7 +84,7 @@ interface ProjectProps {
 
             try {
                 const response = await axios.post(
-                    `${domain}/api/v1/project/create`,
+                    `${Domain}/api/v1/project/create`,
                     formData,
                     {
                         headers: {
@@ -95,17 +96,18 @@ interface ProjectProps {
                 toast({
                     title: "Project Created Successfully",
                 });
-                setloading(false)
+                setloading(false);
             } catch (error) {
                 console.error(error);
                 toast({
                     title: "Error Uploading the Project",
                     description: "Please try again.",
                 });
-                setloading(false)
-                setRefresh(false)
+                setloading(false);
+                setRefresh(false);
             }
-          // }
+        }
+        // }
     };
 
     return (
@@ -163,7 +165,12 @@ interface ProjectProps {
                 </form>
             </CardContent>
             <CardFooter className="w-full flex justify-center">
-                <Button onClick={handleSubmit} disabled={loading?true:false}>Submit</Button>
+                <Button
+                    onClick={handleSubmit}
+                    disabled={loading ? true : false}
+                >
+                    Submit
+                </Button>
             </CardFooter>
         </Card>
     );

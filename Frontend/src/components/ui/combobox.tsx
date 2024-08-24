@@ -14,10 +14,10 @@ import {
 import { cn } from "@/lib/utils"
 import { useRouter } from "next/navigation"
 import axios from "axios"
-import { domain } from "@/lib/domain"
+import { Domain } from "@/lib/Domain"
 import { useAtom } from "jotai"
-import { userAtom } from "@/lib/atoms/userAtom"
-import useAuth from "@/lib/hooks/useUser"
+import { userAtom } from "@/lib/atoms/UserAtom"
+import useAuth from "@/lib/hooks/UseUser"
 
 interface Framework {
   value: string
@@ -50,6 +50,22 @@ export function ComboboxDemo({
   onValueChange,
   setCreateRoomClick
 }: ComboboxDemoProps) {
+  React.useEffect(() => {
+    // Fetch rooms from API
+    const fetchRooms = async () => {
+      try {
+        
+        if(user){
+          const response = await axios.get(`${Domain}/api/v1/room/get-all-room`,{params:{userId:user}}) 
+          setRooms(response.data)
+        }
+      } catch (error) {
+        console.error('Error fetching rooms:', error)
+      }
+    }
+  
+    fetchRooms()
+  }, [])
   const [open, setOpen] = React.useState(false)
   const [value, setValue] = React.useState(defaultValue)
   const [User, setUser] = React.useState<any>()
@@ -64,22 +80,6 @@ export function ComboboxDemo({
     setValue(defaultValue)
   }, [defaultValue])
 
-  React.useEffect(() => {
-    // Fetch rooms from API
-    const fetchRooms = async () => {
-      try {
-        
-        if(user){
-          const response = await axios.get(`${domain}/api/v1/room/get-all-room`,{params:{userId:user}}) 
-          setRooms(response.data)
-        }
-      } catch (error) {
-        console.error('Error fetching rooms:', error)
-      }
-    }
-
-    fetchRooms()
-  }, [])
 
   const handleValueChange = (currentValue: string) => {
     setValue(currentValue)

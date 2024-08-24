@@ -1,10 +1,10 @@
 import axios from "axios";
-import { domain } from "../domain";
+import { Domain } from "../Domain";
 import { useEffect, useState } from "react";
 import { useAtom } from "jotai";
-import { userAtom } from "../atoms/userAtom";
+import { userAtom } from "../atoms/UserAtom";
 
-function useAuth() {
+function UseAuth() {
     const [, setUserid] = useAtom(userAtom);
     const [authenticated, setIsAuthenticated] = useState(false);
     const [loading, setIsLoading] = useState(true);
@@ -13,7 +13,7 @@ function useAuth() {
         const refreshAccesstoken = async () => {
             try {
                 const response = await axios.post(
-                    `${domain}/api/v1/users/refresh-token`,
+                    `${Domain}/api/v1/users/refresh-token`,
                     {},
                     {
                         withCredentials: true,
@@ -39,7 +39,7 @@ function useAuth() {
         const checkAuth = async () => {
             try {
                 const response = await axios.post(
-                    `${domain}/api/v1/users/validate-token`,
+                    `${Domain}/api/v1/users/validate-token`,
                     {},
                     {
                         withCredentials: true,
@@ -67,9 +67,9 @@ function useAuth() {
         };
 
         checkAuth();
-    }, [domain]);
+    }, [Domain]);
 
     return { loading, authenticated };
 }
 
-export default useAuth;
+export default UseAuth;

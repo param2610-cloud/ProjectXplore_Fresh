@@ -1,8 +1,8 @@
-import { userAtom } from '@/lib/atoms/userAtom';
-import { domain } from '@/lib/domain';
+import { userAtom } from '@/lib/atoms/UserAtom';
+import { Domain } from '@/lib/Domain';
 import axios from 'axios';
 import { useAtom } from 'jotai';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Card, CardContent, CardHeader } from './ui/card';
 import { useToast } from './ui/use-toast';
 import Link from 'next/link';
@@ -13,9 +13,9 @@ const ProjectList = () => {
     const [projectList, setProjectList] = useState<any[]>([]);
     
 
-    const getdata = async () => {
+    const getdata = useCallback( async () => {
         try {
-            const response = await axios.get(`${domain}/api/v1/project/list`, {
+            const response = await axios.get(`${Domain}/api/v1/project/list`, {
                 params: { userId: user }
             });
             console.log(response);
@@ -30,7 +30,7 @@ const ProjectList = () => {
                 description: "Error occurred while retrieving projects"
             });
         }
-    };
+    },[user]);
 
     useEffect(() => {
         getdata();
@@ -40,11 +40,11 @@ const ProjectList = () => {
             {projectList.length > 0 ? (
                 projectList.map((project) =>{
                     // author name retrieve
-                    // const author = await axios.get(`${domain}/api/v1/project/list`, {
+                    // const author = await axios.get(`${Domain}/api/v1/project/list`, {
                     //     params: { userId: response.data.data }
                     // });
                     return (
-                    <Link href={`/project/${project.id}`}>
+                    <Link key={project.id} href={`/project/${project.id}`}>
                     <Card key={project.id} className='mx-6 cursor-pointer'>
                         <CardContent className='text-sm'>
                             {}{project.name}

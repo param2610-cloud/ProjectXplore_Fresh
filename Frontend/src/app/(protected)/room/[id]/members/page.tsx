@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useParams } from 'next/navigation';
-import { domain } from '@/lib/domain'; 
+import { Domain } from '@/lib/Domain'; 
 import { Button } from '@/components/ui/button'; 
 import {  Input} from '@/components/ui/input'; 
 import { Label } from '@/components/ui/label'; 
@@ -21,7 +21,7 @@ const Member = () => {
     if (id) {
       const fetchRoomMembers = async () => {
         try {
-          const response = await axios.get(`${domain}/api/v1/room/get-room`, { params: { id } });
+          const response = await axios.get(`${Domain}/api/v1/room/get-room`, { params: { id } });
           console.log(response);
           
           setMembers(response.data.members);
@@ -41,7 +41,7 @@ const Member = () => {
     if (searchQuery) {
       const searchUsers = async () => {
         try {
-          const response = await axios.get(`${domain}/api/v1/search`, { params: { query: searchQuery } });
+          const response = await axios.get(`${Domain}/api/v1/search`, { params: { query: searchQuery } });
           setSearchResults(response.data);
         } catch (error) {
           setError('Failed to search users');
@@ -56,7 +56,7 @@ const Member = () => {
   const handleAddMember = async () => {
     if (!newMemberId || !id) return;
     try {
-      await axios.post(`${domain}/api/v1/add-room-member`, { roomId: id, userId: newMemberId });
+      await axios.post(`${Domain}/api/v1/add-room-member`, { roomId: id, userId: newMemberId });
       setMembers([...members, { id: newMemberId }]); // Update state with the new member
       setNewMemberId('');
     } catch (error) {
@@ -68,7 +68,7 @@ const Member = () => {
   const handleDeleteMember = async (memberId: string) => {
     if (!id) return;
     try {
-      await axios.delete(`${domain}/api/v1/delete-request`, { params: { id: memberId } });
+      await axios.delete(`${Domain}/api/v1/delete-request`, { params: { id: memberId } });
       setMembers(members.filter(member => member.id !== memberId)); // Update state by removing the member
     } catch (error) {
       setError('Failed to delete member');

@@ -2,7 +2,7 @@
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { domain } from "@/lib/domain";
+import { Domain } from "@/lib/Domain";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 
@@ -25,7 +25,7 @@ export default function Datalayout({
             const fetchRoomData = async () => {
                 try {
                     const response = await axios.get(
-                        `${domain}/api/v1/room/get-room`,
+                        `${Domain}/api/v1/room/get-room`,
                         { params: { id } }
                     );
                     setRoomData(response.data);

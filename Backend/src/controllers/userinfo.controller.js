@@ -20,7 +20,7 @@ const getmoreinfo = async () => {
     } = req.body;
 };
 const getSkill = asyncHandler(async (req, res, next) => {
-    const { userId } = req.body;
+    const { userId } = req.query;
     try {
         const userSkills = await prisma.user_skills.findMany({
             where: {
@@ -30,6 +30,7 @@ const getSkill = asyncHandler(async (req, res, next) => {
                 skills: true,
             },
         });
+        console.log(userSkills)
         return res
             .status(200)
             .json(
@@ -378,6 +379,32 @@ const Moreinfo = asyncHandler(async (req, res,next) => {
             .json({ message: "Internal server error", error });
     }
 });
+
+const checkUsernameAvailability = asyncHandler(async (req, res) => {
+    const { username } = req.query;
+
+    if (!username) {
+        return res.status(400).json({ message: 'Username is required.' });
+    }
+
+    try {
+        // Query the database to check if the username exists
+        const user = await prisma.users.findUnique({
+            where: { username: username },
+        });
+
+        // If a user with the given username exists, return that it's taken
+        if (user) {
+            return res.status(200).json({ available: false, message: 'Username is already taken.' });
+        }
+
+        // If no user with the given username exists, return that it's available
+        return res.status(200).json({ available: true, message: 'Username is available.' });
+    } catch (error) {
+        console.error('Error checking username availability:', error);
+        return res.status(500).json({ message: 'Internal server error', error });
+    }
+});
 export {
     addSkill,
     deleteSkill,
@@ -386,4 +413,5 @@ export {
     deleteInstitutionOfNonVerifiedUser,
     getInstitutionDetails,
     Moreinfo,
+    checkUsernameAvailability
 };

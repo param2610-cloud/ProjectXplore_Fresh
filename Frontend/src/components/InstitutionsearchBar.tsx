@@ -4,8 +4,8 @@ import { Button } from "./ui/button";
 import { Label } from "./ui/label";
 import axios from "axios";
 import { useAtom } from "jotai";
-import { userAtom } from "@/lib/atoms/userAtom";
-import { domain } from "@/lib/domain";
+import { userAtom } from "@/lib/atoms/UserAtom";
+import { Domain } from "@/lib/Domain";
 
 interface InstitutionProps {
     institution_id: string;
@@ -42,7 +42,7 @@ const InstitutionSearchWithStudentId = () => {
     useEffect(() => {
         const fetchInstitutionData = async () => {
             const response = await axios.get(
-                `${domain}/api/v1/self/institution-list`,
+                `${Domain}/api/v1/self/institution-list`,
                 {
                     withCredentials: true,
                 }
@@ -57,7 +57,7 @@ const InstitutionSearchWithStudentId = () => {
         const fetchUserInstitutions = async () => {
             if (userId) {
                 const response = await axios.get(
-                    `${domain}/api/v1/users/get-institution`,
+                    `${Domain}/api/v1/users/get-institution`,
                     {
                         params: {
                             userId: userId,
@@ -102,7 +102,7 @@ const InstitutionSearchWithStudentId = () => {
         try {
             if (selectedInstitution && studentId) {
                 const response = await axios.post(
-                    `${domain}/api/v1/users/add-institution`,
+                    `${Domain}/api/v1/users/add-institution`,
                     {
                         userId,
                         institutionId: selectedInstitution.institution_id,

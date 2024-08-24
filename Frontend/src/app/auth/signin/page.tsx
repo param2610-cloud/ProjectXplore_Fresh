@@ -1,94 +1,91 @@
-"use client"
-import Link from "next/link"
+"use client";
+import Link from "next/link";
 
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 import {
     Card,
     CardContent,
     CardDescription,
     CardHeader,
     CardTitle,
-} from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import axios from "axios"
-import { useState, useEffect } from "react"
-import { useToast } from "@/components/ui/use-toast"
-import { Toaster } from "@/components/ui/toaster"
-import { domain } from "@/lib/domain"
-import { useRouter } from "next/navigation"
-import useAuth from "@/lib/hooks/useUser"
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import axios from "axios";
+import { useState, useEffect } from "react";
+import { useToast } from "@/components/ui/use-toast";
+import { Toaster } from "@/components/ui/toaster";
+import { Domain } from "@/lib/Domain";
+import { useRouter } from "next/navigation";
+import useAuth from "@/lib/hooks/UseUser";
 
-export default function page() {
-    const [pageloading, setpageloading] = useState<boolean>(false)
-    const {loading,authenticated} = useAuth();
+export default function Page() {
+    const [pageloading, setPageloading] = useState<boolean>(false);
+    const { loading, authenticated } = useAuth();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [error, setError] = useState(null);
+    const [error, setError] = useState<string | null>(null);
     const { toast } = useToast();
     const router = useRouter();
-    
 
-    const handleSubmit = async (e: any) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLButtonElement>) => {
         e.preventDefault();
-        setpageloading(true);
-        
+        setPageloading(true);
+
         try {
-            const response = await axios.post(`${domain}/api/v1/users/login`, {
+            const response = await axios.post(`${Domain}/api/v1/users/login`, {
                 email,
                 password
             }, {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                withCredentials:true
-            }); 
-                const  {user} = response.data.data;
-                toast({
-                    title: `Welcome ${user.name}`,
-                    description: "Logged In sucessfully"
-                });
-            
-    
-            
-            setpageloading(false)
-            router.push("/dashboard")
+                withCredentials: true
+            });
+            const { user } = response.data.data;
+            toast({
+                title: `Welcome ${user.name}`,
+                description: "Logged In successfully"
+            });
+            setPageloading(false);
+            router.push("/dashboard");
         } catch (err: any) {
             setError(err.response?.data?.message || 'Something went wrong');
-            setpageloading(false)
+            setPageloading(false);
         }
     };
-    
+
     useEffect(() => {
-        if (error != null) {
+        if (error) {
             toast({
                 title: "Login error",
                 description: error
-            })
+            });
         }
-    }, [error])
-    useEffect(()=>{
-        if(authenticated){  
-            router.push("/dashboard")
-        }
-    },[authenticated])
-    useEffect(()=>{
-        if(loading){  
-            toast({
-                title:"PLease wait",
-                description:"Validating your previous login"
-            })
-        }else{
-            toast({
-                title:"PLease Continue",
-                description:"Validating process is done."
-            })
+    }, [error, toast]);
 
+    useEffect(() => {
+        if (authenticated) {
+            router.push("/dashboard");
         }
-    },[loading])
+    }, [authenticated, router]);
+
+    useEffect(() => {
+        if (loading) {
+            toast({
+                title: "Please wait",
+                description: "Validating your previous login"
+            });
+        } else {
+            toast({
+                title: "Please Continue",
+                description: "Validation process is done."
+            });
+        }
+    }, [loading, toast]);
 
     return (
-        <div className="w-screen min-h-screen flex justify-center  items-center">
+        <div className="w-screen min-h-screen flex justify-center items-center">
             <Toaster />
             <Card className="mx-auto max-w-sm scale-125">
                 <CardHeader>
@@ -106,9 +103,9 @@ export default function page() {
                                 type="email"
                                 placeholder="m@example.com"
                                 value={email}
-                                onChange={(e: any) => setEmail(e.target.value)}
+                                onChange={(e) => setEmail(e.target.value)}
                                 required
-                                disabled={loading?true:false}
+                                disabled={loading}
                             />
                         </div>
                         <div className="grid gap-2">
@@ -118,10 +115,21 @@ export default function page() {
                                     Forgot your password?
                                 </Link>
                             </div>
-                            <Input id="password" type="password" disabled={loading?true:false} required value={password} onChange={(e: any) => setPassword(e.target.value)} />
+                            <Input
+                                id="password"
+                                type="password"
+                                required
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                disabled={loading}
+                            />
                         </div>
-                        
-                        <Button type="submit" className="w-full" onClick={handleSubmit} disabled={pageloading||loading?true:false }>
+                        <Button
+                            type="submit"
+                            className="w-full"
+                            onClick={handleSubmit}
+                            disabled={pageloading || loading}
+                        >
                             Login
                         </Button>
                     </div>
@@ -134,5 +142,5 @@ export default function page() {
                 </CardContent>
             </Card>
         </div>
-    )
+    );
 }

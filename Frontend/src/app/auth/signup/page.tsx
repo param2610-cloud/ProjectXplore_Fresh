@@ -1,16 +1,24 @@
-"use client"
-import{ useEffect, useState } from "react";
-import Avataruploader from "@/lib/control/avataruploader";
+"use client";
+import { useEffect, useState } from "react";
+import Avataruploader from "@/lib/control/Avataruploader";
 import { useToast } from "@/components/ui/use-toast";
 import axios from "axios";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Toaster } from "@/components/ui/toaster";
-import { domain } from "@/lib/domain";
+import { Domain } from "@/lib/Domain";
 import { useRouter } from "next/navigation";
+import { useAtom } from "jotai";
+import { userAtom } from "@/lib/atoms/UserAtom";
 interface ErrorMessage {
     error: boolean;
     title: string;
@@ -26,33 +34,39 @@ interface Message {
 function Signup() {
     const router = useRouter();
     const [email, setemail] = useState("");
+    const [username, setusername] = useState("");
     const [password, setPassword] = useState("");
     const [firstname, setfirstName] = useState("");
     const [lastname, setlastName] = useState("");
     const [Confirmpassword, setConfirmPassword] = useState("");
-    const [selectedfile,setselecetedfile] = useState(null);
+    const [selectedfile, setselecetedfile] = useState(null);
     const [error, setError] = useState<ErrorMessage>();
     const [message, setMessage] = useState<Message>();
     const [same, setSame] = useState<boolean | null>(false);
     const [registerSuccess, setRegisterSuccess] = useState<boolean>(false);
     const [loginSuccess, setLoginSuccess] = useState<boolean>(false);
     const [userId, setUserId] = useState<string | null>(null);
-    const [loading, setloading] = useState(false)
-
+    const [loading, setloading] = useState(false);
+    const [available,setavailable] = useState<boolean>(true)
+    const [,setuserId] = useAtom(userAtom)
     useEffect(() => {
         const login = async (): Promise<string | null> => {
-            setloading(true)
+            setloading(true);
             if (email && password) {
                 try {
-                    const response = await axios.post(`${domain}/api/v1/users/login`, {
-                        email,
-                        password
-                    }, {
-                        headers: {
-                            'Content-Type': 'application/json'
+                    const response = await axios.post(
+                        `${Domain}/api/v1/users/login`,
+                        {
+                            email,
+                            password,
                         },
-                        withCredentials:true
-                    }); 
+                        {
+                            headers: {
+                                "Content-Type": "application/json",
+                            },
+                            withCredentials: true,
+                        }
+                    );
                     const { user } = response.data.data;
                     setMessage({
                         message: true,
@@ -97,14 +111,12 @@ function Signup() {
                 if (userId_) {
                     setUserId(userId_);
                     setLoginSuccess(true);
-                    
                 }
             };
 
             loginUser();
         }
-    }, [registerSuccess]);
-
+    }, [registerSuccess, email, password, router]);
 
     useEffect(() => {
         if (
@@ -122,7 +134,7 @@ function Signup() {
 
     const handleSubmit = async (event: any) => {
         event.preventDefault();
-        setloading(true)
+        setloading(true);
         if (
             email &&
             password &&
@@ -134,19 +146,24 @@ function Signup() {
         ) {
             try {
                 const formdata = new FormData();
-                formdata.append("fullName",  firstname + " "+ lastname);
+                formdata.append("full_name", firstname + " " + lastname);
                 formdata.append("email", email);
                 formdata.append("password", password);
                 formdata.append("avatar", selectedfile, "Avatar.jpg");
+                formdata.append("username",username)
 
-                const response = await axios.post(`${domain}/api/v1/users/register`, formdata, {
-                    headers: {
-                        "Content-Type": "multipart/form-data",
-                    },
-                });
+                const response = await axios.post(
+                    `${Domain}/api/v1/users/register`,
+                    formdata,
+                    {
+                        headers: {
+                            "Content-Type": "multipart/form-data",
+                        },
+                    }
+                );
 
                 const user = response.data.data;
-
+                setuserId(user.user_id)
                 setMessage({
                     message: true,
                     title: "Successfully Registered.",
@@ -178,7 +195,7 @@ function Signup() {
                     "Please fill Full Name, Email, password and confirm password",
             });
         }
-        setloading(false)
+        setloading(false);
     };
     useEffect(() => {
         if (error?.error == true) {
@@ -187,7 +204,7 @@ function Signup() {
                 description: error.description,
             });
         }
-    }, [error]);
+    }, [error, toast]);
     useEffect(() => {
         if (message?.message == true) {
             toast({
@@ -195,65 +212,128 @@ function Signup() {
                 description: message.description,
             });
         }
-    }, [message]);
+    }, [message, toast]);
+    useEffect(()=>{
+        const fetchdata = async ()=>{
+            if(username){
+                const response  = await axios.get(`${Domain}/api/v1/users/username-status`,{params:{username:username}})
+                setavailable(response.data.available)
+            }
+        }
+        fetchdata()
+    },[username])
 
     return (
         <div className="w-screen min-h-screen max-h-full flex justify-center items-center">
-            <Toaster/>
-        <Card className="mx-auto max-w-sm">
-      <CardHeader>
-        <CardTitle className="text-xl">Sign Up</CardTitle>
-        <CardDescription>
-          Enter your information to create an account
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
-        <div className="grid gap-4">
-            <div className="">
-                <Avataruploader setselecetedfile={setselecetedfile}/>
-            </div>
-          <div className="grid grid-cols-2 gap-4">
-            <div className="grid gap-2">
-              <Label htmlFor="first-name">First name</Label>
-              <Input id="first-name" placeholder="Max" required value={firstname} onChange={(e:any)=>setfirstName(e.target.value)}/>
-            </div>
-            <div className="grid gap-2">
-              <Label htmlFor="last-name">Last name</Label>
-              <Input id="last-name" placeholder="Robinson" required value={lastname} onChange={(e:any)=>setlastName
-                (e.target.value)}/>
-            </div>
-          </div>
-          <div className="grid gap-2">
-            <Label htmlFor="email">Email</Label>
-            <Input
-              id="email"
-              type="email"
-              placeholder="m@example.com"
-              required
-              value={email} 
-              onChange={(e:any)=>setemail(e.target.value)}
-            />
-          </div>
-          <div className="grid gap-2">
-            <Label htmlFor="password">Password</Label>
-            <Input id="password" type="password" value={password} onChange={(e:any)=>setPassword(e.target.value)} />
-          </div>
-          <div className="grid gap-2"> 
-            <Label htmlFor="confirmpassword">Confirm Password</Label>
-            <Input id="confirmpassword" type="password" value={Confirmpassword} onChange={(e:any)=>setConfirmPassword(e.target.value)}/>
-          </div>
-          <Button type="submit" className="w-full" onClick={handleSubmit} disabled={loading?true:false}>
-            Create an account
-          </Button>
-        </div>
-        <div className="mt-4 text-center text-sm">
-          Already have an account?{" "}
-          <Link href="/auth/signin" className="underline">
-            Sign in
-          </Link>
-        </div>
-      </CardContent>
-    </Card>
+            <Toaster />
+            <Card className="mx-auto max-w-sm">
+                <CardHeader>
+                    <CardTitle className="text-xl">Sign Up</CardTitle>
+                    <CardDescription>
+                        Enter your information to create an account
+                    </CardDescription>
+                </CardHeader>
+                <CardContent>
+                    <div className="grid gap-4">
+                        <div className="">
+                            <Avataruploader
+                                setselecetedfile={setselecetedfile}
+                            />
+                        </div>
+                        <div className="grid grid-cols-2 gap-4">
+                            <div className="grid gap-2">
+                                <Label htmlFor="first-name">First name</Label>
+                                <Input
+                                    id="first-name"
+                                    placeholder="Max"
+                                    required
+                                    value={firstname}
+                                    onChange={(e: any) =>
+                                        setfirstName(e.target.value)
+                                    }
+                                />
+                            </div>
+                            <div className="grid gap-2">
+                                <Label htmlFor="last-name">Last name</Label>
+                                <Input
+                                    id="last-name"
+                                    placeholder="Robinson"
+                                    required
+                                    value={lastname}
+                                    onChange={(e: any) =>
+                                        setlastName(e.target.value)
+                                    }
+                                />
+                            </div>
+                        </div>
+                        <div className="grid gap-2">
+                            <Label htmlFor="email">Email</Label>
+                            <Input
+                                id="email"
+                                type="email"
+                                placeholder="m@example.com"
+                                required
+                                value={email}
+                                onChange={(e: any) => setemail(e.target.value)}
+                                
+                            />
+                        </div>
+                        <div className="grid gap-2">
+                            <Label htmlFor="email">Username</Label>
+                            <Input
+                                id="username"
+                                type="text"
+                                placeholder="name123"
+                                required
+                                value={username}
+                                onChange={(e: any) =>
+                                    setusername(e.target.value)
+                                }
+                                
+                            />
+                            {!available && <p className="text-red-500">Username is already taken</p>}
+                        </div>
+                        <div className="grid gap-2">
+                            <Label htmlFor="password">Password</Label>
+                            <Input
+                                id="password"
+                                type="password"
+                                value={password}
+                                onChange={(e: any) =>
+                                    setPassword(e.target.value)
+                                }
+                            />
+                        </div>
+                        <div className="grid gap-2">
+                            <Label htmlFor="confirmpassword">
+                                Confirm Password
+                            </Label>
+                            <Input
+                                id="confirmpassword"
+                                type="password"
+                                value={Confirmpassword}
+                                onChange={(e: any) =>
+                                    setConfirmPassword(e.target.value)
+                                }
+                            />
+                        </div>
+                        <Button
+                            type="submit"
+                            className="w-full"
+                            onClick={handleSubmit}
+                            disabled={loading ? true : false}
+                        >
+                            Create an account
+                        </Button>
+                    </div>
+                    <div className="mt-4 text-center text-sm">
+                        Already have an account?{" "}
+                        <Link href="/auth/signin" className="underline">
+                            Sign in
+                        </Link>
+                    </div>
+                </CardContent>
+            </Card>
         </div>
     );
 }

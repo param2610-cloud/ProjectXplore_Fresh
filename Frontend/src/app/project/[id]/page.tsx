@@ -1,7 +1,7 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import axios from "axios";
-import { domain } from "@/lib/domain";
+import { Domain } from "@/lib/Domain";
 import { Facebook, Github, HeartIcon, Linkedin, Youtube } from "lucide-react";
 import {
     Carousel,
@@ -13,11 +13,12 @@ import {
 import { Card, CardContent } from "@/components/ui/card";
 import Modal from "@/components/Model";
 import { useAtom } from "jotai";
-import { userAtom } from "@/lib/atoms/userAtom";
-import useAuth from "@/lib/hooks/useUser";
+import { userAtom } from "@/lib/atoms/UserAtom";
+import useAuth from "@/lib/hooks/UseUser";
 import { useToast } from "@/components/ui/use-toast";
 import { Toaster } from "@/components/ui/toaster";
 import CommentsSection from "@/components/CommentSection";
+import Image from "next/image";
 
 export default function Page({ params }: { params: { id: string } }) {
     const [user] = useAtom(userAtom);
@@ -33,7 +34,7 @@ export default function Page({ params }: { params: { id: string } }) {
                 });
             }
         }
-    }, [user]);
+    }, [user, loading, authenticated, toast]);
     const [projectName, setProjectName] = useState<string>("");
     const [creator, setCreator] = useState<string>("");
     const [description, setDescription] = useState<string>("");
@@ -50,21 +51,21 @@ export default function Page({ params }: { params: { id: string } }) {
     const [modalOpen, setModalOpen] = useState<boolean>(false); // State for the modal visibility
     const [Likepress, setLikepress] = useState<boolean>(false); // State for the modal visibility
 
-    const getData = async () => {
+    const getData = useCallback(async () => {
         try {
-            const response = await axios.get(`${domain}/api/v1/project/get`, {
+            const response = await axios.get(`${Domain}/api/v1/project/get`, {
                 params: { projectId: params.id },
             });
             const likeReponse = await axios.get(
-                `${domain}/api/v1/project/project/likes`,
+                `${Domain}/api/v1/project/project/likes`,
                 {
                     params: { projectId: params.id },
                 }
             );
-
+    
             const project = response.data;
             console.log(project);
-
+    
             setRoomId(project.roomId);
             setProjectName(project.name);
             setCreator(project.author?.name || "Unknown");
@@ -81,11 +82,15 @@ export default function Page({ params }: { params: { id: string } }) {
         } catch (error) {
             console.error("Error fetching project data:", error);
         }
-    };
-    const checkUserLike = async () => {
+    }, [params.id]);
+    
+    useEffect(() => {
+        getData();
+    }, [getData]);
+    const checkUserLike = useCallback(async () => {
         try {
             const response = await axios.get(
-                `${domain}/api/v1/project/project/check-like`,
+                `${Domain}/api/v1/project/project/check-like`,
                 {
                     params: {
                         userId: user,
@@ -93,7 +98,7 @@ export default function Page({ params }: { params: { id: string } }) {
                     },
                 }
             );
-
+    
             if (response.data.hasLiked) {
                 setLikepress(true);
             } else {
@@ -102,16 +107,15 @@ export default function Page({ params }: { params: { id: string } }) {
         } catch (error) {
             console.error("Error checking like status:", error);
         }
-    };
-
-    useEffect(() => {
-        getData();
-    }, [params.id]);
+    }, [user, params.id]);
+    
     useEffect(() => {
         if (user && params.id) {
             checkUserLike();
         }
-    }, [params.id, user]);
+    }, [user, params.id, checkUserLike]);
+    
+    
 
     const handleImageClick = (imageUrl: string) => {
         setSelectedImage(imageUrl);
@@ -126,7 +130,7 @@ export default function Page({ params }: { params: { id: string } }) {
         try {
             if (Likepress == false) {
                 const response = await axios.post(
-                    `${domain}/api/v1/project/project/like`,
+                    `${Domain}/api/v1/project/project/like`,
                     {
                         userId: user,
                         projectId: params.id,
@@ -147,7 +151,7 @@ export default function Page({ params }: { params: { id: string } }) {
     const handleRemoveLike = async () => {
         try {
             const response = await axios.post(
-                `${domain}/api/v1/project/project/remove-likes`,
+                `${Domain}/api/v1/project/project/remove-likes`,
                 {
                     userId: user,
                     projectId: params.id,
@@ -264,7 +268,7 @@ export default function Page({ params }: { params: { id: string } }) {
                                     <div className="p-1">
                                         <Card>
                                             <CardContent className="flex aspect-square items-center justify-center p-2 overflow-hidden">
-                                                <img
+                                                <Image
                                                     src={image.url}
                                                     alt="Project Image"
                                                     className="object-cover w-full h-full cursor-pointer"
