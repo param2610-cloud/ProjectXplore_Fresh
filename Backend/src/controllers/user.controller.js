@@ -238,9 +238,6 @@ const getProfileCompleted = asyncHandler(async (req, res, next) => {
         .status(200)
         .json(new ApiResponse(200, true, "User found"));
 });
-import { prisma } from '../path-to-prisma-client'; // Adjust path to prisma instance
-import asyncHandler from 'express-async-handler'; // Assuming you're using asyncHandler
-import { ApiError, ApiResponse } from '../path-to-response-handlers'; // Adjust path to your ApiError & ApiResponse utilities
 
 export const submitProfileData = asyncHandler(async (req, res, next) => {
   const { userId } = req.query; // Getting the user ID from the query params

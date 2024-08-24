@@ -106,9 +106,10 @@ model impressions {
 }
 
 model institutions {
-  institution_id String  @id @default(uuid())
-  name           String  @db.VarChar(255)
-  address        String?
+  institution_id          String                    @id @default(uuid())
+  name                    String                    @db.VarChar(255)
+  address                 String?
+  InstitutionVerification InstitutionVerification[]
 }
 
 model interests {
@@ -316,6 +317,7 @@ model users {
   user_skills                                                                        user_skills[]
   roles                                                                              roles?                          @relation(fields: [role_id], references: [role_id], onDelete: NoAction, onUpdate: NoAction)
   votes                                                                              votes[]
+  InstitutionVerification                                                            InstitutionVerification[]
 }
 
 model votes {
@@ -325,4 +327,14 @@ model votes {
   vote_type String?   @db.VarChar(10)
   timestamp DateTime? @default(now()) @db.Timestamp(6)
   users     users?    @relation(fields: [user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model InstitutionVerification {
+  id                 String       @id @default(uuid())
+  institutionId      String
+  userId             String
+  verificationStatus Boolean      @default(false)
+  studentId          String?
+  institution        institutions @relation(fields: [institutionId], references: [institution_id])
+  user               users        @relation(fields: [userId], references: [user_id])
 }

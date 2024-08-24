@@ -124,9 +124,13 @@ export default function ClientLayout({
                                     </CardDescription>
                                 </CardHeader>
                                 <CardContent className="p-2 pt-0 md:p-4 md:pt-0">
+                                <Link href={"moreinfo"}>
+
                                     <Button size="sm" className="w-full">
                                         Click
                                     </Button>
+                                    </Link>
+
                                 </CardContent>
                             </Card>
                         </div>
@@ -157,21 +161,23 @@ export default function ClientLayout({
                                     <Card>
                                         <CardHeader>
                                             <CardTitle>
-                                                Upgrade to Pro
+                                            Complete Your Profile
                                             </CardTitle>
                                             <CardDescription>
-                                                Unlock all features and get
-                                                unlimited access to our support
-                                                team.
+                                            If people did not get information much
+                                        about you, then how you will get
+                                        exposure!
                                             </CardDescription>
                                         </CardHeader>
                                         <CardContent>
+                                            <Link href={"moreinfo"}>
                                             <Button
                                                 size="sm"
                                                 className="w-full"
                                             >
                                                 Upgrade
                                             </Button>
+                                                </Link>
                                         </CardContent>
                                     </Card>
                                 </div>
