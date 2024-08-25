@@ -338,3 +338,13 @@ model InstitutionVerification {
   institution        institutions @relation(fields: [institutionId], references: [institution_id])
   user               users        @relation(fields: [userId], references: [user_id])
 }
+
+model team_request_response_record {
+  id               String   @id @default(uuid())
+  team_id          String
+  team_author_id   String
+  url              String
+  status           Boolean
+  req_sent_user_id String?
+  res_status       Boolean?
+}

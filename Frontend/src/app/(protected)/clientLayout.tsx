@@ -96,6 +96,11 @@ export default function ClientLayout({
             fetchdata()
         }
     },[userid])
+    const handlelogout =async ()=>{
+        if(userid){
+            const response  = await axios.post(`${Domain}/api/v1/users/logout`,{user_id:userid},{withCredentials:true})
+        }
+    }
     return (
         <div>
             <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
@@ -235,7 +240,7 @@ export default function ClientLayout({
                                 <DropdownMenuItem>Settings</DropdownMenuItem>
                                 <DropdownMenuItem>Support</DropdownMenuItem>
                                 <DropdownMenuSeparator />
-                                <DropdownMenuItem>Logout</DropdownMenuItem>
+                                <DropdownMenuItem onClick={handlelogout}>Logout</DropdownMenuItem>
                             </DropdownMenuContent>
                         </DropdownMenu>
                     </header>

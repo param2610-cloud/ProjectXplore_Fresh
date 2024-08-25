@@ -111,7 +111,8 @@ const loginUser = asyncHandler(async (req, res, next) => {
 });
 
 const logoutUser = asyncHandler(async (req, res, next) => {
-    await clearUserRefreshToken(req.user.id);
+    const {user_id} = req.body
+    await clearUserRefreshToken(user_id);
 
     const options = {
         httpOnly: true,

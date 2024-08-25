@@ -36,6 +36,7 @@
     "react-autosuggest": "^10.1.0",
     "react-dom": "^18",
     "react-hook-form": "^7.52.2",
+    "react-resizable-panels": "^2.1.1",
     "tailwind-merge": "^2.4.0",
     "tailwindcss-animate": "^1.0.7"
   },

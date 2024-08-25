@@ -277,7 +277,7 @@ const Moreinfo = asyncHandler(async (req, res,next) => {
         userId,
         full_name,
         username,
-        mobileNumber,
+        phone_number,
         address,
         dateOfBirth,
         interest,
@@ -286,8 +286,8 @@ const Moreinfo = asyncHandler(async (req, res,next) => {
 
     try {
         // Validate input
-        console.log(full_name,username,mobileNumber)
-        if (!full_name || !username || !mobileNumber) {
+        console.log(full_name,username,phone_number)
+        if (!full_name || !username || !phone_number) {
             return res.status(400).json({
                 message: "Full name, username, and mobile number are required.",
             });
@@ -325,7 +325,7 @@ const Moreinfo = asyncHandler(async (req, res,next) => {
             data: {
               full_name,                     // Make sure these variables are defined and valid
               username,
-              phone_number: mobileNumber,
+              phone_number: phone_number,
               address,
               date_of_birth: new Date(dateOfBirth)  // Convert the date to a Date object
             }

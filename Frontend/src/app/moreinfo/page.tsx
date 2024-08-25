@@ -58,6 +58,8 @@ export default function UserForm() {
                         ...formData,
                         ...response.data.data, // Prefill form data with user info from the API
                     });
+                localStorage.setItem('userFormData', JSON.stringify(response.data.data));
+
                 }
                 
                 
@@ -69,14 +71,18 @@ export default function UserForm() {
     if(!loading){
         fetchUserData();
     }
-  }, [loading, formData, user]);
+  }, [loading]);
 
   // Update form data and store in localStorage
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    
     const { name, value } = e.target;
+    console.log(name,value);
     const updatedFormData = { ...formData, [name]: value };
     setFormData(updatedFormData);
     localStorage.setItem('userFormData', JSON.stringify(updatedFormData));
+    console.log(updatedFormData);
+    
   };
   const handleTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -137,7 +143,7 @@ export default function UserForm() {
           <Input
           className='w-full flex-grow'
             type="text"
-            name="mobileNumber"
+            name="phone_number"
             value={formData.phone_number}
             onChange={handleChange}
             required

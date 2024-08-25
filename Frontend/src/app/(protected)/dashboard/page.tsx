@@ -80,6 +80,7 @@ const Page = () => {
         setRoomChoice(newValue);
     };
     if (authenticated == false && loading == false) {
+        router.push("/")
         return (
             <div className="w-screen h-screen flex justify-center items-center text-[150px]">
                 Please Login
@@ -178,12 +179,11 @@ const Page = () => {
                                                 className="bg-gray-100 p-4 rounded-lg hover:shadow-md"
                                             >
                                                 <h2 className=" font-bold text-black cursor-pointer">
-                                                    <Link href={item.url}>
+                                                    
                                                         {item.title?.substring(
                                                             0,
                                                             40
                                                         )}
-                                                    </Link>
                                                 </h2>
                                                 <p className="text-gray-600 text-sm">
                                                     {item.content?.substring(

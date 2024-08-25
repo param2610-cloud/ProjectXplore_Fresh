@@ -45,7 +45,7 @@ export const updateUserRefreshToken = async (id, refreshToken) => {
 
 export const clearUserRefreshToken = async (id) => {
     return prisma.users.update({
-        where: { user_id },
+        where: { user_id:id },
         data: { refreshToken: null }
     });
 };
