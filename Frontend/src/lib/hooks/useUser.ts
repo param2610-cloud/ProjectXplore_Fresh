@@ -19,16 +19,15 @@ function UseAuth() {
                         withCredentials: true,
                     }
                 );
-                if(response.data==false){
-                  setIsLoading(false);
-                  setIsAuthenticated(false);
-
+                if (response.data == false) {
+                    setIsLoading(false);
+                    setIsAuthenticated(false);
                 }
                 if (response.status === 200) {
                     const { user } = response.data.data;
                     setIsAuthenticated(true);
                     setIsLoading(false);
-                    setUserid(user.user_id);
+                    setUserid(user.user_id);    
                 }
             } catch (error) {
                 console.error(error);
@@ -45,16 +44,16 @@ function UseAuth() {
                         withCredentials: true,
                     }
                 );
-                if(response.data==false){
-                  setIsLoading(false);
-                  setIsAuthenticated(false);
-
+                if (response.data == false) {
+                    setIsLoading(false);
+                    setIsAuthenticated(false);
                 }
                 if (response.status === 200) {
                     if (response.data.data.user.user_id) {
                         const userid = response.data.data.user.user_id;
                         setIsAuthenticated(true);
                         setUserid(userid);
+
                         setIsLoading(false);
                     }
                 } else {

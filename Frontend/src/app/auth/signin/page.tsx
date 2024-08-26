@@ -43,8 +43,10 @@ export default function Page() {
                 withCredentials: true
             });
             const { user } = response.data.data;
+            console.log(user);
+            
             toast({
-                title: `Welcome ${user.name}`,
+                title: `Welcome ${user.full_name}`,
                 description: "Logged In successfully"
             });
             setPageloading(false);

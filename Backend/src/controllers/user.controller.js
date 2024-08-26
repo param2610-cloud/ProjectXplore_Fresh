@@ -16,7 +16,7 @@ import { uploadOnCloudinary } from "../utils/cloudinary.js";
 import prisma from "../db/prismaClient.js";
 
 const registerUser = asyncHandler(async (req, res, next) => {
-    const { full_name,username, email, password } = req.body;
+    const { full_name, username, email, password } = req.body;
 
     if ([username, email, password].some((field) => field?.trim() === "")) {
         throw next(new ApiError(400, "All fields are required"));
@@ -111,7 +111,7 @@ const loginUser = asyncHandler(async (req, res, next) => {
 });
 
 const logoutUser = asyncHandler(async (req, res, next) => {
-    const {user_id} = req.body
+    const { user_id } = req.body;
     await clearUserRefreshToken(user_id);
 
     const options = {
@@ -131,11 +131,11 @@ const refreshAccessToken = asyncHandler(async (req, res, next) => {
     const incomingRefreshToken =
         req.cookies.refreshToken || req.headers["authorization"]?.substring(7);
 
-        if (!incomingRefreshToken) {
-            return res
+    if (!incomingRefreshToken) {
+        return res
             .status(200)
             .json(new ApiResponse(200, false, "Token is not available"));
-        }
+    }
 
     try {
         const decodedToken = jwt.verify(
@@ -177,8 +177,8 @@ const validateAccessToken = asyncHandler(async (req, res, next) => {
 
     if (!incomingAccessToken) {
         return res
-        .status(200)
-        .json(new ApiResponse(200, false, "Token is not available"));
+            .status(200)
+            .json(new ApiResponse(200, false, "Token is not available"));
     }
 
     try {
@@ -203,7 +203,7 @@ const validateAccessToken = asyncHandler(async (req, res, next) => {
 
 const getUserDetails = asyncHandler(async (req, res, next) => {
     const { userId } = req.query;
-
+    console.log(userId);
     if (!userId) {
         throw next(new ApiError(401, "No user ID found"));
     }
@@ -220,81 +220,124 @@ const getUserDetails = asyncHandler(async (req, res, next) => {
 const getProfileCompleted = asyncHandler(async (req, res, next) => {
     const { userId } = req.query;
     console.log("trigger");
-    
+
     if (!userId) {
         throw next(new ApiError(401, "No user ID found"));
     }
 
     const userDetails = await prisma.users.findUnique({
-        where: {user_id:userId}});
+        where: { user_id: userId },
+    });
     if (!userDetails) {
         throw next(new ApiError(401, "No user details found"));
     }
-    console.log(userDetails)
-    if (!userDetails.address || userDetails.date_of_birth || userDetails.full_name || userDetails.institution_id || userDetails.full_name || userDetails.phone_number || userDetails.username){
+    console.log(userDetails);
+    if (
+        !userDetails.address ||
+        userDetails.date_of_birth ||
+        userDetails.full_name ||
+        userDetails.institution_id ||
+        userDetails.full_name ||
+        userDetails.phone_number ||
+        userDetails.username
+    ) {
         return res
             .status(200)
             .json(new ApiResponse(200, false, "Profile is not completed"));
     }
 
-    return res
-        .status(200)
-        .json(new ApiResponse(200, true, "User found"));
+    return res.status(200).json(new ApiResponse(200, true, "User found"));
 });
 
 export const submitProfileData = asyncHandler(async (req, res, next) => {
-  const { userId } = req.query; // Getting the user ID from the query params
-  const { full_name, username, mobileNumber, address, dateOfBirth, institution, skills, interest } = req.body; // Getting data from request body
-
-  // Check if userId is provided
-  if (!userId) {
-    return next(new ApiError(401, 'No user ID found')); // Throw error if userId is missing
-  }
-
-  try {
-    // Update user profile details in the database
-    const userDetails = await prisma.users.update({
-      where: { user_id: userId },
-      data: {
+    const { userId } = req.query; // Getting the user ID from the query params
+    const {
         full_name,
         username,
-        phone_number: mobileNumber, // Assuming phone_number is used in your schema
+        mobileNumber,
         address,
-        date_of_birth: dateOfBirth,
-        institution_id:institution,
-        skills, // Assuming skills is stored as an array
-        interest
-      }
-    });
+        dateOfBirth,
+        institution,
+        skills,
+        interest,
+    } = req.body; // Getting data from request body
 
-    if (!userDetails) {
-      return next(new ApiError(401, 'No user details found')); // Throw error if user not found
+    // Check if userId is provided
+    if (!userId) {
+        return next(new ApiError(401, "No user ID found")); // Throw error if userId is missing
     }
 
-    // Check if the profile is complete (validate key fields)
-    if (
-      !userDetails.full_name ||
-      !userDetails.username ||
-      !userDetails.phone_number ||
-      !userDetails.address ||
-      !userDetails.date_of_birth 
-    ) {
-      return res
-        .status(200)
-        .json(new ApiResponse(200, false, 'Profile is not completed'));
-    }
+    try {
+        // Update user profile details in the database
+        const userDetails = await prisma.users.update({
+            where: { user_id: userId },
+            data: {
+                full_name,
+                username,
+                phone_number: mobileNumber, // Assuming phone_number is used in your schema
+                address,
+                date_of_birth: dateOfBirth,
+                institution_id: institution,
+                skills, // Assuming skills is stored as an array
+                interest,
+            },
+        });
 
-    // If everything is okay, respond with success
-    return res
-      .status(200)
-      .json(new ApiResponse(200, true, 'Profile updated successfully', userDetails));
-  } catch (error) {
-    console.error('Error updating user profile:', error);
-    return next(new ApiError(500, 'Internal Server Error'));
-  }
+        if (!userDetails) {
+            return next(new ApiError(401, "No user details found")); // Throw error if user not found
+        }
+
+        // Check if the profile is complete (validate key fields)
+        if (
+            !userDetails.full_name ||
+            !userDetails.username ||
+            !userDetails.phone_number ||
+            !userDetails.address ||
+            !userDetails.date_of_birth
+        ) {
+            return res
+                .status(200)
+                .json(new ApiResponse(200, false, "Profile is not completed"));
+        }
+
+        // If everything is okay, respond with success
+        return res
+            .status(200)
+            .json(
+                new ApiResponse(
+                    200,
+                    true,
+                    "Profile updated successfully",
+                    userDetails
+                )
+            );
+    } catch (error) {
+        console.error("Error updating user profile:", error);
+        return next(new ApiError(500, "Internal Server Error"));
+    }
 });
 
-
+const NoOfProject = asyncHandler(async (req, res, next) => {
+    const { userId } = req.query;
+    try {
+        if (userId) {
+            const data = await prisma.user_project_track.findMany({
+                where: {
+                    user_id: userId,
+                },
+                include: {
+                    user: true,
+                },
+            });
+        } else {
+            return next(new ApiError(500, "Internal Server Error"));
+        }
+        return res.status(200).json(new ApiResponse(200, data, "successfull"));
+    } catch (error) {
+        console.log(error);
+        return next(new ApiError(500, "Internal Server Error"));
+    }
+});
 
 export {
     getUserDetails,
@@ -304,4 +347,5 @@ export {
     registerUser,
     validateAccessToken,
     getProfileCompleted,
+    NoOfProject,
 };

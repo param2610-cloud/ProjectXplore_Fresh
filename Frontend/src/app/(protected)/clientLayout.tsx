@@ -11,7 +11,6 @@ import {
     Package2,
     Search,
     ShoppingCart,
-    Users,
     WholeWord,
 } from "lucide-react";
 
@@ -73,33 +72,78 @@ import { useEffect, useState } from "react";
 import NavbarCompo from "@/components/NavbarCompo";
 import { ProjectnumberAtom } from "@/lib/atoms/UseProjectnumber";
 import { Domain } from "@/lib/Domain";
+import { Users } from "@/lib/interface/INTERFACE";
+import { useTheme } from "next-themes";
 
 export default function ClientLayout({
     children,
 }: Readonly<{
     children: React.ReactNode;
 }>) {
+    const router = useRouter();
     const [Projectnumber] = useAtom(ProjectnumberAtom);
-    const [userid]= useAtom(userAtom)
-    const [completed,setcompleted] = useState<boolean>(false)
-    useEffect(()=>{
-        const fetchdata = async()=>{
-            const response = await axios.get(`${Domain}/api/v1/users/profile-completed`,{
-                params:{
-                    userId:userid
+    const [userid] = useAtom(userAtom);
+    const [completed, setcompleted] = useState<boolean>(false);
+    const [profile, setprofile] = useState<Users | null>();
+    const { setTheme } = useTheme();
+    useEffect(() => {
+        const fetchdata = async () => {
+            const response = await axios.get(
+                `${Domain}/api/v1/users/profile-completed`,
+                {
+                    params: {
+                        userId: userid,
+                    },
                 }
-            })
-            setcompleted(response.data.data)
-            console.log(response)
+            );
+            const response2 = await axios.get(
+                `${Domain}/api/v1/users/getUser`,
+                {
+                    params: {
+                        userId: userid,
+                    },
+                }
+            );
+            setprofile(response2.data.data);
+            setcompleted(response.data.data);
+            console.log(response);
+        };
+        if (userid) {
+            fetchdata();
         }
-        if(userid){
-            fetchdata()
+    }, [userid]);
+    const handlelogout = async () => {
+        if (userid) {
+            const response = await axios.post(
+                `${Domain}/api/v1/users/logout`,
+                { user_id: userid },
+                { withCredentials: true }
+            );
+            if (response.status === 200) {
+                router.push("/auth/signin");
+            }
         }
-    },[userid])
-    const handlelogout =async ()=>{
-        if(userid){
-            const response  = await axios.post(`${Domain}/api/v1/users/logout`,{user_id:userid},{withCredentials:true})
-        }
+    };
+    if (!userid) {
+        return (
+            <main className="box-order w-full h-screen overflow-hidden m-0 p-0">
+                <div className="absolute top-0 right-0 left-0 w-screen h-16 bg-sky-500 flex justify-between items-center px-5">
+                    <div className="text-xl font-bold">ProjectXplore</div>
+                    <div>
+                        <div className="flex justify-center items-center gap-4">
+                            <Link href={"/auth/signin"} passHref>
+                                <Button>Sign In</Button>
+                            </Link>
+                            <Link href={"/auth/signup"} passHref>
+                                <Button>Sign Up</Button>
+                            </Link>
+                        </div>
+                    </div>
+                </div>
+                <Separator orientation="horizontal" />
+                <div className="w-screen h-screen">{children}</div>
+            </main>
+        );
     }
     return (
         <div>
@@ -115,11 +159,11 @@ export default function ClientLayout({
                                 <span className="">ProjectXplore</span>
                             </Link>
                             <Popover>
-                                <PopoverTrigger className="ml-auto h-8 w-8" >
-                                        <Bell className="h-4 w-4" />
-                                        <span className="sr-only">
-                                            Toggle notifications
-                                        </span>
+                                <PopoverTrigger className="ml-auto h-8 w-8">
+                                    <Bell className="h-4 w-4" />
+                                    <span className="sr-only">
+                                        Toggle notifications
+                                    </span>
                                 </PopoverTrigger>
                                 <PopoverContent>
                                     {/* <Notification/> // ****** */}
@@ -134,28 +178,30 @@ export default function ClientLayout({
                             />
                         </div>
                         <div className="mt-auto p-4">
-
-                            {!completed && <Card x-chunk="dashboard-02-chunk-0">
-                                <CardHeader className="p-2 pt-0 md:p-4">
-                                    <CardTitle className="text-xl font-bold">
-                                        Complete Your Profile
-                                    </CardTitle>
-                                    <CardDescription>
-                                        If people did not get information much
-                                        about you, then how you will get
-                                        exposure!
-                                    </CardDescription>
-                                </CardHeader>
-                                <CardContent className="p-2 pt-0 md:p-4 md:pt-0">
-                                <Link href={"moreinfo"}>
-
-                                    <Button size="sm" className="w-full">
-                                        Click
-                                    </Button>
-                                    </Link>
-
-                                </CardContent>
-                            </Card>}
+                            {!completed && (
+                                <Card x-chunk="dashboard-02-chunk-0">
+                                    <CardHeader className="p-2 pt-0 md:p-4">
+                                        <CardTitle className="text-xl font-bold">
+                                            Complete Your Profile
+                                        </CardTitle>
+                                        <CardDescription>
+                                            If people did not get information
+                                            much about you, then how you will
+                                            get exposure!
+                                        </CardDescription>
+                                    </CardHeader>
+                                    <CardContent className="p-2 pt-0 md:p-4 md:pt-0">
+                                        <Link href={"moreinfo"}>
+                                            <Button
+                                                size="sm"
+                                                className="w-full"
+                                            >
+                                                Click
+                                            </Button>
+                                        </Link>
+                                    </CardContent>
+                                </Card>
+                            )}
                         </div>
                     </div>
                 </div>
@@ -181,29 +227,31 @@ export default function ClientLayout({
                                     }
                                 />
                                 <div className="mt-auto">
-
-                                    {!completed && <Card>
-                                        <CardHeader>
-                                            <CardTitle>
-                                            Complete Your Profile
-                                            </CardTitle>
-                                            <CardDescription>
-                                            If people did not get information much
-                                        about you, then how you will get
-                                        exposure!
-                                            </CardDescription>
-                                        </CardHeader>
-                                        <CardContent>
-                                            <Link href={"moreinfo"}>
-                                            <Button
-                                                size="sm"
-                                                className="w-full"
-                                            >
-                                                Upgrade
-                                            </Button>
+                                    {!completed && (
+                                        <Card>
+                                            <CardHeader>
+                                                <CardTitle>
+                                                    Complete Your Profile
+                                                </CardTitle>
+                                                <CardDescription>
+                                                    If people did not get
+                                                    information much about you,
+                                                    then how you will get
+                                                    exposure!
+                                                </CardDescription>
+                                            </CardHeader>
+                                            <CardContent>
+                                                <Link href={"moreinfo"}>
+                                                    <Button
+                                                        size="sm"
+                                                        className="w-full"
+                                                    >
+                                                        Upgrade
+                                                    </Button>
                                                 </Link>
-                                        </CardContent>
-                                    </Card>}
+                                            </CardContent>
+                                        </Card>
+                                    )}
                                 </div>
                             </SheetContent>
                         </Sheet>
@@ -226,21 +274,40 @@ export default function ClientLayout({
                                     size="icon"
                                     className="rounded-full"
                                 >
-                                    <CircleUser className="h-5 w-5" />
-                                    <span className="sr-only">
-                                        Toggle user menu
-                                    </span>
+                                    <Avatar>
+                                        <AvatarImage
+                                            className="object-cover"
+                                            src={profile?.profile_picture_link}
+                                        />
+                                    </Avatar>
                                 </Button>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent align="end">
                                 <DropdownMenuLabel>
-                                    My Account
+                                    {profile?.full_name}
                                 </DropdownMenuLabel>
                                 <DropdownMenuSeparator />
+                                <DropdownMenuItem
+                                    onClick={() => setTheme("light")}
+                                >
+                                    Light
+                                </DropdownMenuItem>
+                                <DropdownMenuItem
+                                    onClick={() => setTheme("dark")}
+                                >
+                                    Dark
+                                </DropdownMenuItem>
+                                <DropdownMenuItem
+                                    onClick={() => setTheme("system")}
+                                >
+                                    System
+                                </DropdownMenuItem>
                                 <DropdownMenuItem>Settings</DropdownMenuItem>
                                 <DropdownMenuItem>Support</DropdownMenuItem>
                                 <DropdownMenuSeparator />
-                                <DropdownMenuItem onClick={handlelogout}>Logout</DropdownMenuItem>
+                                <DropdownMenuItem onClick={handlelogout}>
+                                    Logout
+                                </DropdownMenuItem>
                             </DropdownMenuContent>
                         </DropdownMenu>
                     </header>

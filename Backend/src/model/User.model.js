@@ -22,8 +22,7 @@ export const findUserByEmail = async (email) => {
         console.log("no emial")
     }
     return prisma.users.findUnique({
-        where: { email },
-        select: { password:true, refreshToken:true, user_id:true, username:true, email: true }
+        where: { email }
     });
 };
 

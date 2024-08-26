@@ -160,16 +160,18 @@ model project_categories {
 }
 
 model projects {
-  project_id         String               @id @default(uuid())
-  description        String?
-  project_name       String?              @db.VarChar(255)
-  duration           String?              @db.VarChar(50)
-  mentor_details     String?
-  reference_text     String?
-  demo_link          String?
-  features           features[]
-  project_categories project_categories[]
-  mentors            mentors?             @relation(fields: [mentor_details], references: [mentor_id], onDelete: NoAction, onUpdate: NoAction)
+  project_id          String                @id @default(uuid())
+  description         String?
+  project_name        String?               @db.VarChar(255)
+  duration            String?               @db.VarChar(50)
+  mentor_details      String?
+  reference_text      String?
+  demo_link           String?
+  features            features[]
+  project_categories  project_categories[]
+  mentors             mentors?              @relation(fields: [mentor_details], references: [mentor_id], onDelete: NoAction, onUpdate: NoAction)
+  team_project_record team_project_record[]
+  user_project_track  user_project_track[]
 }
 
 model roles {
@@ -256,15 +258,17 @@ model team_member_roles {
 }
 
 model teams {
-  team_id           String              @id @default(uuid())
-  team_name         String              @db.VarChar(255)
-  team_author_id    String?
-  objective         String?
-  profile_pic_link  String?
-  achievements      achievements[]
-  chat_messages     chat_messages[]
-  team_member_roles team_member_roles[]
-  users             users?              @relation(fields: [team_author_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
+  team_id                      String                         @id @default(uuid())
+  team_name                    String                         @db.VarChar(255)
+  team_author_id               String?
+  objective                    String?
+  profile_pic_link             String?
+  achievements                 achievements[]
+  chat_messages                chat_messages[]
+  team_member_roles            team_member_roles[]
+  users                        users?                         @relation(fields: [team_author_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
+  team_project_record          team_project_record[]
+  team_request_response_record team_request_response_record[]
 }
 
 model user_interests {
@@ -318,6 +322,8 @@ model users {
   roles                                                                              roles?                          @relation(fields: [role_id], references: [role_id], onDelete: NoAction, onUpdate: NoAction)
   votes                                                                              votes[]
   InstitutionVerification                                                            InstitutionVerification[]
+  user_project_track                                                                 user_project_track[]
+  team_request_response_record                                                       team_request_response_record[]
 }
 
 model votes {
@@ -340,11 +346,29 @@ model InstitutionVerification {
 }
 
 model team_request_response_record {
-  id               String   @id @default(uuid())
-  team_id          String
-  team_author_id   String
-  url              String
-  status           Boolean
-  req_sent_user_id String?
-  res_status       Boolean?
+  id                    String   @id @default(uuid())
+  team_id               String
+  team_author_id        String
+  url                   String
+  status                Boolean
+  res_applicant_user_id String?
+  res_status            Boolean?
+  teams                 teams    @relation(fields: [team_id], references: [team_id])
+  users                 users?   @relation(fields: [res_applicant_user_id], references: [user_id])
+}
+
+model team_project_record {
+  id         String   @id @default(uuid())
+  team_id    String
+  project_id String
+  teams      teams    @relation(fields: [team_id], references: [team_id])
+  projects   projects @relation(fields: [project_id], references: [project_id])
+}
+
+model user_project_track {
+  id         String   @id @default(uuid())
+  user_id    String
+  project_id String
+  user       users    @relation(fields: [user_id], references: [user_id])
+  project    projects @relation(fields: [project_id], references: [project_id])
 }
