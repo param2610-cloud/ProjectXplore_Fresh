@@ -82,6 +82,7 @@ export default function ClientLayout({
 }>) {
     const router = useRouter();
     const [Projectnumber] = useAtom(ProjectnumberAtom);
+    const { loading, authenticated } = useAuth();
     const [userid] = useAtom(userAtom);
     const [completed, setcompleted] = useState<boolean>(false);
     const [profile, setprofile] = useState<Users | null>();
@@ -146,173 +147,156 @@ export default function ClientLayout({
         );
     }
     return (
-        <div>
-            <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
-                <div className="hidden border-r bg-muted/40 md:block">
-                    <div className="flex h-full max-h-screen flex-col gap-2">
-                        <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
-                            <Link
-                                href="/"
-                                className="flex items-center gap-2 font-semibold"
-                            >
-                                <Package2 className="h-6 w-6" />
-                                <span className="">ProjectXplore</span>
-                            </Link>
-                            <Popover>
-                                <PopoverTrigger className="ml-auto h-8 w-8">
-                                    <Bell className="h-4 w-4" />
-                                    <span className="sr-only">
-                                        Toggle notifications
-                                    </span>
-                                </PopoverTrigger>
-                                <PopoverContent>
-                                    {/* <Notification/> // ****** */}
-                                </PopoverContent>
-                            </Popover>
-                        </div>
-                        <div className="flex-1">
-                            <NavbarCompo
-                                projectNumber={
-                                    Projectnumber?.Projectnumber ?? null
-                                }
-                            />
-                        </div>
-                        <div className="mt-auto p-4">
-                            {!completed && (
-                                <Card x-chunk="dashboard-02-chunk-0">
-                                    <CardHeader className="p-2 pt-0 md:p-4">
-                                        <CardTitle className="text-xl font-bold">
-                                            Complete Your Profile
-                                        </CardTitle>
-                                        <CardDescription>
-                                            If people did not get information
-                                            much about you, then how you will
-                                            get exposure!
-                                        </CardDescription>
-                                    </CardHeader>
-                                    <CardContent className="p-2 pt-0 md:p-4 md:pt-0">
-                                        <Link href={"moreinfo"}>
-                                            <Button
-                                                size="sm"
-                                                className="w-full"
-                                            >
-                                                Click
-                                            </Button>
-                                        </Link>
-                                    </CardContent>
-                                </Card>
-                            )}
-                        </div>
+        <div className="grid min-h-screen h-screen w-screen md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr] overflow-hidden">
+            <div className="hidden border-r bg-muted/40 md:block h-screen col-span-1  ">
+                <div className="flex h-full flex-col">
+                    <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
+                        <Link
+                            href="/"
+                            className="flex items-center gap-2 font-semibold"
+                        >
+                            <Package2 className="h-6 w-6" />
+                            <span className="">ProjectXplore</span>
+                        </Link>
+                        <Popover>
+                            <PopoverTrigger className="ml-auto h-8 w-8">
+                                <Bell className="h-4 w-4" />
+                                <span className="sr-only">
+                                    Toggle notifications
+                                </span>
+                            </PopoverTrigger>
+                            <PopoverContent>
+                                {/* <Notification/> // ****** */}
+                            </PopoverContent>
+                        </Popover>
+                    </div>
+                    <div className="flex-1">
+                        {profile && <NavbarCompo userDetails={profile} />}
+                    </div>
+                    <div className="mt-auto p-4">
+                        {!completed && (
+                            <Card x-chunk="dashboard-02-chunk-0">
+                                <CardHeader className="p-2 pt-0 md:p-4">
+                                    <CardTitle className="text-xl font-bold">
+                                        Complete Your Profile
+                                    </CardTitle>
+                                    <CardDescription>
+                                        If people did not get information much
+                                        about you, then how you will get
+                                        exposure!
+                                    </CardDescription>
+                                </CardHeader>
+                                <CardContent className="p-2 pt-0 md:p-4 md:pt-0">
+                                    <Link href={"moreinfo"}>
+                                        <Button size="sm" className="w-full">
+                                            Click
+                                        </Button>
+                                    </Link>
+                                </CardContent>
+                            </Card>
+                        )}
                     </div>
                 </div>
-                <div className="flex flex-col">
-                    <header className="flex h-14 items-center gap-4 border-b bg-muted/40 px-4 lg:h-[60px] lg:px-6">
-                        <Sheet>
-                            <SheetTrigger asChild>
-                                <Button
-                                    variant="outline"
-                                    size="icon"
-                                    className="shrink-0 md:hidden"
-                                >
-                                    <Menu className="h-5 w-5" />
-                                    <span className="sr-only">
-                                        Toggle navigation menu
-                                    </span>
-                                </Button>
-                            </SheetTrigger>
-                            <SheetContent side="left" className="flex flex-col">
-                                <NavbarCompo
-                                    projectNumber={
-                                        Projectnumber?.Projectnumber ?? null
-                                    }
+            </div>
+            <div className="flex flex-col min-h-screen max-h-full w-full">
+                <header className="flex h-14 lg:h-[60px] items-center gap-4 border-b bg-muted/40 px-4 lg:px-6 fixed w-full z-10">
+                    <Sheet>
+                        <SheetTrigger asChild>
+                            <Button
+                                variant="outline"
+                                size="icon"
+                                className="shrink-0 md:hidden"
+                            >
+                                <Menu className="h-5 w-5" />
+                                <span className="sr-only">
+                                    Toggle navigation menu
+                                </span>
+                            </Button>
+                        </SheetTrigger>
+                        <SheetContent side="left" className="flex flex-col">
+                            {profile && <NavbarCompo userDetails={profile} />}
+                            <div className="mt-auto">
+                                {!completed && (
+                                    <Card>
+                                        <CardHeader>
+                                            <CardTitle>
+                                                Complete Your Profile
+                                            </CardTitle>
+                                            <CardDescription>
+                                                If people did not get
+                                                information much about you, then
+                                                how you will get exposure!
+                                            </CardDescription>
+                                        </CardHeader>
+                                        <CardContent>
+                                            <Link href={"moreinfo"}>
+                                                <Button
+                                                    size="sm"
+                                                    className="w-full"
+                                                >
+                                                    Upgrade
+                                                </Button>
+                                            </Link>
+                                        </CardContent>
+                                    </Card>
+                                )}
+                            </div>
+                        </SheetContent>
+                    </Sheet>
+                    <div className="w-full flex-1">
+                        <form>
+                            <div className="relative">
+                                <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+                                <Input
+                                    type="search"
+                                    placeholder="Search products..."
+                                    className="w-full appearance-none bg-background pl-8 shadow-none md:w-2/3 lg:w-1/3"
                                 />
-                                <div className="mt-auto">
-                                    {!completed && (
-                                        <Card>
-                                            <CardHeader>
-                                                <CardTitle>
-                                                    Complete Your Profile
-                                                </CardTitle>
-                                                <CardDescription>
-                                                    If people did not get
-                                                    information much about you,
-                                                    then how you will get
-                                                    exposure!
-                                                </CardDescription>
-                                            </CardHeader>
-                                            <CardContent>
-                                                <Link href={"moreinfo"}>
-                                                    <Button
-                                                        size="sm"
-                                                        className="w-full"
-                                                    >
-                                                        Upgrade
-                                                    </Button>
-                                                </Link>
-                                            </CardContent>
-                                        </Card>
-                                    )}
-                                </div>
-                            </SheetContent>
-                        </Sheet>
-                        <div className="w-full flex-1">
-                            <form>
-                                <div className="relative">
-                                    <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-                                    <Input
-                                        type="search"
-                                        placeholder="Search products..."
-                                        className="w-full appearance-none bg-background pl-8 shadow-none md:w-2/3 lg:w-1/3"
+                            </div>
+                        </form>
+                    </div>
+                    <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                            <Button
+                                variant="secondary"
+                                size="icon"
+                                className="rounded-full"
+                            >
+                                <Avatar>
+                                    <AvatarImage
+                                        className="object-cover"
+                                        src={profile?.profile_picture_link}
                                     />
-                                </div>
-                            </form>
-                        </div>
-                        <DropdownMenu>
-                            <DropdownMenuTrigger asChild>
-                                <Button
-                                    variant="secondary"
-                                    size="icon"
-                                    className="rounded-full"
-                                >
-                                    <Avatar>
-                                        <AvatarImage
-                                            className="object-cover"
-                                            src={profile?.profile_picture_link}
-                                        />
-                                    </Avatar>
-                                </Button>
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent align="end">
-                                <DropdownMenuLabel>
-                                    {profile?.full_name}
-                                </DropdownMenuLabel>
-                                <DropdownMenuSeparator />
-                                <DropdownMenuItem
-                                    onClick={() => setTheme("light")}
-                                >
-                                    Light
-                                </DropdownMenuItem>
-                                <DropdownMenuItem
-                                    onClick={() => setTheme("dark")}
-                                >
-                                    Dark
-                                </DropdownMenuItem>
-                                <DropdownMenuItem
-                                    onClick={() => setTheme("system")}
-                                >
-                                    System
-                                </DropdownMenuItem>
-                                <DropdownMenuItem>Settings</DropdownMenuItem>
-                                <DropdownMenuItem>Support</DropdownMenuItem>
-                                <DropdownMenuSeparator />
-                                <DropdownMenuItem onClick={handlelogout}>
-                                    Logout
-                                </DropdownMenuItem>
-                            </DropdownMenuContent>
-                        </DropdownMenu>
-                    </header>
-                    {children}
-                </div>
+                                </Avatar>
+                            </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                            <DropdownMenuLabel>
+                                {profile?.full_name}
+                            </DropdownMenuLabel>
+                            <DropdownMenuSeparator />
+                            <DropdownMenuItem onClick={() => setTheme("light")}>
+                                Light
+                            </DropdownMenuItem>
+                            <DropdownMenuItem onClick={() => setTheme("dark")}>
+                                Dark
+                            </DropdownMenuItem>
+                            <DropdownMenuItem
+                                onClick={() => setTheme("system")}
+                            >
+                                System
+                            </DropdownMenuItem>
+                            <DropdownMenuItem>Settings</DropdownMenuItem>
+                            <DropdownMenuItem>Support</DropdownMenuItem>
+                            <DropdownMenuSeparator />
+                            <DropdownMenuItem onClick={handlelogout}>
+                                Logout
+                            </DropdownMenuItem>
+                        </DropdownMenuContent>
+                    </DropdownMenu>
+                </header>
+
+                <div className="flex-1 overflow-y-auto mt-14 lg:mt-[60px] ">{children}</div>
             </div>
         </div>
     );

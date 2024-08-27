@@ -66,13 +66,14 @@ model collaboration_requests {
 }
 
 model comments {
-  comment_id   String    @id @default(uuid())
-  parent_id    String?
-  user_id      String?
-  comment_text String?
-  timestamp    DateTime? @default(now()) @db.Timestamp(6)
-  votes        Int?      @default(0)
-  users        users?    @relation(fields: [user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
+  comment_id    String          @id @default(uuid())
+  parent_id     String?
+  user_id       String?
+  comment_text  String?
+  timestamp     DateTime?       @default(now()) @db.Timestamp(6)
+  votes         Int?            @default(0)
+  users         users?          @relation(fields: [user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
+  idea_comments idea_comments[]
 }
 
 model features {
@@ -87,22 +88,17 @@ model features {
 model ideas {
   idea_id                String                   @id @default(uuid())
   user_id                String?
+  idea_name              String?
   idea_text              String?
-  image_link             String?
-  video_link             String?
+  usefull_links          String[]
+  image_link             String[]
+  video_link             String[]
+  docs_link              String[]
   timestamp              DateTime?                @default(now()) @db.Timestamp(6)
   collaboration_requests collaboration_requests[]
   users                  users?                   @relation(fields: [user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
-}
-
-model impressions {
-  impression_id   String    @id @default(uuid())
-  user_id         String?
-  target_id       String?
-  target_type     String?   @db.VarChar(10)
-  impression_type String?   @db.VarChar(20)
-  timestamp       DateTime? @default(now()) @db.Timestamp(6)
-  users           users?    @relation(fields: [user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
+  idea_impressions       idea_impressions[]
+  idea_comments          idea_comments[]
 }
 
 model institutions {
@@ -140,8 +136,9 @@ model issues {
 }
 
 model languages {
-  language_id   String @id @default(uuid())
-  language_name String @unique @db.VarChar(50)
+  language_id           String                  @id @default(uuid())
+  language_name         String                  @unique @db.VarChar(50)
+  project_used_language project_used_language[]
 }
 
 model mentors {
@@ -151,27 +148,23 @@ model mentors {
   projects       projects[]
 }
 
-model project_categories {
-  project_category_id String    @id @default(uuid())
-  project_id          String?
-  language_id         String?
-  software_id         String?
-  projects            projects? @relation(fields: [project_id], references: [project_id], onDelete: NoAction, onUpdate: NoAction)
-}
-
 model projects {
-  project_id          String                @id @default(uuid())
-  description         String?
-  project_name        String?               @db.VarChar(255)
-  duration            String?               @db.VarChar(50)
-  mentor_details      String?
-  reference_text      String?
-  demo_link           String?
-  features            features[]
-  project_categories  project_categories[]
-  mentors             mentors?              @relation(fields: [mentor_details], references: [mentor_id], onDelete: NoAction, onUpdate: NoAction)
-  team_project_record team_project_record[]
-  user_project_track  user_project_track[]
+  project_id              String                    @id @default(uuid())
+  project_type            String?
+  description             String?
+  project_name            String?                   @db.VarChar(255)
+  duration                String?                   @db.VarChar(50)
+  mentor_details          String?
+  reference_text          String?
+  demo_link               String?
+  features                features[]
+  mentors                 mentors?                  @relation(fields: [mentor_details], references: [mentor_id], onDelete: NoAction, onUpdate: NoAction)
+  team_project_record     team_project_record[]
+  user_project_track      user_project_track[]
+  project_components_used project_components_used[]
+  project_used_language   project_used_language[]
+  project_used_software   project_used_software[]
+  project_impressions     project_impressions[]
 }
 
 model roles {
@@ -228,8 +221,9 @@ model skills {
 }
 
 model software {
-  software_id   String @id @default(uuid())
-  software_name String @unique @db.VarChar(100)
+  software_id           String                  @id @default(uuid())
+  software_name         String                  @unique @db.VarChar(100)
+  project_used_software project_used_software[]
 }
 
 model steps {
@@ -310,20 +304,22 @@ model users {
   collaboration_requests                                                             collaboration_requests[]
   comments                                                                           comments[]
   ideas                                                                              ideas[]
-  impressions                                                                        impressions[]
-  issues                                                                             issues[]
-  room_chat_messages                                                                 room_chat_messages[]
-  room_member_roles                                                                  room_member_roles[]
-  room_task_list                                                                     room_task_list[]
-  team_member_roles                                                                  team_member_roles[]
-  teams                                                                              teams[]
-  user_interests                                                                     user_interests[]
-  user_skills                                                                        user_skills[]
-  roles                                                                              roles?                          @relation(fields: [role_id], references: [role_id], onDelete: NoAction, onUpdate: NoAction)
-  votes                                                                              votes[]
-  InstitutionVerification                                                            InstitutionVerification[]
-  user_project_track                                                                 user_project_track[]
-  team_request_response_record                                                       team_request_response_record[]
+
+  issues                       issues[]
+  room_chat_messages           room_chat_messages[]
+  room_member_roles            room_member_roles[]
+  room_task_list               room_task_list[]
+  team_member_roles            team_member_roles[]
+  teams                        teams[]
+  user_interests               user_interests[]
+  user_skills                  user_skills[]
+  roles                        roles?                         @relation(fields: [role_id], references: [role_id], onDelete: NoAction, onUpdate: NoAction)
+  votes                        votes[]
+  InstitutionVerification      InstitutionVerification[]
+  user_project_track           user_project_track[]
+  team_request_response_record team_request_response_record[]
+  idea_impressions             idea_impressions[]
+  project_impressions          project_impressions[]
 }
 
 model votes {
@@ -371,4 +367,63 @@ model user_project_track {
   project_id String
   user       users    @relation(fields: [user_id], references: [user_id])
   project    projects @relation(fields: [project_id], references: [project_id])
+}
+
+model components {
+  id                      String                    @id @default(uuid())
+  components_name         String
+  components_image_link   String
+  project_components_used project_components_used[]
+}
+
+model project_components_used {
+  id           String     @id @default(uuid())
+  component_id String
+  project_id   String
+  components   components @relation(fields: [component_id], references: [id])
+  project      projects   @relation(fields: [project_id], references: [project_id])
+}
+
+model project_used_language {
+  id          String     @id @default(uuid())
+  project_id  String?
+  language_id String?
+  projects    projects?  @relation(fields: [project_id], references: [project_id], onDelete: NoAction, onUpdate: NoAction)
+  language    languages? @relation(fields: [language_id], references: [language_id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model project_used_software {
+  id          String    @id @default(uuid())
+  project_id  String?
+  software_id String?
+  projects    projects? @relation(fields: [project_id], references: [project_id], onDelete: NoAction, onUpdate: NoAction)
+  language    software? @relation(fields: [software_id], references: [software_id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model idea_impressions {
+  id        String    @id @default(uuid())
+  user_id   String?
+  idea_id   String?
+  like      Boolean?
+  timestamp DateTime? @default(now()) @db.Timestamp(6)
+  users     users?    @relation(fields: [user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
+  ideas     ideas?    @relation(fields: [idea_id], references: [idea_id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model project_impressions {
+  id         String    @id @default(uuid())
+  user_id    String?
+  project_id String?
+  like       Boolean?
+  timestamp  DateTime? @default(now()) @db.Timestamp(6)
+  users      users?    @relation(fields: [user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
+  projects   projects? @relation(fields: [project_id], references: [project_id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model idea_comments {
+  id         String   @id @default(uuid())
+  comment_id String
+  idea_id    String
+  comments   comments @relation(fields: [comment_id], references: [comment_id])
+  ideas      ideas    @relation(fields: [idea_id], references: [idea_id])
 }

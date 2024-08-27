@@ -208,7 +208,25 @@ const getUserDetails = asyncHandler(async (req, res, next) => {
         throw next(new ApiError(401, "No user ID found"));
     }
 
-    const userDetails = await findUserById(userId);
+    const userDetails = await prisma.users.findUnique({
+        where:{
+            user_id:userId
+        },include:{
+            teams:true,
+            ideas:{
+                include:{
+                    idea_impressions:true
+                }
+            },
+            user_project_track:{
+                include:{project:true}
+            },
+            idea_impressions:{
+                include:{ideas:true}
+            },
+            project_impressions:{include:{projects:true}}
+        }
+    })
     if (!userDetails) {
         throw next(new ApiError(401, "No user details found"));
     }

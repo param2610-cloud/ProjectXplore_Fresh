@@ -74,16 +74,33 @@ export interface Features {
     projects?: Projects;
     steps: Steps[];
 }
+export interface idea_comments{
+    id         :string ;
+  comment_id :string;
+  idea_id    :string;
+  comments:Comments;
+}
+// export interface project_comments{
+//     id         :string ;
+//   comment_id :string;
+//   project_id    :string;
+//   comments:Comments[]
+// }
 
 export interface Ideas {
     idea_id: string;
     user_id?: string;
+    idea_name?: string;
     idea_text?: string;
-    image_link?: string;
-    video_link?: string;
+    image_link?: string[];
+    video_link?: string[];
+    docs_link?:string[];
     timestamp?: Date;
     collaboration_requests: CollaborationRequests[];
     users?: Users;
+    idea_impressions:idea_impressions[];
+    idea_comments:idea_comments[];
+    usefull_links:String[];
 }
 
 export interface Impressions {
@@ -257,7 +274,7 @@ export interface Teams {
     chat_messages: ChatMessages[];
     team_member_roles: TeamMemberRoles[];
     users?: Users;
-    team_request_response_record:team_request_response_record[]
+    team_request_response_record: team_request_response_record[];
 }
 
 export interface UserInterests {
@@ -294,6 +311,7 @@ export interface Users {
     collaboration_request_reviews_reviewer_idTousers: CollaborationRequestReviews[];
     collaboration_requests: CollaborationRequests[];
     user_project_track: user_project_track[];
+    ideas: Ideas[];
 }
 export interface team_project_record {
     team_id: string;
@@ -313,4 +331,23 @@ export interface team_request_response_record {
     res_status: boolean;
     teams: Teams;
     users: Users;
+}
+export interface idea_impressions {
+    id: string;
+    user_id: string;
+    idea_id: string;
+    like: boolean;
+    timestamp: dateFns;
+    users: Users[];
+    ideas: Ideas[];
+}
+
+export interface project_impressions {
+    id: string;
+    user_id: string;
+    project_id: string;
+    like: boolean;
+    timestamp: dateFns;
+    users: Users[];
+    projects: Projects[];
 }

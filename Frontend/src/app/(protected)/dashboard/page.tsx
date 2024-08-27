@@ -118,14 +118,14 @@ const Page = () => {
         return <div>Loading</div>;
     } else {
         return (
-            <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6 lg:max-h-[calc(100vh-60px)] overflow-hidden">
+            <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6 h-[calc(100vh-60px)] overflow-hidden">
                 <div className="flex items-center">
                     <h1 className="text-lg font-semibold md:text-2xl">
                         Dashboard
                     </h1>
                 </div>
                 <div
-                    className="flex flex-1 items-start justify-start rounded-lg border border-dashed shadow-sm p-7 w-full h-full flex-grow lg:flex-row md:flex-col sm:flex-col"
+                    className="h-full flex flex-1 items-start justify-start rounded-lg border border-dashed shadow-sm p-7 w-full flex-grow lg:flex-row md:flex-col sm:flex-col"
                     x-chunk="dashboard-02-chunk-1"
                 >
                     <div className="flex flex-col p-4 h-full gap-3 md:w-full sm:w-full lg:flex-1">
@@ -166,7 +166,7 @@ const Page = () => {
                         </Card>
                     </div>
                     <div className="flex flex-col p-4 h-full md:w-full sm:w-full lg:flex-1 gap-4">
-                        <Card className="w-full h-[60%] p-3 overflow-y-scroll shadow-md rounded-lg flex-grow">
+                        <Card className="w-full h-[50%] p-3 overflow-y-scroll shadow-md rounded-lg flex-grow">
                             <CardTitle className="text-lg font-bold mb-2">
                                 What&apos;s New
                             </CardTitle>
@@ -213,6 +213,7 @@ const Page = () => {
                                 backgroundRepeat: "no-repeat",
                             }}
                             className="h-[4vw] flex justify-center items-center font-semibold text-2xl pt-4 pl-6"
+                            onClick={()=>{router.push("/idea/create")}}
                         >
                             Submit your idea
                         </Button>
@@ -224,6 +225,7 @@ const Page = () => {
                                 backgroundRepeat: "no-repeat",
                             }}
                             className="h-[4vw] flex justify-center items-center font-bold text-2xl pt-4 pl-6 text-black"
+                            onClick={()=>{router.push("/project/create")}}
                         >
                             Submit your project
                         </Button>
@@ -235,6 +237,7 @@ const Page = () => {
                                 backgroundRepeat: "no-repeat",
                             }}
                             className="h-[4vw] flex justify-center items-center font-bold text-2xl pt-4 pl-6 "
+                            onClick={()=>{router.push("/teams")}}
                         >
                             Join or Create a Team
                         </Button>

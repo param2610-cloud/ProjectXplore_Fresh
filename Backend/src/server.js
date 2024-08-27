@@ -17,7 +17,7 @@ const port = process.env.PORT || 3000;
 app.use(logger);
 app.use(cors(corsoptions));
 app.use(express.json());
-app.use(express.urlencoded({ extended: true}));
+app.use(express.urlencoded({ extended: false}));
 app.use('/', express.static("public"));
 app.use(cookieParser());
 
@@ -26,12 +26,16 @@ import userRouter from './routes/user.router.js';
 import selfRouter from './routes/data.router.js'
 import thirdpartyRouter from './routes/thirdParty.router.js'
 import teamrouter from './routes/team.router.js'
+import idearouter from './routes/idea.router.js'
+import projectRouter from './routes/project.router.js'
 
 //router declaration
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/self', selfRouter);
 app.use('/api/v1/third-party',thirdpartyRouter)
 app.use('/api/v1/team',teamrouter)
+app.use('/api/v1/idea',idearouter)
+app.use('/api/v1/project',projectRouter)
 
 
 app.use(ErrorHandler);
