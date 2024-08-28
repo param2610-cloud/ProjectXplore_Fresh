@@ -87,14 +87,14 @@ const ProjectCreateComponent: React.FC = () => {
                     </div>
 
                     {/* Project Duration */}
-                    <div className="flex">
+                    <div className="flex gap-5">
                     <div className="flex flex-col space-y-2">
-                        <Label className="text-lg font-semibold">Project Duration:</Label>
-                        <Input {...register("startDate", { required: true })} placeholder="Enter project Start Date/Month/year" />
+                        <Label className="text-lg font-semibold">Project Start:</Label>
+                        <Input type="date" {...register("startDate", { required: true })} placeholder="Enter project Start Date/Month/year" />
                     </div>
                     <div className="flex flex-col space-y-2">
-                        <Label className="text-lg font-semibold">Project Duration:</Label>
-                        <Input {...register("endDate", { required: true })} placeholder="Enter project end Date/Month/year" />
+                        <Label className="text-lg font-semibold">Project End:</Label>
+                        <Input type="date" {...register("endDate", { required: true })} placeholder="Enter project end Date/Month/year" />
                     </div>
                     </div>
 

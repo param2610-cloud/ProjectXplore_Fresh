@@ -82,7 +82,6 @@ const FreshSearchBar = ({
   return (
     <div className="w-full">
       <div className="search-container w-full flex justify-center items-center gap-4">
-        <Label className="text-xl font-bold whitespace-nowrap">Skill:</Label>
         <Input
           type="text"
           placeholder="Search..."
@@ -115,7 +114,7 @@ const FreshSearchBar = ({
         </ul>
       )}
 
-      <div className="flex flex-row justify-start items-center w-full h-14 px-4 py-2 rounded-lg m-6 gap-6 overflow-x-scroll overflow-y-hidden border-2">
+      <div className="flex flex-row justify-start items-center w-full h-14 px-4 py-2 rounded-lg my-6 gap-6 overflow-x-scroll overflow-y-hidden border-2">
         {FINALVALUE.map((item: OptionProps) => (
           <div key={item.id} className="flex justify-center items-center gap-4 p-2 rounded-xl">
             <div className="whitespace-nowrap">{item.components_name}</div>

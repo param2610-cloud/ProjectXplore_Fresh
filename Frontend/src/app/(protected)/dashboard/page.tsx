@@ -38,6 +38,7 @@ import NavbarCompo from "@/components/NavbarCompo";
 import { Progress } from "@/components/ui/progress";
 import { NewsArticle } from "@/lib/interface/NewsArticle";
 import { Button } from "@/components/ui/button";
+import Room_list_dashboard from "@/components/room/Room_list_dashboard";
 
 const roomsarray = [
     { value: "1", label: "kolkata Jawans" },
@@ -137,33 +138,10 @@ const Page = () => {
                                 <Progress value={55} />
                             </CardContent>
                         </Card>
-                        <Card className="flex-grow py-4 px-2">
-                            <CardTitle className="text-lg">List</CardTitle>
-                            <CardContent className="py-4">
-                                <div className="border-2 border-black rounded-lg p-1">
-                                    <h1 className="text-lg font-bold">
-                                        Employee Management System
-                                    </h1>
-                                    <p className="text-gray-400 py-2 pl-2">
-                                        Lorem ipsum dolor sit amet consectetur
-                                        adipisicing elit...
-                                    </p>
-                                    <div className="flex w-full justify-between px-2">
-                                        <div className="text-red-600 font-medium">
-                                            <div className="font-bold text-blue-500">
-                                                Team Drona
-                                            </div>
-                                            <div className="pl-1">
-                                                Project Manager
-                                            </div>
-                                        </div>
-                                        <div className="text-green-500 font-medium">
-                                            Backend
-                                        </div>
-                                    </div>
-                                </div>
-                            </CardContent>
-                        </Card>
+                        <div>
+                            <Room_list_dashboard/>
+                        </div>
+                        
                     </div>
                     <div className="flex flex-col p-4 h-full md:w-full sm:w-full lg:flex-1 gap-4">
                         <Card className="w-full h-[50%] p-3 overflow-y-scroll shadow-md rounded-lg flex-grow">

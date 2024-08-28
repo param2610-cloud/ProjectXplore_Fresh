@@ -199,7 +199,7 @@ export default function ClientLayout({
                 </div>
             </div>
             <div className="flex flex-col min-h-screen max-h-full w-full">
-                <header className="flex h-14 lg:h-[60px] items-center gap-4 border-b bg-muted/40 px-4 lg:px-6 fixed w-full z-10">
+                <header className="flex h-14 lg:h-[60px] items-center gap-4 border-b bg-muted/40 px-4 lg:px-6 fixed w-screen sm:w-screen md:w-[calc(100vw-220px)] lg:w-[calc(100vw-280px)] z-10">
                     <Sheet>
                         <SheetTrigger asChild>
                             <Button

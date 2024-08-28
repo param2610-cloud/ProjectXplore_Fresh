@@ -29,16 +29,6 @@ model answers {
   users       users?    @relation(fields: [user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
 }
 
-model chat_messages {
-  message_id   String    @id @default(uuid())
-  team_id      String?
-  user_id      String?
-  message_text String?
-  timestamp    DateTime? @default(now()) @db.Timestamp(6)
-  teams        teams?    @relation(fields: [team_id], references: [team_id], onDelete: NoAction, onUpdate: NoAction)
-  users        users?    @relation(fields: [user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
-}
-
 model collaboration_request_reviews {
   review_id                                                  String                  @id @default(uuid())
   request_id                                                 String?
@@ -93,12 +83,15 @@ model ideas {
   usefull_links          String[]
   image_link             String[]
   video_link             String[]
-  docs_link              String[]
+  roomId                 String
   timestamp              DateTime?                @default(now()) @db.Timestamp(6)
   collaboration_requests collaboration_requests[]
   users                  users?                   @relation(fields: [user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
   idea_impressions       idea_impressions[]
   idea_comments          idea_comments[]
+  createdAt              DateTime                 @default(now())
+  updatedAt              DateTime                 @updatedAt
+  roomDetails            rooms?                   @relation(fields: [roomId], references: [room_id], onDelete: NoAction, onUpdate: NoAction)
 }
 
 model institutions {
@@ -173,23 +166,13 @@ model roles {
   users   users[]
 }
 
-model room_chat_messages {
-  room_message_id String    @id @default(uuid())
-  room_id         String?
-  user_id         String?
-  message_text    String?
-  timestamp       DateTime? @default(now()) @db.Timestamp(6)
-  rooms           rooms?    @relation(fields: [room_id], references: [room_id], onDelete: NoAction, onUpdate: NoAction)
-  users           users?    @relation(fields: [user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
-}
-
-model room_member_roles {
-  room_member_role_id String  @id @default(uuid())
-  room_id             String?
-  user_id             String?
-  role_name           String? @db.VarChar(50)
-  rooms               rooms?  @relation(fields: [room_id], references: [room_id], onDelete: NoAction, onUpdate: NoAction)
-  users               users?  @relation(fields: [user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
+model room_member {
+  id        String  @id @default(uuid())
+  room_id   String?
+  user_id   String?
+  role_name String? @db.VarChar(50)
+  rooms     rooms?  @relation(fields: [room_id], references: [room_id], onDelete: NoAction, onUpdate: NoAction)
+  users     users?  @relation(fields: [user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
 }
 
 model room_task_list {
@@ -205,13 +188,17 @@ model room_task_list {
 }
 
 model rooms {
-  room_id            String               @id @default(uuid())
-  room_name          String               @db.VarChar(255)
-  objective          String?
-  profile_pic_link   String?
-  room_chat_messages room_chat_messages[]
-  room_member_roles  room_member_roles[]
-  room_task_list     room_task_list[]
+  room_id          String           @id @default(uuid())
+  room_name        String           @db.VarChar(255)
+  objective        String?
+  owner_id         String
+  profile_pic_link String?
+  room_member      room_member[]
+  room_task_list   room_task_list[]
+  owner            users            @relation(fields: [owner_id], references: [user_id])
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
+  ideas            ideas[]
 }
 
 model skills {
@@ -221,8 +208,9 @@ model skills {
 }
 
 model software {
-  software_id           String                  @id @default(uuid())
-  software_name         String                  @unique @db.VarChar(100)
+  id                    String                  @id @default(uuid())
+  name                  String                  @unique @db.VarChar(100)
+  image_link            String?
   project_used_software project_used_software[]
 }
 
@@ -258,7 +246,6 @@ model teams {
   objective                    String?
   profile_pic_link             String?
   achievements                 achievements[]
-  chat_messages                chat_messages[]
   team_member_roles            team_member_roles[]
   users                        users?                         @relation(fields: [team_author_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
   team_project_record          team_project_record[]
@@ -298,7 +285,6 @@ model users {
   institution_id                                                                     String?
   team_id                                                                            String?
   answers                                                                            answers[]
-  chat_messages                                                                      chat_messages[]
   collaboration_request_reviews_collaboration_request_reviews_collaborator_idTousers collaboration_request_reviews[] @relation("collaboration_request_reviews_collaborator_idTousers")
   collaboration_request_reviews_collaboration_request_reviews_reviewer_idTousers     collaboration_request_reviews[] @relation("collaboration_request_reviews_reviewer_idTousers")
   collaboration_requests                                                             collaboration_requests[]
@@ -306,8 +292,7 @@ model users {
   ideas                                                                              ideas[]
 
   issues                       issues[]
-  room_chat_messages           room_chat_messages[]
-  room_member_roles            room_member_roles[]
+  room_member_roles            room_member[]
   room_task_list               room_task_list[]
   team_member_roles            team_member_roles[]
   teams                        teams[]
@@ -320,6 +305,7 @@ model users {
   team_request_response_record team_request_response_record[]
   idea_impressions             idea_impressions[]
   project_impressions          project_impressions[]
+  rooms                        rooms[]
 }
 
 model votes {
@@ -371,8 +357,8 @@ model user_project_track {
 
 model components {
   id                      String                    @id @default(uuid())
-  components_name         String
-  components_image_link   String
+  name                    String
+  image_link              String
   project_components_used project_components_used[]
 }
 
@@ -397,7 +383,7 @@ model project_used_software {
   project_id  String?
   software_id String?
   projects    projects? @relation(fields: [project_id], references: [project_id], onDelete: NoAction, onUpdate: NoAction)
-  language    software? @relation(fields: [software_id], references: [software_id], onDelete: NoAction, onUpdate: NoAction)
+  software    software? @relation(fields: [software_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
 
 model idea_impressions {
@@ -426,4 +412,9 @@ model idea_comments {
   idea_id    String
   comments   comments @relation(fields: [comment_id], references: [comment_id])
   ideas      ideas    @relation(fields: [idea_id], references: [idea_id])
+}
+
+model room_update_table {
+  id          String  @id @default(uuid())
+  description String?
 }

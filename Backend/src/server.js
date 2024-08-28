@@ -28,6 +28,7 @@ import thirdpartyRouter from './routes/thirdParty.router.js'
 import teamrouter from './routes/team.router.js'
 import idearouter from './routes/idea.router.js'
 import projectRouter from './routes/project.router.js'
+import roomRouter from './routes/room.router.js'
 
 //router declaration
 app.use('/api/v1/users', userRouter);
@@ -36,6 +37,7 @@ app.use('/api/v1/third-party',thirdpartyRouter)
 app.use('/api/v1/team',teamrouter)
 app.use('/api/v1/idea',idearouter)
 app.use('/api/v1/project',projectRouter)
+app.use('/api/v1/room',roomRouter)
 
 
 app.use(ErrorHandler);

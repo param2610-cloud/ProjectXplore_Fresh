@@ -100,7 +100,7 @@ export interface Ideas {
     users?: Users;
     idea_impressions:idea_impressions[];
     idea_comments:idea_comments[];
-    usefull_links:String[];
+    usefull_links:string[];
 }
 
 export interface Impressions {
@@ -223,8 +223,7 @@ export interface Rooms {
     room_name: string;
     objective?: string;
     profile_pic_link?: string;
-    room_chat_messages: RoomChatMessages[];
-    room_member_roles: RoomMemberRoles[];
+    room_member: RoomMemberRoles[];
     room_task_list: RoomTaskList[];
 }
 
@@ -350,4 +349,10 @@ export interface project_impressions {
     timestamp: dateFns;
     users: Users[];
     projects: Projects[];
+}
+
+
+export interface RoomGetData {
+    data_as_member:Rooms[]
+    data_as_owner:Rooms[]
 }

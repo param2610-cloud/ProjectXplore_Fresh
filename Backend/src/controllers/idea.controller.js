@@ -11,13 +11,13 @@ export const createIdea = asyncHandler(async (req, res, next) => {
         mediaLinks,
         uploadedImageMediaLinks,
         uploadedVideoMediaLinks,
-        uploadedApplicationMediaLinks,
         userId,
+        roomId,
     } = req.body;
     // console.log(ideaName, ideaDescription, mediaLinks, userId);
 
     try {
-        if (!ideaDescription || !userId) {
+        if (!ideaDescription || !userId || !roomId) {
             throw next(new ApiError(500, "User id or desc not revieved "));
         }
 
@@ -27,26 +27,36 @@ export const createIdea = asyncHandler(async (req, res, next) => {
                 idea_text: ideaDescription,
                 image_link: uploadedImageMediaLinks,
                 video_link: uploadedVideoMediaLinks,
-                docs_link: uploadedApplicationMediaLinks,
                 user_id: userId,
-                usefull_links:mediaLinks
+                usefull_links: mediaLinks,
+                roomId: roomId,
             },
         });
         console.log(idea);
 
-        return res.status(200).json(
-            new ApiResponse(200, idea, "Idea is created successfully!")
-        );
+        return res
+            .status(200)
+            .json(new ApiResponse(200, idea, "Idea is created successfully!"));
     } catch (error) {
         console.error(error);
         throw next(new ApiError(500, "Error while creating Idea"));
     }
 });
 export const getIdea = asyncHandler(async (req, res, next) => {
-    const { ideaId } = req.query;
+    const { ideaId, roomId } = req.query;
+    
+    // Log the received query parameters for debugging
+    console.log('Idea ID:', ideaId, 'Room ID:', roomId);
+
     try {
+        if (!ideaId && !roomId) {
+            return res.status(400).json(new ApiResponse(400, null, "Idea ID or Room ID is required"));
+        }
+
+        let data = null;
+        
         if (ideaId) {
-            const data = await prisma.ideas.findUnique({
+            data = await prisma.ideas.findUnique({
                 where: {
                     idea_id: ideaId,
                 },
@@ -59,14 +69,31 @@ export const getIdea = asyncHandler(async (req, res, next) => {
                     users: true,
                 },
             });
-            if(data){
-                return res.status(200).json(
-                    new ApiResponse(200, data, "Idea is created successfully!")
-                );
-            }
+        } else if (roomId) {
+            data = await prisma.ideas.findFirst({
+                where: {
+                    roomId: roomId,
+                },
+                include: {
+                    collaboration_requests: { include: { users: true } },
+                    idea_comments: {
+                        include: { comments: { include: { users: true } } },
+                    },
+                    idea_impressions: { include: { users: true } },
+                    users: true,
+                },
+            });
         }
+
+        if (!data) {
+            return res.status(200).json(new ApiResponse(200, null, "Idea not found"));
+        }
+
+        return res.status(200).json(new ApiResponse(200, data, "Idea fetched successfully"));
+
     } catch (error) {
-        console.log(error);
-        throw next(new ApiError(500, "Error while creating Idea"));
+        console.error("Error while fetching idea:", error);
+        return next(new ApiError(500, "Error while fetching Idea"));
     }
 });
+

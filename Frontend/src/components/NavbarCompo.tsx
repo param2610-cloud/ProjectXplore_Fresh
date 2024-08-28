@@ -1,4 +1,4 @@
-import { Earth, Home, LucideLayoutDashboard, Package, Settings, Users2  } from 'lucide-react'
+import { Box, Brain, Earth, Home, House, LucideLayoutDashboard, Package, Settings, Users2  } from 'lucide-react'
 import Link from 'next/link'
 import React from 'react'
 import { Badge } from './ui/badge'
@@ -21,6 +21,13 @@ const NavbarCompo = ({ userDetails }: { userDetails: Users | null }) => {
                                         Dashboard
                                     </Link>
                                     <Link
+                                        href="/room"
+                                        className={`flex items-center gap-3 rounded-lg bg-muted px-3 py-2 ${pathname.includes("projects")?`text-primary`:`text-muted-foreground    `} transition-all hover:text-primary`}
+                                    >
+                                        <Box className="h-4 w-4" />
+                                        Rooms
+                                    </Link>
+                                    <Link
                                         href="#"
                                         className={`flex items-center gap-3 rounded-lg bg-muted px-3 py-2 ${pathname.includes("projects")?`text-primary`:`text-muted-foreground    `} transition-all hover:text-primary`}
                                     >
@@ -35,7 +42,7 @@ const NavbarCompo = ({ userDetails }: { userDetails: Users | null }) => {
                                         href="/idea"
                                         className={`flex items-center gap-3 rounded-lg bg-muted px-3 py-2 ${pathname.includes("projects")?`text-primary`:`text-muted-foreground    `} transition-all hover:text-primary`}
                                     >
-                                        <Home className="h-4 w-4" />
+                                        <Brain className="h-4 w-4" />
                                         My Ideas
                                         <Badge className="ml-auto flex h-6 w-6 shrink-0 items-center justify-center rounded-full">
                                             {userDetails?.ideas && userDetails.ideas.length}

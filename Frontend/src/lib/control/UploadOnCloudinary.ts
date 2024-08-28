@@ -1,64 +1,69 @@
-'use client'
-import axios from "axios";
+'use client';
 import { useState } from "react";
-import { Domain } from "../Domain";
+import axios from "axios";
 
 interface UploadOnCloudinaryProps {
-    mediaFiles: File[]; // Array of media files to be uploaded
+    mediaFiles: File[];
     setuploadedImageMediaLinks: React.Dispatch<React.SetStateAction<string[]>>;
     setuploadedVideoMediaLinks: React.Dispatch<React.SetStateAction<string[]>>;
-    setuploadedApplicationMediaLinks: React.Dispatch<React.SetStateAction<string[]>>;
-    uploadedImageMediaLinks:string[],
-    uploadedVideoMediaLinks:string[],
-    uploadedApplicationMediaLinks:string[],
-
 }
 
 const UploadOnCloudinary = async ({
     mediaFiles,
-    uploadedImageMediaLinks,
     setuploadedImageMediaLinks,
-    uploadedVideoMediaLinks,
     setuploadedVideoMediaLinks,
-    uploadedApplicationMediaLinks,
-    setuploadedApplicationMediaLinks,
 }: UploadOnCloudinaryProps) => {
 
-    for (const file of mediaFiles) {
-        const newform = new FormData();
-        newform.append("mediaFile", file);
+    const CLOUD_NAME = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
+    const UPLOAD_PRESET = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET;
+    const API_KEY = process.env.NEXT_PUBLIC_CLOUDINARY_API_KEY;
 
+    if (!CLOUD_NAME || !UPLOAD_PRESET || !API_KEY) {
+        console.error("Cloudinary environment variables are not set properly.");
+        return;
+    }
+
+    for (const file of mediaFiles) {
+        setuploadedImageMediaLinks(["hojoborolo"])
         try {
-            const response = await axios.post(
-                `${Domain}/api/v1/self/upload-on-cloudinary`,
-                newform
-            );
-            if (response) {
-                const uploadedUrl = response.data.data; 
-                
-                
-                if (file.type.startsWith("image/")) {
-                    console.log(uploadedUrl);
-                    setuploadedImageMediaLinks([
-                        ...uploadedImageMediaLinks,
-                        uploadedUrl,
-                    ]);
-                } else if (file.type.startsWith("video/")) {
-                    console.log(uploadedUrl);
-                    setuploadedVideoMediaLinks([
-                        ...uploadedVideoMediaLinks,
-                        uploadedUrl,
-                    ]);
-                } else if (file.type.startsWith("application/")) {
-                    console.log(uploadedUrl);
-                    setuploadedApplicationMediaLinks([
-                        ...uploadedApplicationMediaLinks,
-                        uploadedUrl,
-                    ]);
-                }
+            const formData = new FormData();
+            formData.append("file", file);
+            formData.append("upload_preset", UPLOAD_PRESET);
+
+            const resourceType = file.type.startsWith("video/") ? "video" : "image";
+            const uploadUrl = `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/${resourceType}/upload`;
+
+            const response = await axios.post(uploadUrl, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
+
+            if (response.status === 200) {
+                const result = response.data;
+                const uploadedUrl = result.secure_url;
+                console.log(`Uploaded URL: ${uploadedUrl}`);
+
+                if (resourceType === "image") {
+                    setuploadedImageMediaLinks(prevLinks => {
+                        console.log("Updating image links:", [...prevLinks, uploadedUrl]);
+                        return [...prevLinks, uploadedUrl];
+                    });
+                } else if (resourceType === "video") {
+                    setuploadedVideoMediaLinks(prevLinks => {
+                        console.log("Updating video links:", [...prevLinks, uploadedUrl]);
+                        return [...prevLinks, uploadedUrl];
+                    });
+                } 
+            } else {
+                console.error("Failed to upload file:", response.statusText);
             }
         } catch (error) {
-            console.error("Error uploading file:", error);
+            if (axios.isAxiosError(error)) {
+                console.error("Error uploading file:", error.response?.data || error.message);
+            } else {
+                console.error("Error uploading file:", error);
+            }
         }
     }
 };
