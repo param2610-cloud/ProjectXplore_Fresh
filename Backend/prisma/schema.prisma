@@ -199,6 +199,7 @@ model rooms {
   createdAt        DateTime         @default(now())
   updatedAt        DateTime         @updatedAt
   ideas            ideas[]
+  project_update   project_update[]
 }
 
 model skills {
@@ -306,6 +307,7 @@ model users {
   idea_impressions             idea_impressions[]
   project_impressions          project_impressions[]
   rooms                        rooms[]
+  project_update               project_update[]
 }
 
 model votes {
@@ -417,4 +419,17 @@ model idea_comments {
 model room_update_table {
   id          String  @id @default(uuid())
   description String?
+}
+
+model project_update {
+  id             String   @id @default(uuid())
+  room_id        String?
+  text           String?
+  image_link     String[]
+  video_link     String[]
+  author_id      String?
+  room_details   rooms?   @relation(fields: [room_id], references: [room_id])
+  author_details users?   @relation(fields: [author_id], references: [user_id])
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
 }

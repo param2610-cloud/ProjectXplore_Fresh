@@ -2,6 +2,7 @@ import prisma from "../db/prismaClient.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
+import crypto from 'crypto'
 
 const addInstitution = asyncHandler(async (req,res,next)=>{
     const {Institution_name,Address} = req.body;
@@ -91,4 +92,14 @@ const addSkill = asyncHandler(async (req,res,next)=>{
         throw next(new ApiError(500, "Error occured while adding the data"));
     }
 })
-export {addInstitution,addInterest,addSkill}
+
+const generate_Signature = asyncHandler(async (req,res,next)=>{
+    const { public_id, timestamp } = req.query;
+  const secret = process.env.CLOUDINARY_API_SECRET;
+
+  const stringToSign = `public_id=${public_id}&timestamp=${timestamp}`;
+  const signature = crypto.createHash('sha1').update(stringToSign + secret).digest('hex');
+
+  res.json(signature);
+})
+export {addInstitution,addInterest,addSkill,generate_Signature}

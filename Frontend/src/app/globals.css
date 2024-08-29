@@ -23,6 +23,7 @@
     --destructive-foreground: 8 92% 94%;
     --ring: 213 81% 42%;
     --radius: 0.5rem;
+    --grid-color: #bdbdbd;
   }
 
   .dark {
@@ -45,6 +46,7 @@
     --destructive: 8 92% 52%;
     --destructive-foreground: 0 0% 100%;
     --ring: 213 81% 42%;
+    --grid-color: #3D3D3D;
   }
 }
 
@@ -56,4 +58,12 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+.glass-effect {
+  background: rgba(255, 255, 255, 0.1); /* Semi-transparent background */
+  backdrop-filter: blur(0.5px); /* Blur effect for glass */
+  -webkit-backdrop-filter: blur(10px); /* Safari support */
+  border-radius: 10px; /* Rounded corners */
+  border: 1px solid rgba(255, 255, 255, 0.2); /* Optional border */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Soft shadow */
 }

@@ -20,7 +20,7 @@ const config = {
         extend: {
           
             backgroundImage: {
-                "radial-grid": "radial-gradient(#BDBDBD 1px, transparent 0)",
+                "radial-grid": "radial-gradient(var(--grid-color) 1px, transparent 0)",
             },
             backgroundSize: {
                 "40": "40px 40px",

@@ -356,3 +356,13 @@ export interface RoomGetData {
     data_as_member:Rooms[]
     data_as_owner:Rooms[]
 }
+export interface project_update {
+    id:string;
+    room_id:string;
+    text:string;
+    image_link:string[];
+    video_link:string[];
+    author_id:string;
+    author_details:Users;
+    createdAt:any
+}

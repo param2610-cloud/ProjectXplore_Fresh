@@ -57,3 +57,27 @@ export const create_a_room = asyncHandler(async(req,res,next)=>{
         
     }
 })
+export const getRoomData = asyncHandler(async(req,res,next)=>{
+    const {roomId} = req.query;
+    try {
+        if(roomId){
+            const Roomdata= await prisma.rooms.findUnique({
+                where:{
+                    room_id:roomId
+                },include:{
+                    project_update:{
+                        include:{
+                            author_details:true
+                        }
+                    }
+                }
+            })
+            console.log(Roomdata);
+            
+            return res.status(200).json(new ApiResponse(200,Roomdata,"Succefull"))
+        }
+    } catch (error) {
+        console.log(error)
+        throw next(new ApiError(500,"Error while fetching room data"))
+    }
+})
