@@ -2,10 +2,17 @@
 import { roboto } from "@/app/fonts";
 import Formdata_ from "@/components/IdeaCreationGrp/FormdataCompo";
 import ProjectUpdates from "@/components/ProjectUpdates";
+import MemberList from "@/components/room/MemberList";
+import RequestList from "@/components/room/RequestList";
 import TextInputWithCloudinary from "@/components/TextAreaStyle";
 import GeminiStyleInput from "@/components/TextAreaStyle";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+} from "@/components/ui/popover";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/use-toast";
 import { userAtom } from "@/lib/atoms/UserAtom";
@@ -14,15 +21,27 @@ import UseAuth from "@/lib/hooks/UseUser";
 import { Ideas, project_update, Rooms } from "@/lib/interface/INTERFACE";
 import axios from "axios";
 import { useAtom } from "jotai";
-import { ArrowRight, ChevronLeft, ChevronRight, Paperclip, Pin, Upload } from "lucide-react";
+import {
+    ArrowRight,
+    ChevronLeft,
+    ChevronRight,
+    List,
+    Paperclip,
+    Pin,
+    Settings,
+    Upload,
+    Users,
+} from "lucide-react";
 import { useTheme } from "next-themes";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
 const Page = () => {
     const { loading, authenticated } = UseAuth();
     const [userId] = useAtom(userAtom);
+    const router = useRouter()
     const [DataLoading, setDataloading] = useState<boolean>(false);
     const [startupRender, setstartupRender] = useState<boolean>(true);
     const [CreateIdeaCard, setCreateIdeaCard] = useState<boolean>(false);
@@ -35,7 +54,9 @@ const Page = () => {
     const [imagelink, setimagelink] = useState<string[]>([]);
     const [videolink, setvideolink] = useState<string[]>([]);
     const [update_list, setupdate_list] = useState<project_update[]>([]);
-    const [sidebarOpen,setsidebarOpen] = useState<boolean>(false)
+    const [activeTab, setActiveTab] = useState<
+        "requests" | "members" | "settings" | null
+    >(null);
     const { toast } = useToast();
     const pathname = usePathname();
     const parts = pathname.split("/");
@@ -44,6 +65,7 @@ const Page = () => {
         if (roomIdFromPath && roomIdFromPath !== roomId) {
             setroomId(roomIdFromPath);
         }
+        console.log(roomId);
     }, [pathname, roomId]);
 
     useEffect(() => {
@@ -119,7 +141,7 @@ const Page = () => {
                 }
             );
             if (UpdateData) {
-                setInputUpdate('')
+                setInputUpdate("");
                 console.log(UpdateData);
                 setupdate_list([...update_list, UpdateData.data.data]);
             }
@@ -130,37 +152,57 @@ const Page = () => {
     useEffect(() => {
         console.log(update_list);
     }, [update_list]);
+    if(!userId){
+        router.push("/auth/signin")
+    }
 
     return (
         <div className="w-full h-full flex flex-col justify-start items-start bg-radial-grid bg-[length:20px_20px] overflow-hidden">
             <div className="w-full h-full overflow-y-scroll">
-                <div>
-                    <div className="flex gap-1 justify-center items-center z-10 absolute text-3xl font-extrabold pt-4 pl-1">
-
-                        <div className="border-2 rounded-md cursor-pointer flex justify-center items-center" onClick={()=>setsidebarOpen(true)}>
-                        <ChevronRight size={30}/>
-                        </div>
+                <div className="flex justify-between items-center w-full p-4">
+                    <div className="flex gap-1 justify-center items-center z-10 text-3xl font-extrabold">
                         {roomData && roomData.room_name}
                     </div>
-                    <div className={`z-10 absolute flex flex-col gap-4 pt-4 justify-start items-center text-3xl font-extrabold h-[calc(100vh-60px)] bg-gray-100 ${sidebarOpen?`w-[12%]`:`w-[0%] hidden`}`}>
-                        <div className="flex gap-4 justify-center items-center whitespace-pre-wrap">
-                            <div className="w-full overflow-hidden">
-                        {roomData && roomData.room_name}
+                    <Popover>
+                        <PopoverTrigger asChild>
+                            <Button variant="outline">Room Options</Button>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-56">
+                            <div className="flex flex-col space-y-2">
+                                {userId === roomData?.owner_id && (
+                                    <Button
+                                        variant="ghost"
+                                        onClick={() => setActiveTab("requests")}
+                                    >
+                                        <List className="mr-2 h-4 w-4" />
+                                        Request List
+                                    </Button>
+                                )}
+                                <Button
+                                    variant="ghost"
+                                    onClick={() => setActiveTab("members")}
+                                >
+                                    <Users className="mr-2 h-4 w-4" />
+                                    Member List
+                                </Button>
+                                <Button
+                                    variant="ghost"
+                                    onClick={() => setActiveTab("settings")}
+                                >
+                                    <Settings className="mr-2 h-4 w-4" />
+                                    Settings
+                                </Button>
                             </div>
-                        <div className="border-2 mt-1 rounded-md shadow-md cursor-pointer flex justify-center items-center" onClick={()=>setsidebarOpen(false)}>
-                        <ChevronLeft size={30}/>
-                        </div>
-                        </div>
-                        <div className="flex flex-col justify-center items-start w-full pt-4">
-                            <Button variant={'ghost'} className="text-lg w-full">Members</Button>
-                            <Button variant={'ghost'} className="text-lg w-full">Request</Button>
-                            <Button variant={'ghost'} className="text-lg w-full">Settings</Button>
-                        </div>
-                    </div>
+                        </PopoverContent>
+                    </Popover>
                 </div>
-                    <div className="absolute z-10 ml-[12%] w-[65%] bg-black h-[calc(100vh-100px)] ">
-
-                    </div>
+                {activeTab === "requests" &&
+                    roomId &&
+                    userId === roomData?.owner_id && <RequestList />}
+                {activeTab === "members" && <MemberList />}
+                {activeTab === "settings" && (
+                    <div>Settings Component (to be implemented)</div>
+                )}
                 {startupRender && (
                     <div className="flex w-full h-full flex-col justify-center items-center">
                         <div
@@ -233,10 +275,9 @@ const Page = () => {
                             </div>
                         </div>
                     )}
-                    
-                    <div className="w-full flex flex-col pb-[120px]">
 
-                    {/* {update_list &&
+                    <div className="w-full flex flex-col pb-[120px]">
+                        {/* {update_list &&
                         update_list.map((update_data: project_update,index) => {
                             if(userId===update_data.author_id){
                                 return(
@@ -264,11 +305,13 @@ const Page = () => {
                             </div>
                             );
                         })} */}
-                        {
-                            update_list && userId && (<ProjectUpdates updateList={update_list} currentUserId={userId}/>)
-                        }
-                        
-                        </div>
+                        {update_list && userId && (
+                            <ProjectUpdates
+                                updateList={update_list}
+                                currentUserId={userId}
+                            />
+                        )}
+                    </div>
                 </div>
                 {ideaData && (
                     <div className="absolute bottom-0 right-0  w-screen lg:w-[calc(100vw-760px)] md:w-[calc(100vw-400px)] pb-8 pr-8 flex justify-center items-center">

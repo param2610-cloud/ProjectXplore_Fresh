@@ -1,6 +1,5 @@
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import Image from "next/image";
 import Link from "next/link";
 
 export default function Home() {
@@ -21,13 +20,10 @@ export default function Home() {
             </div>
             <Separator orientation="horizontal" />
             <div className="w-screen h-screen">
-                <Image
+                <img
                     src={"/banner.jpg"}
                     alt="banner"
-                    width={1920}
-                    height={700}
-                    objectFit="cover"
-                    className="w-full h-full"
+                    className="w-full h-full object-cover"
                 />
             </div>
         </main>

@@ -1,7 +1,7 @@
 import { Check, Copy } from 'lucide-react';
 import React, { useState } from 'react';
 
-const CopyButton = ({ text,className,size }:{text:string,className:string,size:number}) => {
+const CopyButton = ({ text,className,size }:{text:string,className:string,size:number|null}) => {
   const [copied, setCopied] = useState(false);
 
   const copyToClipboard = () => {
@@ -13,11 +13,11 @@ const CopyButton = ({ text,className,size }:{text:string,className:string,size:n
 
   return (
     <>
-      {!copied && (
+      {!copied && size && (
         <Copy onClick={copyToClipboard} className={className} size={size}/>
       )}
       {
-        copied && (
+        copied && size && (
             <Check color='green' className={className} size={size}/>
         )
       }

@@ -61,7 +61,6 @@ export const getIdea = asyncHandler(async (req, res, next) => {
                     idea_id: ideaId,
                 },
                 include: {
-                    collaboration_requests: { include: { users: true } },
                     idea_comments: {
                         include: { comments: { include: { users: true } } },
                     },
@@ -75,7 +74,6 @@ export const getIdea = asyncHandler(async (req, res, next) => {
                     roomId: roomId,
                 },
                 include: {
-                    collaboration_requests: { include: { users: true } },
                     idea_comments: {
                         include: { comments: { include: { users: true } } },
                     },

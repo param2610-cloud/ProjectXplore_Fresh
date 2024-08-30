@@ -20,7 +20,7 @@ const ProjectUpdates = ({ updateList, currentUserId }:{updateList:project_update
               } p-3 shadow-md`}
             >
               <div className="font-semibold mb-1">
-                {update.author_details.full_name}
+                {update?.author_details?.full_name}
               </div>
               <div className="mb-2">{update.text}</div>
               {update.image_link && update.image_link.length > 0 && (

@@ -83,7 +83,7 @@ export default function ClientLayout({
     const router = useRouter();
     const [Projectnumber] = useAtom(ProjectnumberAtom);
     const { loading, authenticated } = useAuth();
-    const [userid] = useAtom(userAtom);
+    const [userid,setUserId] = useAtom(userAtom);
     const [completed, setcompleted] = useState<boolean>(false);
     const [profile, setprofile] = useState<Users | null>();
     const { setTheme } = useTheme();
@@ -121,6 +121,7 @@ export default function ClientLayout({
                 { withCredentials: true }
             );
             if (response.status === 200) {
+                setUserId(null)
                 router.push("/auth/signin");
             }
         }

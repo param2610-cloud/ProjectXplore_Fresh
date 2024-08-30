@@ -41,6 +41,8 @@ export interface CollaborationRequestReviews {
     users_collaborator?: Users;
     collaboration_requests?: CollaborationRequests;
     users_reviewer?: Users;
+    comments:string;
+    users_collaboration_request_reviews_collaborator_idTousers:Users;
 }
 
 export interface CollaborationRequests {
@@ -225,6 +227,8 @@ export interface Rooms {
     profile_pic_link?: string;
     room_member: RoomMemberRoles[];
     room_task_list: RoomTaskList[];
+    owner_id:string;
+    rooms?:Rooms;
 }
 
 export interface Skills {

@@ -55,7 +55,7 @@ const Page = () => {
         if (parts[2]) {
             setIdeaId(parts[2]);
         }
-    }, [pathname]);
+    }, [pathname,parts]);
     const router = useRouter();
     const { loading, authenticated } = UseAuth();
     const [userId] = useAtom(userAtom);

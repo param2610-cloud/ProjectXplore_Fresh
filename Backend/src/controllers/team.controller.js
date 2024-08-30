@@ -98,7 +98,6 @@ const getSpecificTeam = asyncHandler(async (req, res, next) => {
                             },
                         },
                     },
-                    chat_messages: true,
                     team_project_record: true,
                 },
             });

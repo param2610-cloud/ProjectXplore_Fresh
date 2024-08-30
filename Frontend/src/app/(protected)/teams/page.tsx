@@ -7,6 +7,11 @@ import { JoinTeam } from "@/components/TeamDetailsGrp/Jointeam";
 import { AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+  } from "@/components/ui/popover"
+import {
     Card,
     CardContent,
     CardDescription,
@@ -38,6 +43,7 @@ import { useAtom } from "jotai";
 import { Copy } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
+import { MIgrateRoom } from "@/components/room/TeamMigrateDetails";
 
 const Page = () => {
     const router = useRouter();
@@ -122,7 +128,7 @@ const Page = () => {
 
     return (
         <ResizablePanelGroup
-            className="min-h-[calc(100vh-60px)] overflow-x-hidden w-full flex "
+            className={`min-h-[calc(100vh-60px)] overflow-x-hidden w-full flex`}
             direction="horizontal"
         >
             <ResizablePanel defaultSize={35} className="m-3">
@@ -135,7 +141,7 @@ const Page = () => {
                                 <div className="text-gray-400">
                                     Team means unity. A solid team can keep
                                     potential to bring 100 cups. Team up with
-                                    your friends' existing teams or you can create
+                                    your friend existing teams or you can create
                                     your own team.
                                 </div>
                             </CardContent>
@@ -228,6 +234,16 @@ const Page = () => {
                             >
                                 Requests
                             </Button>
+                            }
+                            {
+                                teamDetails?.teamDetails?.team_author_id===userId &&
+                                <>
+                                {
+                                    teamId && 
+                                    <MIgrateRoom teamId={teamId}/>
+                                }
+                            
+                            </>
                             }
                         </CardFooter>
                     </Card>

@@ -35,7 +35,7 @@ model collaboration_request_reviews {
   reviewer_id                                                String?
   collaborator_id                                            String?
   review_status                                              String?                 @db.VarChar(20)
-  review_comments                                            String?
+  comments                                                   String?
   timestamp                                                  DateTime?               @default(now()) @db.Timestamp(6)
   users_collaboration_request_reviews_collaborator_idTousers users?                  @relation("collaboration_request_reviews_collaborator_idTousers", fields: [collaborator_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
   collaboration_requests                                     collaboration_requests? @relation(fields: [request_id], references: [request_id], onDelete: NoAction, onUpdate: NoAction)
@@ -44,14 +44,14 @@ model collaboration_request_reviews {
 
 model collaboration_requests {
   request_id                    String                          @id @default(uuid())
-  idea_id                       String?
+  room_id                       String?
   user_id                       String?
   request_text                  String?
   domain_expertise_required     String?
   status                        String?                         @db.VarChar(20)
   timestamp                     DateTime?                       @default(now()) @db.Timestamp(6)
   collaboration_request_reviews collaboration_request_reviews[]
-  ideas                         ideas?                          @relation(fields: [idea_id], references: [idea_id], onDelete: NoAction, onUpdate: NoAction)
+  rooms                         rooms?                          @relation(fields: [room_id], references: [room_id], onDelete: NoAction, onUpdate: NoAction)
   users                         users?                          @relation(fields: [user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
 }
 
@@ -76,22 +76,21 @@ model features {
 }
 
 model ideas {
-  idea_id                String                   @id @default(uuid())
-  user_id                String?
-  idea_name              String?
-  idea_text              String?
-  usefull_links          String[]
-  image_link             String[]
-  video_link             String[]
-  roomId                 String
-  timestamp              DateTime?                @default(now()) @db.Timestamp(6)
-  collaboration_requests collaboration_requests[]
-  users                  users?                   @relation(fields: [user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
-  idea_impressions       idea_impressions[]
-  idea_comments          idea_comments[]
-  createdAt              DateTime                 @default(now())
-  updatedAt              DateTime                 @updatedAt
-  roomDetails            rooms?                   @relation(fields: [roomId], references: [room_id], onDelete: NoAction, onUpdate: NoAction)
+  idea_id          String             @id @default(uuid())
+  user_id          String?
+  idea_name        String?
+  idea_text        String?
+  usefull_links    String[]
+  image_link       String[]
+  video_link       String[]
+  roomId           String
+  timestamp        DateTime?          @default(now()) @db.Timestamp(6)
+  users            users?             @relation(fields: [user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
+  idea_impressions idea_impressions[]
+  idea_comments    idea_comments[]
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
+  roomDetails      rooms?             @relation(fields: [roomId], references: [room_id], onDelete: NoAction, onUpdate: NoAction)
 }
 
 model institutions {
@@ -200,6 +199,9 @@ model rooms {
   updatedAt        DateTime         @updatedAt
   ideas            ideas[]
   project_update   project_update[]
+
+  collaboration_requests collaboration_requests[]
+  init_feature_list      init_feature_list[]
 }
 
 model skills {
@@ -432,4 +434,12 @@ model project_update {
   author_details users?   @relation(fields: [author_id], references: [user_id])
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
+}
+
+model init_feature_list {
+  id          String @id @default(uuid())
+  title       String
+  description String
+  room_id     String
+  rooms       rooms  @relation(fields: [room_id], references: [room_id])
 }
