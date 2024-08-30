@@ -18,7 +18,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { userAtom } from "@/lib/atoms/UserAtom";
 import { Domain } from "@/lib/Domain";
 import UseAuth from "@/lib/hooks/UseUser";
-import { Ideas, project_update, Rooms } from "@/lib/interface/INTERFACE";
+import { Ideas, update, Rooms } from "@/lib/interface/INTERFACE";
 import axios from "axios";
 import { useAtom } from "jotai";
 import {
@@ -36,12 +36,14 @@ import { useTheme } from "next-themes";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import ProjectCreateComponent from "../../project/create/page";
+import ChatBasedProjectSubmit from "@/components/room/ChatBasedProjectComponent";
 
 const Page = () => {
     const { loading, authenticated } = UseAuth();
     const [userId] = useAtom(userAtom);
-    const router = useRouter()
+    const router = useRouter();
     const [DataLoading, setDataloading] = useState<boolean>(false);
     const [startupRender, setstartupRender] = useState<boolean>(true);
     const [CreateIdeaCard, setCreateIdeaCard] = useState<boolean>(false);
@@ -53,10 +55,13 @@ const Page = () => {
     const [InputUpdate, setInputUpdate] = useState<string>("");
     const [imagelink, setimagelink] = useState<string[]>([]);
     const [videolink, setvideolink] = useState<string[]>([]);
-    const [update_list, setupdate_list] = useState<project_update[]>([]);
+    const [update_list, setupdate_list] = useState<update[]>([]);
     const [activeTab, setActiveTab] = useState<
         "requests" | "members" | "settings" | null
     >(null);
+    const [ClickFinalProject, setClickFinalProject] = useState<boolean>(false);
+    const [showProjectSubmit, setShowProjectSubmit] = useState(false);
+    const submitref = useRef<HTMLButtonElement>(null);
     const { toast } = useToast();
     const pathname = usePathname();
     const parts = pathname.split("/");
@@ -96,8 +101,9 @@ const Page = () => {
                 setIdeadata(ideaData.data.data);
                 setroomdata(roomData.data.data);
 
-                setupdate_list(roomData.data.data.project_update);
-
+                console.log(roomData.data.data.update);
+                setupdate_list(roomData.data.data.update);
+                
                 toast({
                     title: "Data is Fetched",
                     description: "Continue your work",
@@ -152,8 +158,8 @@ const Page = () => {
     useEffect(() => {
         console.log(update_list);
     }, [update_list]);
-    if(!userId){
-        router.push("/auth/signin")
+    if (!userId) {
+        router.push("/auth/signin");
     }
 
     return (
@@ -169,6 +175,13 @@ const Page = () => {
                         </PopoverTrigger>
                         <PopoverContent className="w-56">
                             <div className="flex flex-col space-y-2">
+                                <Button
+                                    variant="ghost"
+                                    onClick={() => submitref.current?.click()}
+                                >
+                                    <List className="mr-2 h-4 w-4" />
+                                    Submit Final Project
+                                </Button>
                                 {userId === roomData?.owner_id && (
                                     <Button
                                         variant="ghost"
@@ -333,9 +346,31 @@ const Page = () => {
                         </Button>
                     </div>
                 )}
+                {ideaData && !showProjectSubmit && (
+                    <div className=" hidden fixed bottom-[200px] right-[40%] z-50">
+                        <Button
+                            ref={submitref}
+                            onClick={() => setShowProjectSubmit(true)}
+                        >
+                            Submit Final Project
+                        </Button>
+                    </div>
+                )}
+                {showProjectSubmit && (
+                    <div className="fixed inset-0 bg-white bg-opacity-50 flex justify-center items-center z-50">
+                        <div className="bg-card rounded-lg shadow-lg overflow-auto max-h-[90vh] w-[90vw] max-w-4xl">
+                            <ChatBasedProjectSubmit />
+                            <Button
+                                className="absolute top-5 right-5"
+                                onClick={() => setShowProjectSubmit(false)}
+                            >
+                                Close
+                            </Button>
+                        </div>
+                    </div>
+                )}
             </div>
         </div>
     );
 };
-
 export default Page;

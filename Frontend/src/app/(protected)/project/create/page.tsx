@@ -63,7 +63,7 @@ const ProjectCreateComponent: React.FC = () => {
         <div className="w-full bg-gray-100 flex justify-center p-6">
             <div className="max-w-4xl w-full bg-white rounded-lg shadow-lg p-8">
                 <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col space-y-6">
-                    <h2 className="text-3xl font-bold text-center mb-4">Create a New Project</h2>
+                    <h2 className="text-3xl font-bold text-center mb-4">Final Project</h2>
 
                     {/* Project Type */}
                     <div className="flex flex-col space-y-2">

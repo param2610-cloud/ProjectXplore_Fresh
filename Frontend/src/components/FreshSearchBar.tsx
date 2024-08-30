@@ -30,6 +30,7 @@ const FreshSearchBar = ({
     const getList = async () => {
       const { data } = await axios.get(`${Domain}${GET_LIST_API}`);
       if (data) {
+        console.log(data.data);
         
         setOptionList(data.data);
       }

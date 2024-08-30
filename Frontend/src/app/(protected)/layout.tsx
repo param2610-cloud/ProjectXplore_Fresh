@@ -19,15 +19,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-      <div className={inter.className}>
+    <div className={inter.className}>
         <ThemeProvider
             attribute="class"
             defaultTheme="system"
             enableSystem
             disableTransitionOnChange
-          >
+            >
         <ClientLayout>
-        {children}
+           {children}
         </ClientLayout>
           </ThemeProvider>
         <Toaster/>

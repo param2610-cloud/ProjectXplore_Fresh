@@ -1,8 +1,8 @@
 import React from 'react';
 import { format } from 'date-fns';
-import { project_update } from '@/lib/interface/INTERFACE';
+import { update } from '@/lib/interface/INTERFACE';
 
-const ProjectUpdates = ({ updateList, currentUserId }:{updateList:project_update[],currentUserId:string}) => {
+const ProjectUpdates = ({ updateList, currentUserId }:{updateList:update[],currentUserId:string}) => {
   return (
     <div className="w-full flex flex-col space-y-4 p-4">
       {updateList.map((update, index) => {

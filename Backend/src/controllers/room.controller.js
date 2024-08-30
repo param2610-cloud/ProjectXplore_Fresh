@@ -124,7 +124,7 @@ export const getRoomData = asyncHandler(async (req, res, next) => {
                     room_id: roomId,
                 },
                 include: {
-                    project_update: {
+                    update: {
                         include: {
                             author_details: true,
                         },

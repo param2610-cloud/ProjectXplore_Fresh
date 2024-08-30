@@ -360,7 +360,7 @@ export interface RoomGetData {
     data_as_member:Rooms[]
     data_as_owner:Rooms[]
 }
-export interface project_update {
+export interface update {
     id:string;
     room_id:string;
     text:string;
@@ -369,4 +369,86 @@ export interface project_update {
     author_id:string;
     author_details:Users;
     createdAt:any
+}
+export interface media {
+    image : string [];
+    video : string[];
+}
+export interface FeatureSection {
+    text: string;
+    media: media;
+}
+
+export interface Feature {
+    input: FeatureSection;
+    process: FeatureSection;
+    output: FeatureSection;
+}
+
+
+
+export interface FeatureSection {
+    text: string;
+    media: media;
+}
+
+export interface Feature {
+    input: FeatureSection;
+    process: FeatureSection;
+    output: FeatureSection;
+}
+
+export interface TechnicalRequirement {
+    programmingLanguages: string[];
+    frameworks: string[];
+    databases: string[];
+    infrastructure: string[];
+    tools: string[];
+}
+
+export interface Milestone {
+    name: string;
+    description: string;
+    dueDate: string;
+}
+
+export interface Deliverable {
+    name: string;
+    description: string;
+    type: "document" | "software" | "data" | "other";
+}
+
+export interface Budget {
+    totalAmount: number;
+    breakdown: { [key: string]: number };
+}
+
+export interface Risk {
+    description: string;
+    impact: "low" | "medium" | "high";
+    mitigation: string;
+}
+
+export interface SuccessMetric {
+    name: string;
+    description: string;
+    targetValue: string;
+}
+
+export interface ProjectData {
+    projectType: string;
+    projectName: string;
+    projectDescription: string;
+    mentor: string;
+    reference: string;
+    demoLink: string;
+    hardwareComponents: any[]; // Adjust based on FreshSearchBar return type
+    softwareTechnologies: string[];
+    feature_list: Feature[];
+    technicalRequirements: TechnicalRequirement;
+    milestones: Milestone[];
+    deliverables: Deliverable[];
+    budget: Budget;
+    risks: Risk[];
+    successMetrics: SuccessMetric[];
 }

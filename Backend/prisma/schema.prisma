@@ -198,10 +198,11 @@ model rooms {
   createdAt        DateTime         @default(now())
   updatedAt        DateTime         @updatedAt
   ideas            ideas[]
-  project_update   project_update[]
+  update           update[]
 
   collaboration_requests collaboration_requests[]
   init_feature_list      init_feature_list[]
+  New_Project_table      New_Project_table[]
 }
 
 model skills {
@@ -309,7 +310,7 @@ model users {
   idea_impressions             idea_impressions[]
   project_impressions          project_impressions[]
   rooms                        rooms[]
-  project_update               project_update[]
+  update                       update[]
 }
 
 model votes {
@@ -423,7 +424,7 @@ model room_update_table {
   description String?
 }
 
-model project_update {
+model update {
   id             String   @id @default(uuid())
   room_id        String?
   text           String?
@@ -442,4 +443,31 @@ model init_feature_list {
   description String
   room_id     String
   rooms       rooms  @relation(fields: [room_id], references: [room_id])
+}
+
+model New_Project_table {
+  id                    String   @id @default(uuid())
+  roomId                String
+  room                  rooms    @relation(fields: [roomId], references: [room_id])
+  projectType           String?
+  projectName           String?
+  projectDescription    String?
+  mentor                String?
+  reference             String?
+  demoLink              String?
+  hardwareComponents    Json
+  softwareTechnologies  String[]
+  featureList           Json
+  technicalRequirements Json
+  milestones            Json
+  deliverables          Json
+  budget                Json
+  risks                 Json
+  successMetrics        Json
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+}
+
+model test {
+  id String @id @default(uuid())
 }

@@ -9,7 +9,7 @@ const getAllUpdateFromRoomId = asyncHandler(async (req, res, next) => {
     
     try {
         if (RoomId) {
-            const data = await prisma.project_update.findMany({
+            const data = await prisma.update.findMany({
                 where: {
                     room_id: RoomId,
                 },
@@ -37,7 +37,7 @@ const createUpdate = asyncHandler(async (req, res, next) => {
     console.log(update_text, image_link, video_link, author_id,roomId);
     try {
         if (update_text && author_id) {
-            const createData = await prisma.project_update.create({
+            const createData = await prisma.update.create({
                 data: {
                     text: update_text,
                     image_link: image_link,
