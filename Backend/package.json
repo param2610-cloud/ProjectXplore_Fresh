@@ -1,7 +1,7 @@
 {
-  "name": "enterprise_task_api",
+  "name": "ProjectXplore_backend_api_service",
   "version": "1.0.0",
-  "description": "This is a backend server of enterprise taks management. ",
+  "description": "This is a backend server of ProjectXplore. ",
   "type": "module",
   "main": "src/server.js",
   "scripts": {
@@ -10,19 +10,19 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/param2610-cloud/Enterprise-Task-Mangement-.git"
+    "url": "git+https://github.com/param2610-cloud/projectxplore.git"
   },
   "keywords": [
-    "employee",
+    "project",
     "backend",
     "api"
   ],
   "author": "Parambrata Ghosh",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/param2610-cloud/Enterprise-Task-Mangement-/issues"
+    "url": "https://github.com/param2610-cloud/projectxplore.git/issues"
   },
-  "homepage": "https://github.com/param2610-cloud/Enterprise-Task-Mangement-#readme",
+  "homepage": "https://github.com/param2610-cloud/projectxplore.git#readme",
   "dependencies": {
     "@google/generative-ai": "^0.17.1",
     "@prisma/client": "^5.17.0",

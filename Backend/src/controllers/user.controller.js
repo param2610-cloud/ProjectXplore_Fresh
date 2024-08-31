@@ -209,24 +209,23 @@ const getUserDetails = asyncHandler(async (req, res, next) => {
     }
 
     const userDetails = await prisma.users.findUnique({
-        where:{
-            user_id:userId
-        },include:{
-            teams:true,
-            ideas:{
-                include:{
-                    idea_impressions:true
-                }
+        where: {
+            user_id: userId,
+        },
+        include: {
+            teams: {
+                include: {
+                    achievements: true,
+                },
             },
-            user_project_track:{
-                include:{project:true}
+            rooms: {
+                include: {
+                    New_Project_table: true,
+                },
             },
-            idea_impressions:{
-                include:{ideas:true}
-            },
-            project_impressions:{include:{projects:true}}
-        }
-    })
+            user_achievements: true,
+        },
+    });
     if (!userDetails) {
         throw next(new ApiError(401, "No user details found"));
     }
@@ -339,21 +338,78 @@ const NoOfProject = asyncHandler(async (req, res, next) => {
     const { userId } = req.query;
     try {
         if (userId) {
-            const data = await prisma.user_project_track.findMany({
+            const data = await prisma.users.findUnique({
                 where: {
                     user_id: userId,
                 },
-                include: {
-                    user: true,
-                },
+                include:{
+                    rooms:{
+                        include:{
+                            New_Project_table:true
+                        }
+                    }
+                }
             });
+            let index = 0
+            for(const rooms of data.rooms){
+                for(const project of rooms.New_Project_table){
+                    index++;
+                }
+            }
         } else {
             return next(new ApiError(500, "Internal Server Error"));
         }
-        return res.status(200).json(new ApiResponse(200, data, "successfull"));
+        return res.status(200).json(new ApiResponse(200, index, "successfull"));
     } catch (error) {
         console.log(error);
         return next(new ApiError(500, "Internal Server Error"));
+    }
+});
+
+const Createachievements = asyncHandler(async (req, res) => {
+    try {
+        const { user_id, title, description, date, images } = req.body;
+
+        const achievement = await prisma.user_achievements.create({
+            data: {
+                user_id,
+                title,
+                description,
+                date: date ? new Date(date) : null,
+                images,
+            },
+        });
+
+        res.status(201).json(achievement);
+    } catch (error) {
+        console.error("Error creating achievement:", error);
+        res.status(500).json({ error: "Error creating achievement" });
+    }
+});
+const listofachievements = asyncHandler(async (req, res) => {
+    try {
+        const { user_id } = req.query;
+        console.log(user_id);
+        
+
+        if (!user_id) {
+            return res.status(400).json({ error: "User ID is required" });
+        }
+
+        const achievements = await prisma.user_achievements.findMany({
+            where: {
+                user_id: user_id,
+            },
+            orderBy: {
+                date: "desc",
+            },
+        });
+        console.log(achievements);
+        
+        res.status(200).json(achievements);
+    } catch (error) {
+        console.error("Error fetching achievements:", error);
+        res.status(500).json({ error: "Error fetching achievements" });
     }
 });
 
@@ -366,4 +422,6 @@ export {
     validateAccessToken,
     getProfileCompleted,
     NoOfProject,
+    Createachievements,
+    listofachievements
 };

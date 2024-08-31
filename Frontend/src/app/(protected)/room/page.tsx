@@ -52,7 +52,7 @@ const RoomPage = () => {
             </div>
             <div className='flex items-center gap-5'> 
 
-            <Button>Create a Room</Button>
+            <Button onClick={()=>router.push("/room/create")}>Create a Room</Button>
             <div>
             <Popover>
   <PopoverTrigger><Button className='bg-green-500 hover:bg-green-700'>Join Rooms</Button></PopoverTrigger>

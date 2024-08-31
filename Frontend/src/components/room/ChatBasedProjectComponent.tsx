@@ -21,14 +21,15 @@ import useFeatureHandler from "@/lib/control/project/HandleFeatureChange";
 import CloudinaryFileUpload from "../FileInputCompo";
 import axios from "axios";
 import { Domain } from "@/lib/Domain";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { useToast } from "../ui/use-toast";
 import { usePathname } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 
 const ChatBasedProjectSubmit: React.FC = () => {
     const [step, setStep] = useState(0);
     const {toast} = useToast()
+    const router = useRouter()
     const [roomId,setroomId] = useState<string>("")
     const pathname = usePathname();
     const parts = pathname.split("/");
@@ -48,7 +49,7 @@ const ChatBasedProjectSubmit: React.FC = () => {
         demoLink: "",
         hardwareComponents: [],
         softwareTechnologies: [],
-        feature_list: [],
+        features: [],
         technicalRequirements: {
             programmingLanguages: [],
             frameworks: [],
@@ -874,7 +875,7 @@ const ChatBasedProjectSubmit: React.FC = () => {
                     title:"Project Submitted Succesfully",
                     description:"As the project is submitted, we are closing the room."
                 })
-                // Reset form or redirect to a success page
+                router.push(`/project/${response.data.data.id}`)
             } else {
                 toast({
                     variant: "destructive",

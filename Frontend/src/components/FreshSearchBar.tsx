@@ -8,8 +8,8 @@ import { X } from "lucide-react";
 
 interface OptionProps {
     id: string | null;
-  components_name: string;
-  components_image_link:string |null;
+  name: string;
+  image_link:string |null;
 }
 
 const FreshSearchBar = ({
@@ -40,7 +40,7 @@ const FreshSearchBar = ({
 
   const handleOptionClick = (option: OptionProps) => {
     setSelectedOption(option);
-    setInputValue(option.components_name);
+    setInputValue(option.name);
     setFilteredSuggestions([]);
   };
 
@@ -50,7 +50,7 @@ const FreshSearchBar = ({
       SETFINALVALUE([...FINALVALUE, selectedOption]);
     } else if (inputValue) {
       // Add input value if not selected from suggestion
-      SETFINALVALUE([...FINALVALUE, { id: null, components_name: inputValue,components_image_link:null }]);
+      SETFINALVALUE([...FINALVALUE, { id: null, name: inputValue,image_link:null }]);
     }
     setInputValue("");
     setSelectedOption(null);
@@ -67,7 +67,7 @@ const FreshSearchBar = ({
 
     if (query.length > 0) {
       const filtered = optionList.filter((item: OptionProps) =>
-        item.components_name.toLowerCase().includes(query.toLowerCase())
+        item.name.toLowerCase().includes(query.toLowerCase())
       );
       setFilteredSuggestions(filtered);
     } else {
@@ -105,9 +105,9 @@ const FreshSearchBar = ({
               onClick={() => handleOptionClick(suggestion)}
             >
                 <div className="flex gap-4 justify-start items-center">
-                    {suggestion.components_image_link && (<img className="w-14 h-full" src={suggestion.components_image_link} alt="" />)}
+                    {suggestion.image_link && (<img className="w-14 h-full" src={suggestion.image_link} alt="" />)}
                     <div className="whitespace-nowrap">
-              {suggestion.components_name}
+              {suggestion.name}
                     </div>
                 </div>
             </li>
@@ -118,7 +118,7 @@ const FreshSearchBar = ({
       <div className="flex flex-row justify-start items-center w-full h-14 px-4 py-2 rounded-lg my-6 gap-6 overflow-x-scroll overflow-y-hidden border-2">
         {FINALVALUE.map((item: OptionProps) => (
           <div key={item.id} className="flex justify-center items-center gap-4 p-2 rounded-xl">
-            <div className="whitespace-nowrap">{item.components_name}</div>
+            <div className="whitespace-nowrap">{item.name}</div>
             <X color="gray" className="cursor-pointer" onClick={() => deleteSkill(item)} />
           </div>
         ))}

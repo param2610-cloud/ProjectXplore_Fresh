@@ -311,6 +311,7 @@ model users {
   project_impressions          project_impressions[]
   rooms                        rooms[]
   update                       update[]
+  user_achievements            user_achievements[]
 }
 
 model votes {
@@ -446,28 +447,260 @@ model init_feature_list {
 }
 
 model New_Project_table {
-  id                    String   @id @default(uuid())
-  roomId                String
-  room                  rooms    @relation(fields: [roomId], references: [room_id])
-  projectType           String?
-  projectName           String?
-  projectDescription    String?
-  mentor                String?
-  reference             String?
-  demoLink              String?
-  hardwareComponents    Json
-  softwareTechnologies  String[]
-  featureList           Json
-  technicalRequirements Json
-  milestones            Json
-  deliverables          Json
-  budget                Json
-  risks                 Json
-  successMetrics        Json
-  createdAt             DateTime @default(now())
-  updatedAt             DateTime @updatedAt
+  id                 String   @id @default(uuid())
+  roomId             String
+  room               rooms    @relation(fields: [roomId], references: [room_id])
+  projectType        String?
+  projectName        String?
+  projectDescription String?
+  mentor             String?
+  reference          String?
+  demoLink           String?
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  // Relations
+  softwareTechnologies  softwareTechnologies[]
+  hardwareComponents    HardwareComponent[]
+  features              new_Feature[]
+  technicalRequirements TechnicalRequirement?
+  milestones            Milestone[]
+  deliverables          Deliverable[]
+  budget                Budget?
+  risks                 Risk[]
+  successMetrics        SuccessMetric[]
+  roomsRoom_id          String?
+}
+
+model HardwareComponent {
+  id         String            @id @default(uuid())
+  name       String
+  image_link String?
+  quantity   Int?
+  projectId  String
+  project    New_Project_table @relation(fields: [projectId], references: [id])
+}
+
+model softwareTechnologies {
+  id         String            @id @default(uuid())
+  name       String
+  image_link String?
+  projectId  String
+  project    New_Project_table @relation(fields: [projectId], references: [id])
+}
+
+model new_Feature {
+  id                String              @id @default(uuid())
+  inputId           String?
+  processId         String?
+  outputId          String?
+  projectID         String?
+  inputs            feature_subSectiom? @relation("inputs", fields: [inputId], references: [id])
+  outputs           feature_subSectiom? @relation("output", fields: [outputId], references: [id])
+  processes         feature_subSectiom? @relation("processes", fields: [processId], references: [id])
+  New_Project_table New_Project_table?  @relation(fields: [projectID], references: [id])
+}
+
+model feature_subSectiom {
+  id      String  @id @default(uuid())
+  text    String?
+  mediaId String?
+  medias  media?  @relation(fields: [mediaId], references: [id])
+
+  inputFeatures   new_Feature[] @relation("inputs")
+  outputFeatures  new_Feature[] @relation("output")
+  processFeatures new_Feature[] @relation("processes")
+}
+
+model media {
+  id                 String               @id @default(uuid())
+  images             String[]
+  videos             String[]
+  feature_subSectiom feature_subSectiom[]
+}
+
+model TechnicalRequirement {
+  id                   String            @id @default(uuid())
+  programmingLanguages String[]
+  frameworks           String[]
+  databases            String[]
+  infrastructure       String[]
+  tools                String[]
+  projectId            String            @unique
+  project              New_Project_table @relation(fields: [projectId], references: [id])
+}
+
+model Milestone {
+  id          String            @id @default(uuid())
+  name        String
+  description String
+  dueDate     DateTime
+  projectId   String
+  project     New_Project_table @relation(fields: [projectId], references: [id])
+}
+
+model Deliverable {
+  id          String            @id @default(uuid())
+  name        String
+  description String
+  type        String
+  projectId   String
+  project     New_Project_table @relation(fields: [projectId], references: [id])
+}
+
+model Budget {
+  id         String            @id @default(uuid())
+  projectId  String            @unique
+  project    New_Project_table @relation(fields: [projectId], references: [id])
+  categories BudgetCategory[]
+}
+
+model BudgetCategory {
+  id       String  @id @default(uuid())
+  name     String?
+  amount   Float?
+  budgetId String
+  budget   Budget  @relation(fields: [budgetId], references: [id])
+}
+
+model Risk {
+  id          String            @id @default(uuid())
+  description String
+  impact      String
+  mitigation  String
+  projectId   String
+  project     New_Project_table @relation(fields: [projectId], references: [id])
+}
+
+model SuccessMetric {
+  id          String            @id @default(uuid())
+  name        String
+  description String
+  targetValue String
+  projectId   String
+  project     New_Project_table @relation(fields: [projectId], references: [id])
 }
 
 model test {
   id String @id @default(uuid())
+}
+
+model user_achievements {
+  id          String    @id @default(uuid())
+  user_id     String
+  title       String
+  description String
+  date        DateTime? @db.Date
+  images      String[]
+  users       users     @relation(references: [user_id], fields: [user_id])
+}
+
+model Developer {
+  id             String                 @id @default(uuid())
+  name           String
+  profilePicture String
+  title          String
+  bio            String
+  email          String                 @unique
+  phone          String?
+  location       String
+  linkedinUrl    String
+  githubUrl      String
+  twitterUrl     String?
+  skills         Developer_Skill[]
+  projects       Developer_Project[]
+  experiences    Developer_Experience[]
+  education      Developer_Education[]
+  createdAt      DateTime               @default(now())
+  updatedAt      DateTime               @updatedAt
+}
+
+model Developer_Skill {
+  id          String              @id @default(uuid())
+  name        String
+  type        Developer_SkillType
+  developer   Developer           @relation(fields: [developerId], references: [id])
+  developerId String
+  createdAt   DateTime            @default(now())
+  updatedAt   DateTime            @updatedAt
+
+  @@unique([name, developerId])
+}
+
+enum Developer_SkillType {
+  TECHNICAL
+  SOFT
+}
+
+model Developer_Project {
+  id           String                        @id @default(uuid())
+  name         String
+  description  String
+  role         String
+  demoLink     String?
+  githubLink   String?
+  developer    Developer                     @relation(fields: [developerId], references: [id])
+  developerId  String
+  technologies Developer_ProjectTechnology[]
+  createdAt    DateTime                      @default(now())
+  updatedAt    DateTime                      @updatedAt
+}
+
+model Developer_ProjectTechnology {
+  id        String            @id @default(uuid())
+  name      String
+  project   Developer_Project @relation(fields: [projectId], references: [id])
+  projectId String
+  createdAt DateTime          @default(now())
+  updatedAt DateTime          @updatedAt
+
+  @@unique([name, projectId])
+}
+
+model Developer_Experience {
+  id               String                           @id @default(uuid())
+  jobTitle         String
+  company          String
+  startDate        DateTime
+  endDate          DateTime?
+  responsibilities String
+  developer        Developer                        @relation(fields: [developerId], references: [id])
+  developerId      String
+  technologies     Developer_ExperienceTechnology[]
+  createdAt        DateTime                         @default(now())
+  updatedAt        DateTime                         @updatedAt
+}
+
+model Developer_ExperienceTechnology {
+  id           String               @id @default(uuid())
+  name         String
+  experience   Developer_Experience @relation(fields: [experienceId], references: [id])
+  experienceId String
+  createdAt    DateTime             @default(now())
+  updatedAt    DateTime             @updatedAt
+
+  @@unique([name, experienceId])
+}
+
+model Developer_Education {
+  id              String                     @id @default(uuid())
+  degree          String
+  institution     String
+  graduationDate  DateTime
+  developer       Developer                  @relation(fields: [developerId], references: [id])
+  developerId     String
+  relevantCourses Developer_RelevantCourse[]
+  createdAt       DateTime                   @default(now())
+  updatedAt       DateTime                   @updatedAt
+}
+
+model Developer_RelevantCourse {
+  id          String              @id @default(uuid())
+  name        String
+  education   Developer_Education @relation(fields: [educationId], references: [id])
+  educationId String
+  createdAt   DateTime            @default(now())
+  updatedAt   DateTime            @updatedAt
+
+  @@unique([name, educationId])
 }

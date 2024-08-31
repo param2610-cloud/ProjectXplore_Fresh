@@ -229,6 +229,8 @@ export interface Rooms {
     room_task_list: RoomTaskList[];
     owner_id:string;
     rooms?:Rooms;
+    update:update[];
+
 }
 
 export interface Skills {
@@ -368,35 +370,26 @@ export interface update {
     video_link:string[];
     author_id:string;
     author_details:Users;
-    createdAt:any
+    createdAt:any,
 }
 export interface media {
-    image : string [];
-    video : string[];
+    images : string [];
+    videos : string[];
 }
 export interface FeatureSection {
     text: string;
     media: media;
 }
 
-export interface Feature {
-    input: FeatureSection;
-    process: FeatureSection;
-    output: FeatureSection;
+export interface  Feature {
+    inputs: FeatureSection;
+    processes: FeatureSection;
+    outputs: FeatureSection;
 }
 
 
 
-export interface FeatureSection {
-    text: string;
-    media: media;
-}
 
-export interface Feature {
-    input: FeatureSection;
-    process: FeatureSection;
-    output: FeatureSection;
-}
 
 export interface TechnicalRequirement {
     programmingLanguages: string[];
@@ -436,19 +429,113 @@ export interface SuccessMetric {
 }
 
 export interface ProjectData {
+    id?:string;
+    roomId?:string;
     projectType: string;
     projectName: string;
     projectDescription: string;
     mentor: string;
     reference: string;
     demoLink: string;
-    hardwareComponents: any[]; // Adjust based on FreshSearchBar return type
+    hardwareComponents: HardwareComponent[]; // Adjust based on FreshSearchBar return type
     softwareTechnologies: string[];
-    feature_list: Feature[];
+    features: Feature[];
     technicalRequirements: TechnicalRequirement;
     milestones: Milestone[];
     deliverables: Deliverable[];
     budget: Budget;
     risks: Risk[];
     successMetrics: SuccessMetric[];
+    room?:Rooms;
+    createdAt?:any;
+    updatedAt?:any
 }
+export interface HardwareComponent {
+    id       :string;
+    name      :string;
+    quantity  :number;
+    image_link:string;
+    
+  }
+export interface softwareTechnologies {
+    id       :string;
+    name      :string;
+    image_link:string;
+    
+  }
+export interface user_achievements {
+    id          :string;
+  user_id     :string;
+  title       :string;
+  description :string;
+  date        :string
+  images      :string[];
+}
+
+
+export interface Developer {
+    id: string;
+    name: string;
+    profilePicture: string;
+    title: string;
+    bio: string;
+    email: string;
+    phone?: string;
+    location: string;
+    linkedinUrl: string;
+    githubUrl: string;
+    twitterUrl?: string;
+  }
+  
+  export interface Skill {
+    id: string;
+    name: string;
+    type: 'TECHNICAL' | 'SOFT';
+    developerId: string;
+  }
+  
+  export interface Project {
+    id: string;
+    name: string;
+    description: string;
+    role: string;
+    demoLink?: string;
+    githubLink?: string;
+    developerId: string;
+  }
+  
+  export interface ProjectTechnology {
+    id: string;
+    name: string;
+    projectId: string;
+  }
+  
+  export interface Experience {
+    id: string;
+    jobTitle: string;
+    company: string;
+    startDate: Date;
+    endDate?: Date;
+    responsibilities: string;
+    developerId: string;
+  }
+  
+  export interface ExperienceTechnology {
+    id: string;
+    name: string;
+    experienceId: string;
+  }
+  
+  export interface Education {
+    id: string;
+    degree: string;
+    institution: string;
+    graduationDate: Date;
+    developerId: string;
+  }
+  
+  export interface RelevantCourse {
+    id: string;
+    name: string;
+    educationId: string;
+  }

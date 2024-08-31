@@ -28,7 +28,7 @@ const NavbarCompo = ({ userDetails }: { userDetails: Users | null }) => {
                                         Rooms
                                     </Link>
                                     <Link
-                                        href="#"
+                                        href="/project"
                                         className={`flex items-center gap-3 rounded-lg bg-muted px-3 py-2 ${pathname.includes("projects")?`text-primary`:`text-muted-foreground    `} transition-all hover:text-primary`}
                                     >
                                         <Home className="h-4 w-4" />

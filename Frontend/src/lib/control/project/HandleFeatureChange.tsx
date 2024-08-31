@@ -84,7 +84,7 @@ const useFeatureHandler = (ProjectData:ProjectData,setProjectData:React.Dispatch
             setProjectData((prev)=>{
                 return {
                     ...prev,
-                    feature_list: [...prev.feature_list,currentFeature], // Spread `features` array into `prev.features`
+                    feature_list: [...prev.features,currentFeature], // Spread `features` array into `prev.features`
                 }; 
             })
             setFeatures((prev) => {
