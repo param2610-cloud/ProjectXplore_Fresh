@@ -1,3 +1,4 @@
+// @ts-nocheck
 'use client';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -10,8 +11,20 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Domain } from '@/lib/Domain';
+import UseAuth from '@/lib/hooks/UseUser';
+import { useAtom } from 'jotai';
+import { userAtom } from '@/lib/atoms/UserAtom';
+
+
+
+const CLOUD_NAME = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
+const UPLOAD_PRESET = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET;
+const API_KEY = process.env.NEXT_PUBLIC_CLOUDINARY_API_KEY;
 
 const DeveloperPortfolioForm = () => {
+  const {loading,authenticated} = UseAuth()
+  const [userId]= useAtom(userAtom)
   const { register, handleSubmit, formState: { errors } } = useForm();
   const [activeTab, setActiveTab] = useState('personal');
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -26,9 +39,9 @@ const DeveloperPortfolioForm = () => {
       if (data.profilePicture[0]) {
         const imageFormData = new FormData();
         imageFormData.append('file', data.profilePicture[0]);
-        imageFormData.append('upload_preset', 'your_cloudinary_upload_preset');
-
-        const cloudinaryResponse = await fetch('https://api.cloudinary.com/v1_1/your_cloud_name/image/upload', {
+        imageFormData.append('upload_preset', UPLOAD_PRESET);
+        
+        const cloudinaryResponse = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`, {
           method: 'POST',
           body: imageFormData
         });
@@ -37,18 +50,22 @@ const DeveloperPortfolioForm = () => {
         data.profilePicture = imageData.secure_url;
       }
 
+      console.log(data);
+      
       // Send data to backend API
-      const response = await fetch('/api/submit-portfolio', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+      const response = await fetch(`${Domain}/api/v1/portfolio/portfolio?userId=${userId}`, {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+            },
         body: JSON.stringify(data),
       });
 
+      console.log(response);
       if (!response.ok) {
         throw new Error('Failed to submit portfolio');
       }
+      
 
       setSubmitStatus({ type: 'success', message: 'Portfolio submitted successfully!' });
     } catch (error) {
@@ -78,11 +95,7 @@ const DeveloperPortfolioForm = () => {
             <ScrollArea className="h-[500px] w-full rounded-md border p-4 mt-4">
               <TabsContent value="personal">
                 <div className="space-y-4">
-                  <div>
-                    <Label htmlFor="name">Full Name</Label>
-                    <Input id="name" {...register("name", { required: "Name is required" })} />
-                    {errors.name && <span className="text-red-500">{errors.name.message}</span>}
-                  </div>
+                  
                   <div>
                     <Label htmlFor="profilePicture">Profile Picture</Label>
                     <Input id="profilePicture" type="file" {...register("profilePicture")} />
@@ -97,15 +110,8 @@ const DeveloperPortfolioForm = () => {
                     <Textarea id="bio" {...register("bio", { required: "Bio is required" })} />
                     {errors.bio && <span className="text-red-500">{errors.bio.message}</span>}
                   </div>
-                  <div>
-                    <Label htmlFor="email">Email</Label>
-                    <Input id="email" type="email" {...register("email", { required: "Email is required" })} />
-                    {errors.email && <span className="text-red-500">{errors.email.message}</span>}
-                  </div>
-                  <div>
-                    <Label htmlFor="phone">Phone Number (Optional)</Label>
-                    <Input id="phone" {...register("phone")} />
-                  </div>
+                 
+                  
                   <div>
                     <Label htmlFor="location">Location</Label>
                     <Input id="location" {...register("location")} />

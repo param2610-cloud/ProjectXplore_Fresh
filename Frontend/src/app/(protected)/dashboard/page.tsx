@@ -46,6 +46,9 @@ const roomsarray = [
 ];
 
 const Page = () => {
+    const { loading, authenticated } = useAuth();
+    const [user] = useAtom(userAtom);
+    const router = useRouter();
     useEffect(() => {
         // Startup loading
         const fetchData = async () => {
@@ -56,11 +59,11 @@ const Page = () => {
                 console.log(error);
             }
         };
+        if(user === "d0e358f6-c0c7-41a0-8f4a-2687967431ad"){
+            router.push("/institution")
+        }
         fetchData();
-    }, []);
-    const router = useRouter();
-    const { loading, authenticated } = useAuth();
-    const [user] = useAtom(userAtom);
+    }, [user]);
     useEffect(() => {
         if (!loading) {
             console.log(user);

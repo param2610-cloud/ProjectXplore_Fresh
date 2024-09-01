@@ -100,6 +100,8 @@ const RequestList = () => {
     };
 
     const handleCreateRequest = async (e: React.FormEvent) => {
+        console.log("trigger");
+        
         e.preventDefault();
         try {
             const response = await axios.post(
@@ -113,8 +115,9 @@ const RequestList = () => {
                     status: "active",
                 }
             );
-
-            if (response.status === 201) {
+            console.log(response);
+            
+            if (response.status === 200) {
                 toast({
                     title: "Request Created",
                     description:

@@ -1,3 +1,5 @@
+import { User } from "@/components/SearchDialouge";
+
 export interface Achievements {
     achievement_id: string;
     team_id?: string;
@@ -230,6 +232,7 @@ export interface Rooms {
     owner_id:string;
     rooms?:Rooms;
     update:update[];
+    New_Project_table:ProjectData[];
 
 }
 
@@ -408,7 +411,7 @@ export interface Milestone {
 export interface Deliverable {
     name: string;
     description: string;
-    type: "document" | "software" | "data" | "other";
+    type: 'document' | 'software' | 'data' | 'other';
 }
 
 export interface Budget {
@@ -418,7 +421,7 @@ export interface Budget {
 
 export interface Risk {
     description: string;
-    impact: "low" | "medium" | "high";
+    impact: 'low' | 'medium' | 'high';
     mitigation: string;
 }
 
@@ -538,4 +541,90 @@ export interface Developer {
     id: string;
     name: string;
     educationId: string;
+  }
+
+  export interface UserPortfolioGetDataResponse {
+    user_id?: string;
+    full_name?: string;
+    role_id?: string;
+    email?: string;
+    phone_number?: string;
+    username?: string;
+    password?: string;
+    refreshToken?: string;
+    date_of_birth?: string;
+    address?: string;
+    profile_picture_link?: string;
+    institution_id?: string;
+    team_id?: string;
+    portfolio_profilePicture?: string;
+        title?:string;
+        bio?: string;
+        location?: string;
+        linkedinUrl?: string;
+        githubUrl?: string;
+        twitterUrl?: string;
+        createdAt?: string;
+        updatedAt?: string;
+        teams?:any[];
+        rooms?: any[];
+        user_achievements?:any[];
+        skills?:any[];
+        experiences?:any[];
+        education?:any[];
+  }
+
+  export interface Developer_Skill {
+    id           :string;
+    name         :string;
+    type         :string;
+    createdAt    :string;
+    updatedAt    :string;
+    users? :Users;
+    usersUser_id :string;
+  }
+  export interface Developer_Project {
+    id           :string;
+    name         :string;
+    description  :string;
+    role         :string;
+    demoLink     :string;
+    githubLink   :string;
+    technologies? :Developer_ProjectTechnology[];
+    createdAt    :string;
+    updatedAt    :string;
+    users?        :Users;
+    usersUser_id :string;
+  }
+ export interface Developer_ProjectTechnology {
+    id        :string;
+    name      :string;
+    project?   :Developer_Project;
+    projectId :string;
+    createdAt :string;
+    updatedAt :string;
+  }
+  export interface Developer_Education {
+    id              :string;
+  degree          :string;
+  institution     :string;
+  graduationDate  :string;
+  relevantCourses :string;
+  createdAt       :string;
+  updatedAt       :string;
+  users           :string;
+  usersUser_id    :string;
+  }
+  export interface  Developer_Experience {
+    id               :string;
+    jobTitle         :string;
+    company          :string;
+    startDate        :string;
+    endDate          :string;
+    responsibilities :string;
+    technologies    :any[];
+    createdAt        :string;
+    updatedAt        :string;
+    users            :User;
+    usersUser_id    :string;
   }

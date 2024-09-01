@@ -10,6 +10,16 @@ const layout = ({ children }: { children: React.ReactNode }) => {
                 </div>
                 <div>Project Settings</div>
                 <div>Room Settings</div>
+                <div>
+                  <Link href={"/settings/createportfolio"}>
+                  Create Portfolio
+                  </Link>
+                </div>
+                <div>
+                  <Link href={`/yourprofile`}>
+                  Your Portfolio
+                  </Link>
+                </div>
             </div>
             <div className="w-full flex-1">{children}</div>
         </div>

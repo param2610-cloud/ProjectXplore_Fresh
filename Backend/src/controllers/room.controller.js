@@ -418,8 +418,8 @@ export const requestReviewStatusUpdate = asyncHandler(async (req, res, next) => 
             if (validStatuses.includes(review_status) && roomData) {
                 const roomname = roomData.room_name;
                 const Collaborator_name =Data.users_collaboration_request_reviews_collaborator_idTousers.full_name;
-                const IdeaName = roomData.ideas[0].idea_name;
-                const IdeaText = roomData.ideas[0].idea_text;
+                const IdeaName = roomData?.ideas[0]?.idea_name;
+                const IdeaText = roomData?.ideas[0]?.idea_text;
                 const Email =
                     Data
                         .users_collaboration_request_reviews_collaborator_idTousers
@@ -649,3 +649,4 @@ export const migrate_room =asyncHandler(async(req,res,next)=>{
 
     }
 })
+

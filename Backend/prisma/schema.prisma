@@ -187,19 +187,20 @@ model room_task_list {
 }
 
 model rooms {
-  room_id          String           @id @default(uuid())
-  room_name        String           @db.VarChar(255)
-  objective        String?
-  owner_id         String
-  profile_pic_link String?
-  room_member      room_member[]
-  room_task_list   room_task_list[]
-  owner            users            @relation(fields: [owner_id], references: [user_id])
-  createdAt        DateTime         @default(now())
-  updatedAt        DateTime         @updatedAt
-  ideas            ideas[]
-  update           update[]
-
+  room_id                String                   @id @default(uuid())
+  room_name              String                   @db.VarChar(255)
+  objective              String?
+  owner_id               String
+  profile_pic_link       String?
+  teamId                 String?
+  room_member            room_member[]
+  room_task_list         room_task_list[]
+  owner                  users                    @relation(fields: [owner_id], references: [user_id])
+  createdAt              DateTime                 @default(now())
+  updatedAt              DateTime                 @updatedAt
+  ideas                  ideas[]
+  update                 update[]
+  teams                  teams?                   @relation(fields: [teamId], references: [team_id])
   collaboration_requests collaboration_requests[]
   init_feature_list      init_feature_list[]
   New_Project_table      New_Project_table[]
@@ -254,6 +255,8 @@ model teams {
   users                        users?                         @relation(fields: [team_author_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction)
   team_project_record          team_project_record[]
   team_request_response_record team_request_response_record[]
+  team_achievements            team_achievements[]
+  rooms                        rooms[]
 }
 
 model user_interests {
@@ -288,6 +291,19 @@ model users {
   profile_picture_link                                                               String?
   institution_id                                                                     String?
   team_id                                                                            String?
+  portfolio_profilePicture                                                           String?
+  title                                                                              String?
+  bio                                                                                String?
+  location                                                                           String?
+  linkedinUrl                                                                        String?
+  githubUrl                                                                          String?
+  twitterUrl                                                                         String?
+  skills                                                                             Developer_Skill[]
+  projects                                                                           Developer_Project[]
+  experiences                                                                        Developer_Experience[]
+  education                                                                          Developer_Education[]
+  createdAt                                                                          DateTime                        @default(now())
+  updatedAt                                                                          DateTime                        @updatedAt
   answers                                                                            answers[]
   collaboration_request_reviews_collaboration_request_reviews_collaborator_idTousers collaboration_request_reviews[] @relation("collaboration_request_reviews_collaborator_idTousers")
   collaboration_request_reviews_collaboration_request_reviews_reviewer_idTousers     collaboration_request_reviews[] @relation("collaboration_request_reviews_reviewer_idTousers")
@@ -595,36 +611,14 @@ model user_achievements {
   users       users     @relation(references: [user_id], fields: [user_id])
 }
 
-model Developer {
-  id             String                 @id @default(uuid())
-  name           String
-  profilePicture String
-  title          String
-  bio            String
-  email          String                 @unique
-  phone          String?
-  location       String
-  linkedinUrl    String
-  githubUrl      String
-  twitterUrl     String?
-  skills         Developer_Skill[]
-  projects       Developer_Project[]
-  experiences    Developer_Experience[]
-  education      Developer_Education[]
-  createdAt      DateTime               @default(now())
-  updatedAt      DateTime               @updatedAt
-}
-
 model Developer_Skill {
-  id          String              @id @default(uuid())
-  name        String
-  type        Developer_SkillType
-  developer   Developer           @relation(fields: [developerId], references: [id])
-  developerId String
-  createdAt   DateTime            @default(now())
-  updatedAt   DateTime            @updatedAt
-
-  @@unique([name, developerId])
+  id           String              @id @default(uuid())
+  name         String
+  type         Developer_SkillType
+  createdAt    DateTime            @default(now())
+  updatedAt    DateTime            @updatedAt
+  users        users?              @relation(fields: [usersUser_id], references: [user_id])
+  usersUser_id String?
 }
 
 enum Developer_SkillType {
@@ -633,17 +627,17 @@ enum Developer_SkillType {
 }
 
 model Developer_Project {
-  id           String                        @id @default(uuid())
+  id           String                        @id @default(uuid()) // Use 'id' instead of 'project_id'
   name         String
   description  String
   role         String
   demoLink     String?
   githubLink   String?
-  developer    Developer                     @relation(fields: [developerId], references: [id])
-  developerId  String
   technologies Developer_ProjectTechnology[]
   createdAt    DateTime                      @default(now())
   updatedAt    DateTime                      @updatedAt
+  users        users?                        @relation(fields: [usersUser_id], references: [user_id])
+  usersUser_id String?
 }
 
 model Developer_ProjectTechnology {
@@ -653,8 +647,6 @@ model Developer_ProjectTechnology {
   projectId String
   createdAt DateTime          @default(now())
   updatedAt DateTime          @updatedAt
-
-  @@unique([name, projectId])
 }
 
 model Developer_Experience {
@@ -664,11 +656,11 @@ model Developer_Experience {
   startDate        DateTime
   endDate          DateTime?
   responsibilities String
-  developer        Developer                        @relation(fields: [developerId], references: [id])
-  developerId      String
   technologies     Developer_ExperienceTechnology[]
   createdAt        DateTime                         @default(now())
   updatedAt        DateTime                         @updatedAt
+  users            users?                           @relation(fields: [usersUser_id], references: [user_id])
+  usersUser_id     String?
 }
 
 model Developer_ExperienceTechnology {
@@ -678,8 +670,6 @@ model Developer_ExperienceTechnology {
   experienceId String
   createdAt    DateTime             @default(now())
   updatedAt    DateTime             @updatedAt
-
-  @@unique([name, experienceId])
 }
 
 model Developer_Education {
@@ -687,11 +677,11 @@ model Developer_Education {
   degree          String
   institution     String
   graduationDate  DateTime
-  developer       Developer                  @relation(fields: [developerId], references: [id])
-  developerId     String
   relevantCourses Developer_RelevantCourse[]
   createdAt       DateTime                   @default(now())
   updatedAt       DateTime                   @updatedAt
+  users           users?                     @relation(fields: [usersUser_id], references: [user_id])
+  usersUser_id    String?
 }
 
 model Developer_RelevantCourse {
@@ -701,6 +691,14 @@ model Developer_RelevantCourse {
   educationId String
   createdAt   DateTime            @default(now())
   updatedAt   DateTime            @updatedAt
+}
 
-  @@unique([name, educationId])
+model team_achievements {
+  id          String    @id @default(uuid())
+  team_id     String
+  title       String
+  description String
+  date        DateTime? @db.Date
+  images      String[]
+  teams       teams     @relation(references: [team_id], fields: [team_id])
 }

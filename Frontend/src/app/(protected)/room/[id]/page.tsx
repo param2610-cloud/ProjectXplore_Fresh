@@ -65,13 +65,17 @@ const Page = () => {
     const { toast } = useToast();
     const pathname = usePathname();
     const parts = pathname.split("/");
+
     useEffect(() => {
+        if(userId === "d0e358f6-c0c7-41a0-8f4a-2687967431ad"){
+            router.push("/institution")
+        }
         const roomIdFromPath = parts[2];
         if (roomIdFromPath && roomIdFromPath !== roomId) {
             setroomId(roomIdFromPath);
         }
         console.log(roomId);
-    }, [pathname, roomId]);
+    }, [pathname, roomId,userId]);
 
     useEffect(() => {
         const fetchIdeaData = async () => {

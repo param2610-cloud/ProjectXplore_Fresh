@@ -30,6 +30,8 @@ import idearouter from './routes/idea.router.js'
 import projectRouter from './routes/project.router.js'
 import roomRouter from './routes/room.router.js'
 import updateRouter from './routes/update.router.js'
+import portfolioRouter from './routes/portfolio.router.js'
+import coordinator from './routes/mentor.router.js';
 
 //router declaration
 app.use('/api/v1/users', userRouter);
@@ -40,6 +42,8 @@ app.use('/api/v1/idea',idearouter)
 app.use('/api/v1/project',projectRouter)
 app.use('/api/v1/room',roomRouter)
 app.use('/api/v1/update',updateRouter)
+app.use("/api/v1/portfolio",portfolioRouter)
+app.use("/api/v1/mentor",coordinator)
 
 
 app.use(ErrorHandler);

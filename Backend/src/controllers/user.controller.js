@@ -224,6 +224,9 @@ const getUserDetails = asyncHandler(async (req, res, next) => {
                 },
             },
             user_achievements: true,
+            skills:true,
+            education:true,
+            experiences:true
         },
     });
     if (!userDetails) {

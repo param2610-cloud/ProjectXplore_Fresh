@@ -1,4 +1,4 @@
-import { Box, Brain, Earth, Home, House, Lightbulb, LucideLayoutDashboard, Package, Settings, Users2  } from 'lucide-react'
+import { Box, Brain, Earth, Home, House, Lightbulb, LucideLayoutDashboard, Package, School, Settings, Users2  } from 'lucide-react'
 import Link from 'next/link'
 import React from 'react'
 import { Badge } from './ui/badge'
@@ -10,9 +10,40 @@ import { Users } from '@/lib/interface/INTERFACE'
 const NavbarCompo = ({ userDetails }: { userDetails: Users | null }) => {
     const pathname = usePathname()
     console.log();
-    
-  return (
-    <nav className="grid items-start px-2 text-sm font-medium lg:px-4">
+    if(userDetails?.email==="mentor123@gmail.com"){
+        return(
+            <nav className="grid items-start px-2 text-sm font-medium lg:px-4">
+                                    <Link
+                                        href="/dashboard"
+                                        className={`flex items-center gap-3 rounded-lg bg-muted px-3 py-2 ${pathname.includes("projects")?`text-primary`:`text-muted-foreground    `} transition-all hover:text-primary`}
+                                    >
+                                        <LucideLayoutDashboard className="h-4 w-4" />
+                                        Dashboard
+                                    </Link>
+                                    <Link
+                                        href="/institution"
+                                        className={`flex items-center gap-3 rounded-lg bg-muted px-3 py-2 ${pathname.includes("error")?`text-primary`:`text-muted-foreground    `} transition-all hover:text-primary`}
+                                    >
+                                        <School className="h-4 w-4" />
+                                        Institution
+                                    </Link>
+                                    <Link
+                                        href="/settings/achievements"
+                                        className={`flex items-center gap-3 rounded-lg bg-muted px-3 py-2 ${pathname.includes("settings")?`text-primary`:`text-muted-foreground    `} transition-all hover:text-primary`}
+                                    >
+                                        <Settings className="h-4 w-4" />
+                                        Settings
+                                    </Link>
+                                    <Separator/>
+                                    
+
+                                </nav>
+        )
+    }else{
+
+        
+        return (
+            <nav className="grid items-start px-2 text-sm font-medium lg:px-4">
                                     <Link
                                         href="/dashboard"
                                         className={`flex items-center gap-3 rounded-lg bg-muted px-3 py-2 ${pathname.includes("projects")?`text-primary`:`text-muted-foreground    `} transition-all hover:text-primary`}
@@ -63,14 +94,14 @@ const NavbarCompo = ({ userDetails }: { userDetails: Users | null }) => {
                                         Teams{" "}
                                     </Link>
                                     <Link
-                                        href="#"
+                                        href="/institution"
                                         className={`flex items-center gap-3 rounded-lg bg-muted px-3 py-2 ${pathname.includes("error")?`text-primary`:`text-muted-foreground    `} transition-all hover:text-primary`}
                                     >
-                                        <Users2 className="h-4 w-4" />
-                                        Error Help
+                                        <School className="h-4 w-4" />
+                                        Institution
                                     </Link>
                                     <Link
-                                        href="#"
+                                        href="/settings/achievements"
                                         className={`flex items-center gap-3 rounded-lg bg-muted px-3 py-2 ${pathname.includes("settings")?`text-primary`:`text-muted-foreground    `} transition-all hover:text-primary`}
                                     >
                                         <Settings className="h-4 w-4" />
@@ -81,6 +112,7 @@ const NavbarCompo = ({ userDetails }: { userDetails: Users | null }) => {
 
                                 </nav>
   )
+}
 }
 
 export default NavbarCompo

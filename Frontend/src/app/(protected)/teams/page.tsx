@@ -203,14 +203,14 @@ const Page = () => {
                                 <div className="w-full h-full whitespace-nowrap border-2 rounded-xl p-4">
                                     {`${FrontendDomain}/team/${teamId}/request`}
                                 </div>
-                                <div>
+                                {/* <div>
                                     <Button
                                         variant={"outline"}
                                         className="border-dashed border-gray-500 w-full flex justify-center"
                                     >
                                         Drop Community Post
                                     </Button>
-                                </div>
+                                </div> */}
                             </div>
                         </CardContent>
                         <CardFooter className="flex gap-6 ">

@@ -1,7 +1,7 @@
 import express from 'express'
 import { verifyJWT } from '../middlewares/auth.middleware.js';
 import { upload } from '../middlewares/multer.middleware.js';
-import { AddTeamMember, createTeam, deleteTeam, getListofTeam, getSpecificTeam, GlobalTeamListData, RemoveTeamMember, teamReqStatus, teamRequest_send, updateDetailsofTeam, userTeamStatus } from '../controllers/team.controller.js';
+import { AddTeamMember, createTeam, deleteTeam, getListofTeam, getSpecificTeam, GlobalTeamListData, ProjectDetails, RemoveTeamMember, teamAchievement, teamListAchievement, teamReqStatus, teamRequest_send, updateDetailsofTeam, userTeamStatus } from '../controllers/team.controller.js';
 const router = express.Router();
 
 
@@ -15,5 +15,9 @@ router.post("/team-member-remove",RemoveTeamMember)
 router.get("/get-team",getSpecificTeam)
 router.get("/team-list",GlobalTeamListData)
 router.get("/team-status",userTeamStatus)
+router.post("/achievements",teamAchievement)
+router.get("/achievements",teamListAchievement)
+router.get("/project-history",ProjectDetails)
+
 
 export default router   

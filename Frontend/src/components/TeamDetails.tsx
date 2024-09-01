@@ -11,6 +11,9 @@ import { Domain } from "@/lib/Domain";
 import { TeamData } from "@/lib/interface/teamdata";
 import { Teams } from "@/lib/interface/INTERFACE";
 import Member from "./TeamDetailsGrp/Member";
+import AchievementsPage from "@/app/(protected)/settings/achievements/page";
+import { TeamAchievementsPage } from "./TeamDetailsGrp/TeamAchievements";
+import ProjectHistory from "./TeamDetailsGrp/ProjectHistory";
 
 const TeamDetails = () => {
     const [userId] = useAtom(userAtom);
@@ -69,6 +72,16 @@ const TeamDetails = () => {
                 {
                     ActiveTab==="members" && (
                         <Member teamDetails={teamDetails?teamDetails:null}/>
+                    )
+                }
+                {
+                    ActiveTab==="projects" && teamDetails?.teamDetails.team_id &&  (
+                        <ProjectHistory team_id={teamDetails?.teamDetails.team_id}/>
+                    )
+                }
+                {
+                    ActiveTab==="achievements" && teamDetails?.teamDetails.team_id && (
+                        <TeamAchievementsPage team_id={teamDetails?.teamDetails.team_id}/>
                     )
                 }
             </main>

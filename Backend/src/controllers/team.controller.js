@@ -430,6 +430,95 @@ const RemoveTeamMember = asyncHandler(async (req, res, next) => {
         throw next(new ApiError(500, "Error while removing member"));
     }
 });
+const teamAchievement = asyncHandler(async(req,res,next)=>{
+    try {
+        const { team_id, title, description, date, images } = req.body;
+
+        const achievement = await prisma.team_achievements.create({
+            data: {
+                team_id,
+                title,
+                description,
+                date: date ? new Date(date) : null,
+                images,
+            },
+        });
+
+        res.status(201).json(achievement);
+    } catch (error) {
+        console.error("Error creating achievement:", error);
+        res.status(500).json({ error: "Error creating achievement" });
+    }
+})
+const teamListAchievement = asyncHandler(async(req,res,next)=>{
+    try {
+        const { team_id } = req.query;
+        console.log(team_id);
+        
+
+        if (!team_id) {
+            return res.status(400).json({ error: "User ID is required" });
+        }
+
+        const achievements = await prisma.team_achievements.findMany({
+            where: {
+                team_id: team_id,
+            },
+            orderBy: {
+                date: "desc",
+            },
+        });
+        console.log(achievements);
+        
+        res.status(200).json(achievements);
+    } catch (error) {
+        console.error("Error fetching achievements:", error);
+        res.status(500).json({ error: "Error fetching achievements" });
+    }
+})
+
+
+const ProjectDetails = asyncHandler(async (req, res, next) => {
+    const { teamId } = req.query;
+    console.log(teamId);
+
+    try {
+        const roomId = await prisma.rooms.findMany({
+            where: {
+                teamId: teamId
+            },
+            select: {
+                room_id: true
+            }
+        });
+
+        console.log(roomId);
+
+        // Use map to fetch data for each room and Promise.all to resolve all the promises
+        const projectData = await Promise.all(roomId.map(async (room) => {
+            const data = await prisma.rooms.findUnique({
+                where: {
+                    room_id: room.room_id
+                },
+                select: {
+                    New_Project_table: true
+                }
+            });
+
+            console.log(data);
+
+            // Assuming New_Project_table is an array and you want the first item
+            return data.New_Project_table[0];
+        }));
+
+        console.log(projectData);
+
+        return res.status(200).json(new ApiResponse(200, projectData, 'Project Data fetched successfully.'));
+    } catch (error) {
+        console.log(error);
+        return next(new ApiError(500, 'Unable to fetch project details.'));
+    }
+});
 
 
 export {
@@ -443,5 +532,8 @@ export {
     GlobalTeamListData,
     teamRequest_send,
     AddTeamMember,
-    RemoveTeamMember
+    RemoveTeamMember,
+    teamAchievement,
+    teamListAchievement,
+    ProjectDetails
 };

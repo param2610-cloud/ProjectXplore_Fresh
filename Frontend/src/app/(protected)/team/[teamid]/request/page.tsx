@@ -19,7 +19,7 @@ import { TeamData } from "@/lib/interface/teamdata";
 import axios from "axios";
 import { useAtom } from "jotai";
 import Image from "next/image";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
 const Page = () => {
@@ -31,6 +31,7 @@ const Page = () => {
     const [teamId, setTeamId] = useState<string | null>(null);
     const [userDetails, setuserDetails] = useState<Users>();
     const [TeamDetails, setteamdetails] = useState<TeamData>();
+    const [ issent,setissent]= useState<boolean>(false)
     useEffect(() => {
         if (parts[2]) {
             setTeamId(parts[2]);
@@ -63,9 +64,27 @@ const Page = () => {
             typeof teamId === 'string' && <RequestList teamID={teamId} />
         );
     }
-    
-    return (
-        <div className="w-full h-full flex justify-start items-center flex-col">
+    const acceptreq =async ()=>{
+        try {
+            const data = await axios.post(`${Domain}/api/v1/team/team-req-send`, {
+                teamId:teamId,
+                userId:userId
+            });
+            if(data.status === 201){
+                setissent(true)
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+    if(issent){
+        return (<div>
+            Request is sent successfully.
+        </div>)
+    }else{
+
+        return (
+            <div className="w-full h-full flex justify-start items-center flex-col">
             <div className="m-10 w-full">
                 <div className="flex justify-start items-center ml-10 gap-3">
                     <img
@@ -85,11 +104,12 @@ const Page = () => {
                 </h1>
             </div>
             <div className="flex gap-10">
-                <Button>Accept</Button>
+                <Button onClick={acceptreq}>Accept</Button>
                 <Button>Decline</Button>
             </div>
         </div>
     );
+}
 };
 
 export default Page;

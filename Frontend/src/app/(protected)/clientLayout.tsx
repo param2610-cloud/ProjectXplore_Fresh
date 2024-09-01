@@ -67,7 +67,7 @@ import { PopoverContent } from "@radix-ui/react-popover";
 import axios from "axios";
 import { useAtom } from "jotai";
 import { LogOut, Settings, UserCircle } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import NavbarCompo from "@/components/NavbarCompo";
 import { ProjectnumberAtom } from "@/lib/atoms/UseProjectnumber";
@@ -87,6 +87,16 @@ export default function ClientLayout({
     const [completed, setcompleted] = useState<boolean>(false);
     const [profile, setprofile] = useState<Users | null>();
     const { setTheme } = useTheme();
+    const pathname = usePathname()
+    const [Isprofile,setIsprofile] = useState<boolean>(false)
+    useEffect(()=>{
+        const parts = pathname.split("/")
+        if(parts[1]==='yourprofile'){
+            setIsprofile(true)
+        }else{
+            setIsprofile(false)
+        }
+    },[pathname])
     useEffect(() => {
         const fetchdata = async () => {
             const response = await axios.get(
@@ -126,7 +136,7 @@ export default function ClientLayout({
             }
         }
     };
-    if (!userid) {
+    if (!userid || Isprofile || profile?.email!=="mentor123@gmail.com") {
         return (
             <main className="box-order w-full h-screen overflow-hidden m-0 p-0">
                 <div className="absolute top-0 right-0 left-0 w-screen h-16 bg-sky-500 flex justify-between items-center px-5">
@@ -146,9 +156,10 @@ export default function ClientLayout({
                 <div className="w-screen h-screen">{children}</div>
             </main>
         );
-    }
-    return (
-        <div className="grid min-h-screen h-screen w-screen md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr] overflow-hidden">
+    }else if(profile?.email!=="mentor123@gmail.com"){
+
+        return (
+            <div className="grid min-h-screen h-screen w-screen md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr] overflow-hidden">
             <div className="hidden border-r bg-muted/40 md:block h-screen col-span-1  ">
                 <div className="flex h-full flex-col">
                     <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
@@ -179,18 +190,16 @@ export default function ClientLayout({
                             <Card x-chunk="dashboard-02-chunk-0">
                                 <CardHeader className="p-2 pt-0 md:p-4">
                                     <CardTitle className="text-xl font-bold">
-                                        Complete Your Profile
+                                        Add your Institution
                                     </CardTitle>
                                     <CardDescription>
-                                        If people did not get information much
-                                        about you, then how you will get
-                                        exposure!
+                                        Add Others Details also for primary inspection.
                                     </CardDescription>
                                 </CardHeader>
                                 <CardContent className="p-2 pt-0 md:p-4 md:pt-0">
-                                    <Link href={"moreinfo"}>
+                                    <Link href={"/moreinfo"}>
                                         <Button size="sm" className="w-full">
-                                            Click
+                                            Add Institution
                                         </Button>
                                     </Link>
                                 </CardContent>
@@ -207,7 +216,7 @@ export default function ClientLayout({
                                 variant="outline"
                                 size="icon"
                                 className="shrink-0 md:hidden"
-                            >
+                                >
                                 <Menu className="h-5 w-5" />
                                 <span className="sr-only">
                                     Toggle navigation menu
@@ -234,7 +243,7 @@ export default function ClientLayout({
                                                 <Button
                                                     size="sm"
                                                     className="w-full"
-                                                >
+                                                    >
                                                     Upgrade
                                                 </Button>
                                             </Link>
@@ -252,7 +261,7 @@ export default function ClientLayout({
                                     type="search"
                                     placeholder="Search projects..."
                                     className="w-full appearance-none bg-background pl-8 shadow-none md:w-2/3 lg:w-1/3"
-                                />
+                                    />
                             </div>
                         </form>
                     </div>
@@ -267,7 +276,7 @@ export default function ClientLayout({
                                     <AvatarImage
                                         className="object-cover"
                                         src={profile?.profile_picture_link}
-                                    />
+                                        />
                                 </Avatar>
                             </Button>
                         </DropdownMenuTrigger>
@@ -284,7 +293,7 @@ export default function ClientLayout({
                             </DropdownMenuItem>
                             <DropdownMenuItem
                                 onClick={() => setTheme("system")}
-                            >
+                                >
                                 System
                             </DropdownMenuItem>
                             <DropdownMenuItem><Link href={"/settings/yourprofile"}>Your Profile</Link></DropdownMenuItem>
@@ -301,4 +310,20 @@ export default function ClientLayout({
             </div>
         </div>
     );
+}else{
+    return (
+        <main className="box-order w-full h-screen overflow-hidden m-0 p-0">
+                <div className="absolute top-0 right-0 left-0 w-screen h-16 bg-sky-500 flex justify-between items-center px-5">
+                    <div className="text-xl font-bold">ProjectXplore</div>
+                    <div>
+                    <Link href={"#"} passHref>
+                                <Button onClick={handlelogout}>Log Out</Button>
+                            </Link>
+                    </div>
+                </div>
+                <Separator orientation="horizontal" />
+                <div className="w-screen h-screen">{children}</div>
+            </main>
+    )
+}
 }
