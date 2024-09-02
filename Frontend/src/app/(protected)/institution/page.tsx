@@ -5,6 +5,9 @@ import axios from 'axios';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { Domain } from '@/lib/Domain';
+import UseAuth from '@/lib/hooks/UseUser';
+import { useAtom } from 'jotai';
+import { userAtom } from '@/lib/atoms/UserAtom';
 
 interface User {
   full_name: string;
@@ -29,6 +32,8 @@ interface Project {
 }
 
 const MentorDashboard = () => {
+  const {loading,authenticated} = UseAuth();
+  const [userId] = useAtom(userAtom)
   const [activeTab, setActiveTab] = useState('students');
   const [students, setStudents] = useState<Student[]>([]);
   const [projects, setProjects] = useState<Project[]>([]);
@@ -73,7 +78,7 @@ const MentorDashboard = () => {
       fetchProjects();
     }
   }, [activeTab]);
-
+  // if(userId===)
   return (
     <div className="container mx-auto p-4 mt-[60px]">
       <Tabs defaultValue="students" onValueChange={setActiveTab}>

@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 @layer base {
-  :root {
+    /* :root {
     --background: 213 43% 99%;
     --foreground: 213 63% 3%;
     --muted: 213 19% 94%;
@@ -47,23 +47,98 @@
     --destructive-foreground: 0 0% 100%;
     --ring: 213 81% 42%;
     --grid-color: #3D3D3D;
-  }
-}
+  } */
+    :root {
+        --background: 231 100% 98%;
+        --foreground: 231 15% 15%;
+        --muted: 231 20% 92%;
+        --muted-foreground: 231 10% 40%;
+        --popover: 0 0% 100%;
+        --popover-foreground: 231 15% 15%;
+        --card: 0 0% 100%;
+        --card-foreground: 231 15% 15%;
+        --border: 231 15% 85%;
+        --input: 231 15% 85%;
+        --primary: 231 48% 48%;
+        --primary-foreground: 0 0% 100%;
+        --secondary: 231 96% 92%;
+        --secondary-foreground: 231 48% 48%;
+        --accent: 231 96% 92%;
+        --accent-foreground: 231 48% 48%;
+        --destructive: 0 84% 60%;
+        --destructive-foreground: 0 0% 100%;
+        --ring: 231 48% 48%;
+        --radius: 0.5rem;
+        --grid-color: #e2e8f0;
 
+        /* Additional colors used in the dashboard */
+        --success: 142 76% 36%;
+        --success-foreground: 0 0% 100%;
+        --warning: 38 92% 50%;
+        --warning-foreground: 0 0% 100%;
+        --info: 199 89% 48%;
+        --info-foreground: 0 0% 100%;
+        --sidebar-bg: 231 48% 95%;
+        --sidebar-fg: 231 15% 15%;
+        --sidebar-muted: 231 20% 85%;
+        --sidebar-muted-fg: 231 15% 40%;
+        --sidebar-highlight: 231 48% 90%;
+        --sidebar-highlight-fg: 231 48% 48%;
+        --sidebar-border: 231 20% 88%;
+    }
+
+    .dark {
+        --background: 231 15% 10%;
+        --foreground: 231 15% 95%;
+        --muted: 231 15% 20%;
+        --muted-foreground: 231 10% 70%;
+        --popover: 231 15% 10%;
+        --popover-foreground: 231 15% 95%;
+        --card: 231 15% 15%;
+        --card-foreground: 231 15% 95%;
+        --border: 231 15% 25%;
+        --input: 231 15% 25%;
+        --primary: 231 48% 58%;
+        --primary-foreground: 0 0% 100%;
+        --secondary: 231 15% 30%;
+        --secondary-foreground: 231 15% 90%;
+        --accent: 231 15% 30%;
+        --accent-foreground: 231 15% 90%;
+        --destructive: 0 84% 60%;
+        --destructive-foreground: 0 0% 100%;
+        --ring: 231 48% 58%;
+        --grid-color: #3d3d3d;
+
+        /* Additional colors used in the dashboard */
+        --success: 142 76% 36%;
+        --success-foreground: 0 0% 100%;
+        --warning: 38 92% 50%;
+        --warning-foreground: 0 0% 100%;
+        --info: 199 89% 48%;
+        --info-foreground: 0 0% 100%;
+        --sidebar-bg: 231 15% 15%;
+        --sidebar-fg: 231 15% 95%;
+        --sidebar-muted: 231 15% 25%;
+        --sidebar-muted-fg: 231 15% 70%;
+        --sidebar-highlight: 231 48% 30%;
+        --sidebar-highlight-fg: 231 48% 90%;
+        --sidebar-border: 231 15% 20%;
+    }
+}
 
 @layer base {
-  * {
-    @apply border-border;
-  }
-  body {
-    @apply bg-background text-foreground;
-  }
+    * {
+        @apply border-border;
+    }
+    body {
+        @apply bg-background text-foreground;
+    }
 }
 .glass-effect {
-  background: rgba(255, 255, 255, 0.1); /* Semi-transparent background */
-  backdrop-filter: blur(0.5px); /* Blur effect for glass */
-  -webkit-backdrop-filter: blur(10px); /* Safari support */
-  border-radius: 10px; /* Rounded corners */
-  border: 1px solid rgba(255, 255, 255, 0.2); /* Optional border */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Soft shadow */
+    background: rgba(255, 255, 255, 0.1); /* Semi-transparent background */
+    backdrop-filter: blur(0.5px); /* Blur effect for glass */
+    -webkit-backdrop-filter: blur(10px); /* Safari support */
+    border-radius: 10px; /* Rounded corners */
+    border: 1px solid rgba(255, 255, 255, 0.2); /* Optional border */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Soft shadow */
 }

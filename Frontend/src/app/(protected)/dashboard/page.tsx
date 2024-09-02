@@ -1,238 +1,237 @@
 "use client";
-import Link from "next/link";
-import {
-    Bell,
-    CircleUser,
-    Earth,
-    Home,
-    LineChart,
-    Menu,
-    Package,
-    Package2,
-    Search,
-    ShoppingCart,
-    Users,
-    WholeWord,  
-} from "lucide-react";
-
-import { Badge } from "@/components/ui/badge";
-import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardHeader,
-    CardTitle,
-    } from "@/components/ui/card";
-
-import { useToast } from "@/components/ui/use-toast";
-import { userAtom } from "@/lib/atoms/UserAtom";
-import { Domain } from "@/lib/Domain";
-import UseAuth from "@/lib/hooks/UseUser";
-import { PopoverContent } from "@radix-ui/react-popover";
-import axios from "axios";
-import { useAtom } from "jotai";
-import { LogOut, Settings, UserCircle } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-import NavbarCompo from "@/components/NavbarCompo";
-import { Progress } from "@/components/ui/progress";
-import { NewsArticle } from "@/lib/interface/NewsArticle";
+import React, { useEffect } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import Room_list_dashboard from "@/components/room/Room_list_dashboard";
+import { Progress } from "@/components/ui/progress";
+import {
+    Folder,
+    Users,
+    Award,
+    Bell,
+    Search,
+    PlusCircle,
+    RefreshCw,
+    UserPlus,
+} from "lucide-react";
+import UseAuth from "@/lib/hooks/UseUser";
+import { useAtom } from "jotai";
+import { userAtom } from "@/lib/atoms/UserAtom";
+import { useRouter } from "next/navigation";
 
-const roomsarray = [
-    { value: "1", label: "kolkata Jawans" },
-    { value: "2", label: "BharaBytes" },
-];
-
-const Page = () => {
-    const { loading, authenticated } = UseAuth();
-    const [user] = useAtom(userAtom);
+const Dashboard = () => {
+    const {} = UseAuth();
+    const [userId] = useAtom(userAtom);
     const router = useRouter();
     useEffect(() => {
-        // Startup loading
-        const fetchData = async () => {
-            try {
-                const response = await axios.get(`${Domain}/api/v1/third-party/tech-news`);
-                setnews(response.data.data.articles);
-            } catch (error) {
-                console.log(error);
-            }
-        };
-        if(user === "d0e358f6-c0c7-41a0-8f4a-2687967431ad"){
-            router.push("/institution")
+        if (userId === "0c33131a-5771-424e-87a7-bf788bb656e4") {
+            router.push("/institution");
         }
-        fetchData();
-    }, [user]);
-    useEffect(() => {
-        if (!loading) {
-            console.log(user);
-        }
-    }, [loading, authenticated,user]);
-    const [refresh, setrefresh] = useState<boolean>(false);
+    }, [userId]);
+    return (
+        <div className="p-6 space-y-6 bg-gradient-to-br from-purple-50 to-indigo-50 min-h-screen">
+            <header className="flex justify-between items-center">
+                <h1 className="text-3xl font-bold text-indigo-800">
+                    Your ProjectXplore Workspace
+                </h1>
+                <Button className="bg-indigo-600 hover:bg-indigo-700">
+                    <Bell className="h-4 w-4 mr-2" />
+                    Notifications
+                </Button>
+            </header>
 
-    const [RoomChoice, setRoomChoice] = useState<string>("1");
-    const [CreateRoomClick, setCreateRoomClick] = useState<boolean>(false);
-    const [projectNumber, setprojectNumber] = useState<number>(0);
-    const [Rooms, setRooms] = useState<any>();
-    const [team, setTeam] = useState<any>();
-    const [news, setnews] = useState<NewsArticle[]>();
-    const { toast } = useToast();
-
-
-    const handleRoomValueChange = (newValue: string) => {
-        setRoomChoice(newValue);
-    };
-    if (authenticated == false && loading == false) {
-        router.push("/")
-        return (
-            <div className="w-screen h-screen flex justify-center items-center text-[150px]">
-                Please Login
-            </div>
-        );
-    }
-
-    const handleLogout = async () => {
-        try {
-            const response = await axios.post(
-                `${Domain}/api/v1/users/logout`,
-                {},
-                { withCredentials: true }
-            );
-            if (response.status === 200) {
-                router.push("/");
-            }
-        } catch (error) {
-            console.error("Error during logout:", error);
-            toast({
-                title: "Error Occured During logging out",
-                description: "Possible Reason Cookie was cleared",
-            });
-        }
-    };
-    const newsDataFetch = async () => {
-        const response = await axios.get(
-            `${Domain}/api/v1/third-party/tech-news`
-        );
-        return response;
-    };
-    if (loading || authenticated == false) {
-        return <div>Loading</div>;
-    } else if (refresh) {
-        return <div>Loading</div>;
-    } else {
-        return (
-            <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6 h-[calc(100vh-60px)] overflow-hidden">
-                <div className="flex items-center">
-                    <h1 className="text-lg font-semibold md:text-2xl">
-                        Dashboard
-                    </h1>
-                </div>
-                <div
-                    className="h-full flex flex-1 items-start justify-start rounded-lg border border-dashed shadow-sm p-7 w-full flex-grow lg:flex-row md:flex-col sm:flex-col"
-                    x-chunk="dashboard-02-chunk-1"
-                >
-                    <div className="flex flex-col p-4 h-full gap-3 md:w-full sm:w-full lg:flex-1">
-                        <Card className="p-2">
-                            <CardTitle className="text-lg p-1">
-                                Project Name
-                            </CardTitle>
-                            <CardContent>
-                                <Progress value={55} />
-                            </CardContent>
-                        </Card>
-                        <div>
-                            <Room_list_dashboard/>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <Card className="bg-white shadow-lg hover:shadow-xl transition-shadow duration-300">
+                    <CardHeader className="flex flex-row items-center justify-between pb-2">
+                        <CardTitle className="text-lg font-semibold text-indigo-700">
+                            Your Projects
+                        </CardTitle>
+                        <Folder className="h-6 w-6 text-indigo-500" />
+                    </CardHeader>
+                    <CardContent>
+                        <div className="text-3xl font-bold text-indigo-900">
+                            7
                         </div>
-                        
-                    </div>
-                    <div className="flex flex-col p-4 h-full md:w-full sm:w-full lg:flex-1 gap-4">
-                        <Card className="w-full h-[50%] p-3 overflow-y-scroll shadow-md rounded-lg flex-grow">
-                            <CardTitle className="text-lg font-bold mb-2">
-                                What&apos;s New
-                            </CardTitle>
-                            <CardContent className="flex flex-col space-y-4">
-                                {Array.isArray(news) &&
-                                    news.map((item: NewsArticle) => (
-                                        <Link href={item.url} key={item.title}>
-                                            <div
-                                                key={item.title}
-                                                className="bg-gray-100 p-4 rounded-lg hover:shadow-md"
-                                            >
-                                                <h2 className=" font-bold text-black cursor-pointer">
-                                                    
-                                                        {item.title?.substring(
-                                                            0,
-                                                            40
-                                                        )}
-                                                </h2>
-                                                <p className="text-gray-600 text-sm">
-                                                    {item.content?.substring(
-                                                        0,
-                                                        100
-                                                    )}
-                                                    ...
-                                                </p>
-                                            </div>
-                                        </Link>
-                                    ))}
-                            </CardContent>
-                        </Card>
-                        <Card className="h-[40%]">
-                            <CardTitle className="p-4">Notification</CardTitle>
-                            <CardContent className="h-full w-full flex justify-center items-center">
-                                No Notification
-                            </CardContent>
-                        </Card>
-                    </div>
-                    <div className="flex flex-col p-4 md:w-full sm:w-full lg:flex-1 gap-5 h-full">
-                        <Button
-                            style={{
-                                backgroundImage: "url(bg-idea.jpg)",
-                                backgroundSize: "cover",
-                                backgroundPosition: "center",
-                                backgroundRepeat: "no-repeat",
-                            }}
-                            className="h-[4vw] flex justify-center items-center font-semibold text-2xl pt-4 pl-6"
-                            onClick={()=>{router.push("/idea/create")}}
-                        >
-                            Submit your idea
+                        <p className="text-sm text-indigo-600">
+                            2 active, 5 completed
+                        </p>
+                        <Progress value={70} className="mt-2" />
+                    </CardContent>
+                </Card>
+
+                <Card className="bg-white shadow-lg hover:shadow-xl transition-shadow duration-300">
+                    <CardHeader className="flex flex-row items-center justify-between pb-2">
+                        <CardTitle className="text-lg font-semibold text-indigo-700">
+                            Your Teams
+                        </CardTitle>
+                        <Users className="h-6 w-6 text-indigo-500" />
+                    </CardHeader>
+                    <CardContent>
+                        <div className="text-3xl font-bold text-indigo-900">
+                            3
+                        </div>
+                        <p className="text-sm text-indigo-600">
+                            12 team members total
+                        </p>
+                        <div className="flex -space-x-2 overflow-hidden mt-2">
+                            {[...Array(5)].map((_, i) => (
+                                <img
+                                    key={i}
+                                    className="inline-block h-8 w-8 rounded-full ring-2 ring-white"
+                                    src={`/api/placeholder/${30 + i}/30`}
+                                    alt={`Team member ${i + 1}`}
+                                />
+                            ))}
+                            <span className="flex items-center justify-center w-8 h-8 rounded-full bg-indigo-100 text-indigo-800 text-xs font-medium">
+                                +7
+                            </span>
+                        </div>
+                    </CardContent>
+                </Card>
+
+                <Card className="bg-white shadow-lg hover:shadow-xl transition-shadow duration-300">
+                    <CardHeader className="flex flex-row items-center justify-between pb-2">
+                        <CardTitle className="text-lg font-semibold text-indigo-700">
+                            Your Achievements
+                        </CardTitle>
+                        <Award className="h-6 w-6 text-indigo-500" />
+                    </CardHeader>
+                    <CardContent>
+                        <div className="text-3xl font-bold text-indigo-900">
+                            5
+                        </div>
+                        <p className="text-sm text-indigo-600">
+                            1 new this month
+                        </p>
+                        <div className="flex space-x-1 mt-2">
+                            {[...Array(5)].map((_, i) => (
+                                <span
+                                    key={i}
+                                    className="w-2 h-2 rounded-full bg-indigo-400"
+                                ></span>
+                            ))}
+                        </div>
+                    </CardContent>
+                </Card>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <Card className="bg-white shadow-lg hover:shadow-xl transition-shadow duration-300">
+                    <CardHeader>
+                        <CardTitle className="text-xl font-semibold text-indigo-800">
+                            Quick Actions
+                        </CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-3">
+                        <Button className="w-full bg-green-500 hover:bg-green-600 text-white">
+                            <PlusCircle className="h-4 w-4 mr-2" />
+                            Create New Project
                         </Button>
-                        <Button
-                            style={{
-                                backgroundImage: "url(bg-project.png)",
-                                backgroundSize: "cover",
-                                backgroundPosition: "center",
-                                backgroundRepeat: "no-repeat",
-                            }}
-                            className="h-[4vw] flex justify-center items-center font-bold text-2xl pt-4 pl-6 text-black"
-                            onClick={()=>{router.push("/project/create")}}
-                        >
-                            Submit your project
+                        <Button className="w-full bg-yellow-500 hover:bg-yellow-600 text-white">
+                            <RefreshCw className="h-4 w-4 mr-2" />
+                            Update Project Status
                         </Button>
-                        <Button
-                            style={{
-                                backgroundImage: "url(bg-team.jpg)",
-                                backgroundSize: "cover",
-                                backgroundPosition: "center",
-                                backgroundRepeat: "no-repeat",
-                            }}
-                            className="h-[4vw] flex justify-center items-center font-bold text-2xl pt-4 pl-6 "
-                            onClick={()=>{router.push("/teams")}}
-                        >
-                            Join or Create a Team
+                        <Button className="w-full bg-blue-500 hover:bg-blue-600 text-white">
+                            <UserPlus className="h-4 w-4 mr-2" />
+                            Invite Team Member
                         </Button>
-                        <Card className="h-full w-full">
-                            <CardTitle className="p-4">Invitation & Requests</CardTitle>
-                            <CardContent className="h-full w-full flex justify-center items-center">
-                                No inviatation or request
-                            </CardContent>
-                        </Card>
+                    </CardContent>
+                </Card>
+
+                <Card className="bg-white shadow-lg hover:shadow-xl transition-shadow duration-300">
+                    <CardHeader>
+                        <CardTitle className="text-xl font-semibold text-indigo-800">
+                            Recent Activity
+                        </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                        <ul className="space-y-3">
+                            <li className="flex items-center p-2 bg-indigo-50 rounded-lg">
+                                <div className="h-8 w-8 rounded-full bg-indigo-200 flex items-center justify-center mr-3">
+                                    <Folder className="h-4 w-4 text-indigo-600" />
+                                </div>
+                                <span className="text-sm text-indigo-800">
+                                    Updated "AI Chat Bot" project
+                                </span>
+                            </li>
+                            <li className="flex items-center p-2 bg-green-50 rounded-lg">
+                                <div className="h-8 w-8 rounded-full bg-green-200 flex items-center justify-center mr-3">
+                                    <Users className="h-4 w-4 text-green-600" />
+                                </div>
+                                <span className="text-sm text-green-800">
+                                    New member joined "CodeCrafters" team
+                                </span>
+                            </li>
+                            <li className="flex items-center p-2 bg-yellow-50 rounded-lg">
+                                <div className="h-8 w-8 rounded-full bg-yellow-200 flex items-center justify-center mr-3">
+                                    <Award className="h-4 w-4 text-yellow-600" />
+                                </div>
+                                <span className="text-sm text-yellow-800">
+                                    Earned "Innovation Star" achievement
+                                </span>
+                            </li>
+                        </ul>
+                    </CardContent>
+                </Card>
+            </div>
+
+            <Card className="bg-white shadow-lg hover:shadow-xl transition-shadow duration-300">
+                <CardHeader>
+                    <CardTitle className="text-xl font-semibold text-indigo-800">
+                        Your Active Projects
+                    </CardTitle>
+                </CardHeader>
+                <CardContent>
+                    <ul className="space-y-4">
+                        <li className="flex justify-between items-center">
+                            <div>
+                                <h3 className="font-semibold text-indigo-700">
+                                    AI Chat Bot
+                                </h3>
+                                <p className="text-sm text-indigo-600">
+                                    Due in 7 days
+                                </p>
+                            </div>
+                            <Progress value={75} className="w-1/3" />
+                        </li>
+                        <li className="flex justify-between items-center">
+                            <div>
+                                <h3 className="font-semibold text-indigo-700">
+                                    Smart Home IoT
+                                </h3>
+                                <p className="text-sm text-indigo-600">
+                                    Due in 14 days
+                                </p>
+                            </div>
+                            <Progress value={40} className="w-1/3" />
+                        </li>
+                    </ul>
+                </CardContent>
+            </Card>
+
+            <Card className="bg-white shadow-lg hover:shadow-xl transition-shadow duration-300">
+                <CardHeader>
+                    <CardTitle className="text-xl font-semibold text-indigo-800">
+                        Explore Projects
+                    </CardTitle>
+                </CardHeader>
+                <CardContent>
+                    <div className="flex items-center space-x-2">
+                        <div className="relative flex-grow">
+                            <Search className="h-5 w-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                            <input
+                                type="text"
+                                placeholder="Search projects..."
+                                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                            />
+                        </div>
+                        <Button className="bg-indigo-600 hover:bg-indigo-700">
+                            Search
+                        </Button>
                     </div>
-                </div>
-            </main>
-        );
-    }
+                </CardContent>
+            </Card>
+        </div>
+    );
 };
 
-export default Page;
+export default Dashboard;

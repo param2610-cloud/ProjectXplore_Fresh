@@ -15,21 +15,21 @@ const NavbarCompo = ({ userDetails }: { userDetails: Users | null }) => {
             <nav className="grid items-start px-2 text-sm font-medium lg:px-4">
                                     <Link
                                         href="/dashboard"
-                                        className={`flex items-center gap-3 rounded-lg bg-muted px-3 py-2 ${pathname.includes("projects")?`text-primary`:`text-muted-foreground    `} transition-all hover:text-primary`}
+                                        className={`flex items-center gap-3 rounded-lg   px-3 py-2 ${pathname.includes("projects")?`text-primary`:`text-muted-foreground    `} transition-all hover:text-primary`}
                                     >
                                         <LucideLayoutDashboard className="h-4 w-4" />
                                         Dashboard
                                     </Link>
                                     <Link
                                         href="/institution"
-                                        className={`flex items-center gap-3 rounded-lg bg-muted px-3 py-2 ${pathname.includes("error")?`text-primary`:`text-muted-foreground    `} transition-all hover:text-primary`}
+                                        className={`flex items-center gap-3 rounded-lg bg-muted/40 px-3 py-2 ${pathname.includes("error")?`text-primary`:`text-muted-foreground    `} transition-all hover:text-primary`}
                                     >
                                         <School className="h-4 w-4" />
                                         Institution
                                     </Link>
                                     <Link
                                         href="/settings/achievements"
-                                        className={`flex items-center gap-3 rounded-lg bg-muted px-3 py-2 ${pathname.includes("settings")?`text-primary`:`text-muted-foreground    `} transition-all hover:text-primary`}
+                                        className={`flex items-center gap-3 rounded-lg bg-muted/40 px-3 py-2 ${pathname.includes("settings")?`text-primary`:`text-muted-foreground    `} transition-all hover:text-primary`}
                                     >
                                         <Settings className="h-4 w-4" />
                                         Settings
@@ -46,21 +46,21 @@ const NavbarCompo = ({ userDetails }: { userDetails: Users | null }) => {
             <nav className="grid items-start px-2 text-sm font-medium lg:px-4">
                                     <Link
                                         href="/dashboard"
-                                        className={`flex items-center gap-3 rounded-lg bg-muted px-3 py-2 ${pathname.includes("projects")?`text-primary`:`text-muted-foreground    `} transition-all hover:text-primary`}
+                                        className={`flex items-center gap-3 rounded-lg  bg-muted/40 px-3 py-2 ${pathname.includes("projects")?`text-primary`:`text-muted-foreground    `} transition-all hover:text-primary`}
                                     >
                                         <LucideLayoutDashboard className="h-4 w-4" />
                                         Dashboard
                                     </Link>
                                     <Link
                                         href="/room"
-                                        className={`flex items-center gap-3 rounded-lg bg-muted px-3 py-2 ${pathname.includes("projects")?`text-primary`:`text-muted-foreground    `} transition-all hover:text-primary`}
+                                        className={`flex items-center gap-3 rounded-lg  bg-muted/40 px-3 py-2 ${pathname.includes("projects")?`text-primary`:`text-muted-foreground    `} transition-all hover:text-primary`}
                                     >
                                         <Box className="h-4 w-4" />
                                         Rooms
                                     </Link>
                                     <Link
                                         href="/project"
-                                        className={`flex items-center gap-3 rounded-lg bg-muted px-3 py-2 ${pathname.includes("projects")?`text-primary`:`text-muted-foreground    `} transition-all hover:text-primary`}
+                                        className={`flex items-center gap-3 rounded-lg  bg-muted/40 px-3 py-2 ${pathname.includes("projects")?`text-primary`:`text-muted-foreground    `} transition-all hover:text-primary`}
                                     >
                                         <Home className="h-4 w-4" />
                                         My Projects
@@ -71,7 +71,7 @@ const NavbarCompo = ({ userDetails }: { userDetails: Users | null }) => {
                                     </Link>
                                     <Link
                                         href="/idea"
-                                        className={`flex items-center gap-3 rounded-lg bg-muted px-3 py-2 ${pathname.includes("projects")?`text-primary`:`text-muted-foreground    `} transition-all hover:text-primary`}
+                                        className={`flex items-center gap-3 rounded-lg  bg-muted/40 px-3 py-2 ${pathname.includes("projects")?`text-primary`:`text-muted-foreground    `} transition-all hover:text-primary`}
                                     >
                                         <Lightbulb className="h-4 w-4" />
                                         My Ideas
@@ -81,28 +81,28 @@ const NavbarCompo = ({ userDetails }: { userDetails: Users | null }) => {
                                     </Link>
                                     <Link
                                         href="#"
-                                        className={`flex items-center gap-3 rounded-lg bg-muted px-3 py-2 ${pathname.includes("explore-projects")?`text-primary`:`text-muted-foreground    `} transition-all hover:text-primary`}
+                                        className={`flex items-center gap-3 rounded-lg  bg-muted/40 px-3 py-2 ${pathname.includes("explore-projects")?`text-primary`:`text-muted-foreground    `} transition-all hover:text-primary`}
                                     >
                                         <Earth className="h-4 w-4" />
                                         Browse Projects
                                     </Link>
                                     <Link
                                         href="/teams"
-                                        className={`flex items-center gap-3 rounded-lg bg-muted px-3 py-2 ${pathname.includes("teams")?`text-primary`:`text-muted-foreground    `} transition-all hover:text-primary`}
+                                        className={`flex items-center gap-3 rounded-lg  bg-muted/40 px-3 py-2 ${pathname.includes("teams")?`text-primary`:`text-muted-foreground    `} transition-all hover:text-primary`}
                                     >
                                         <Package className="h-4 w-4" />
                                         Teams{" "}
                                     </Link>
                                     <Link
                                         href="/institution"
-                                        className={`flex items-center gap-3 rounded-lg bg-muted px-3 py-2 ${pathname.includes("error")?`text-primary`:`text-muted-foreground    `} transition-all hover:text-primary`}
+                                        className={`flex items-center gap-3 rounded-lg  bg-muted/40 px-3 py-2 ${pathname.includes("error")?`text-primary`:`text-muted-foreground    `} transition-all hover:text-primary`}
                                     >
                                         <School className="h-4 w-4" />
                                         Institution
                                     </Link>
                                     <Link
                                         href="/settings/achievements"
-                                        className={`flex items-center gap-3 rounded-lg bg-muted px-3 py-2 ${pathname.includes("settings")?`text-primary`:`text-muted-foreground    `} transition-all hover:text-primary`}
+                                        className={`flex items-center gap-3 rounded-lg  bg-muted/40 px-3 py-2 ${pathname.includes("settings")?`text-primary`:`text-muted-foreground    `} transition-all hover:text-primary`}
                                     >
                                         <Settings className="h-4 w-4" />
                                         Settings

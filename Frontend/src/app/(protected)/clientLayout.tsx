@@ -61,7 +61,7 @@ import {
     TableRow,
 } from "@/components/ui/table";
 import { useToast } from "@/components/ui/use-toast";
-import { userAtom } from "@/lib/atoms/UserAtom";
+import { userAtom } from "../../lib/atoms/UserAtom";
 import UseAuth from "@/lib/hooks/UseUser";
 import { PopoverContent } from "@radix-ui/react-popover";
 import axios from "axios";
@@ -160,7 +160,7 @@ export default function ClientLayout({
 
         return (
             <div className="grid min-h-screen h-screen w-screen md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr] overflow-hidden">
-            <div className="hidden border-r bg-muted/40 md:block h-screen col-span-1  ">
+            <div className="hidden border-r sidebar-bg md:block h-screen col-span-1  ">
                 <div className="flex h-full flex-col">
                     <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
                         <Link
@@ -209,7 +209,7 @@ export default function ClientLayout({
                 </div>
             </div>
             <div className="flex flex-col min-h-screen max-h-full w-full">
-                <header className="flex h-14 lg:h-[60px] items-center gap-4 border-b bg-muted/40 px-4 lg:px-6 fixed w-screen sm:w-screen md:w-[calc(100vw-220px)] lg:w-[calc(100vw-280px)] z-10">
+                <header className="flex h-14 lg:h-[60px] items-center gap-4 border-b sidebar-bg px-4 lg:px-6 fixed w-screen sm:w-screen md:w-[calc(100vw-220px)] lg:w-[calc(100vw-280px)] z-10">
                     <Sheet>
                         <SheetTrigger asChild>
                             <Button
