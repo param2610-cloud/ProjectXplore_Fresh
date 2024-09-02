@@ -27,7 +27,7 @@ import {
 import { useToast } from "@/components/ui/use-toast";
 import { userAtom } from "@/lib/atoms/UserAtom";
 import { Domain } from "@/lib/Domain";
-import useAuth from "@/lib/hooks/UseUser";
+import UseAuth from "@/lib/hooks/UseUser";
 import { PopoverContent } from "@radix-ui/react-popover";
 import axios from "axios";
 import { useAtom } from "jotai";
@@ -46,7 +46,7 @@ const roomsarray = [
 ];
 
 const Page = () => {
-    const { loading, authenticated } = useAuth();
+    const { loading, authenticated } = UseAuth();
     const [user] = useAtom(userAtom);
     const router = useRouter();
     useEffect(() => {

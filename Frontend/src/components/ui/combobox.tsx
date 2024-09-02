@@ -17,7 +17,7 @@ import axios from "axios"
 import { Domain } from "@/lib/Domain"
 import { useAtom } from "jotai"
 import { userAtom } from "@/lib/atoms/UserAtom"
-import useAuth from "@/lib/hooks/UseUser"
+import UseAuth from "@/lib/hooks/UseUser"
 
 interface Framework {
   value: string

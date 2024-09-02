@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Domain } from '@/lib/Domain';
-import useAuth from '@/lib/hooks/UseUser';
+import UseAuth from '@/lib/hooks/UseUser';
 import { useAtom } from 'jotai';
 import { userAtom } from '@/lib/atoms/UserAtom';
 import { Label } from '@/components/ui/label';
@@ -25,7 +25,7 @@ interface UserData {
 
 export default function UserForm() {
   const router = useRouter()
-    const {loading,authenticated} = useAuth()
+    const {loading,authenticated} = UseAuth()
     const [user] = useAtom(userAtom)
   const [formData, setFormData] = useState<UserData>({
     full_name: '',

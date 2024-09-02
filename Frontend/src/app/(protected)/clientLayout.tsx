@@ -62,7 +62,7 @@ import {
 } from "@/components/ui/table";
 import { useToast } from "@/components/ui/use-toast";
 import { userAtom } from "@/lib/atoms/UserAtom";
-import useAuth from "@/lib/hooks/UseUser";
+import UseAuth from "@/lib/hooks/UseUser";
 import { PopoverContent } from "@radix-ui/react-popover";
 import axios from "axios";
 import { useAtom } from "jotai";
@@ -82,7 +82,7 @@ export default function ClientLayout({
 }>) {
     const router = useRouter();
     const [Projectnumber] = useAtom(ProjectnumberAtom);
-    const { loading, authenticated } = useAuth();
+    const { loading, authenticated } = UseAuth();
     const [userid,setUserId] = useAtom(userAtom);
     const [completed, setcompleted] = useState<boolean>(false);
     const [profile, setprofile] = useState<Users | null>();
