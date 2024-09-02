@@ -136,7 +136,7 @@ export default function ClientLayout({
             }
         }
     };
-    if (!userid || Isprofile || profile?.email!=="mentor123@gmail.com") {
+    if (!userid || Isprofile ) {
         return (
             <main className="box-order w-full h-screen overflow-hidden m-0 p-0">
                 <div className="absolute top-0 right-0 left-0 w-screen h-16 bg-sky-500 flex justify-between items-center px-5">

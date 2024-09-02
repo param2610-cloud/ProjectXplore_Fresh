@@ -50,7 +50,7 @@ export default function ListAchievements() {
       <h2 className="text-2xl font-bold">Your Achievements</h2>
       {error && <Alert variant="destructive"><AlertDescription>{error}</AlertDescription></Alert>}
       {achievements.length === 0 ? (
-        <Alert><AlertDescription>You haven't added any achievements yet.</AlertDescription></Alert>
+        <Alert><AlertDescription>You haven&apos;t added any achievements yet.</AlertDescription></Alert>
       ) : (
         achievements.map((achievement) => (
           <Card key={achievement.id}>
@@ -64,7 +64,7 @@ export default function ListAchievements() {
                 <div className="mt-2 flex space-x-2">
                   {achievement.images.map((image, index) => (
                     // <img key={index} src={image} alt={`Achievement ${index + 1}`} className="w-20 h-20 object-cover rounded" />
-                    <div className='text-blue-500'>
+                    <div className='text-blue-500' key={index}>
                       {image}
                     </div>
                   ))}
