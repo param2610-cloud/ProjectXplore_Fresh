@@ -27,7 +27,7 @@
 // import { useToast } from "@/components/ui/use-toast";
 // import { userAtom } from "@/lib/atoms/UserAtom";
 // import { Domain } from "@/lib/Domain";
-// import UseAuth from "@/lib/hooks/UseUser";
+// import UseAuth from "@/lib/hooks/useUser";
 // import { PopoverContent } from "@radix-ui/react-popover";
 // import axios from "axios";
 // import { useAtom } from "jotai";

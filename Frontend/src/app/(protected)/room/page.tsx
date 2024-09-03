@@ -1,7 +1,7 @@
 'use client'
 import RoomCard from '@/components/room/RoomCard'
 import { Button } from '@/components/ui/button'
-import { userAtom } from '@/lib/atoms/UserAtom'
+import { userAtom } from '@/lib/atoms/userAtom'
 import { Domain } from '@/lib/Domain'
 import UseAuth from '@/lib/hooks/UseUser'
 import { RoomGetData } from '@/lib/interface/INTERFACE'

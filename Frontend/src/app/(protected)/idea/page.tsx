@@ -1,8 +1,8 @@
 "use client";
 import Ideacard from "@/components/Ideacard";
-import { userAtom } from "@/lib/atoms/UserAtom";
+import { userAtom } from "@/lib/atoms/userAtom";
 import { Domain } from "@/lib/Domain";
-import UseAuth from "@/lib/hooks/UseUser";
+import UseAuth from "@/lib/hooks/useUser";
 import { Users } from "@/lib/interface/INTERFACE";
 import axios from "axios";
 import { useAtom } from "jotai";

@@ -13,9 +13,9 @@ import {
     TableRow,
 } from "../ui/table";
 import { Button } from "../ui/button";
-import { userAtom } from "@/lib/atoms/UserAtom";
+import { userAtom } from "@/lib/atoms/userAtom";
 import { useAtom } from "jotai";
-import UseAuth from "@/lib/hooks/UseUser";
+import UseAuth from "@/lib/hooks/useUser";
 import { usePathname } from "next/navigation";
 import axios from "axios";
 import { Domain } from "@/lib/Domain";
