@@ -10,7 +10,7 @@ import {
     CardContent,
 } from "@/components/ui/card";
 import UseAuth from "@/lib/hooks/UseAuth";
-import { userAtom } from "@/lib/atoms/userAtom";
+import { userAtom } from '@/lib/atoms/UserAtom';
 import { useToast } from "../ui/use-toast";
 import { ProjectData } from "@/lib/interface/INTERFACE";
 

@@ -16,11 +16,11 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/use-toast";
 <<<<<<< HEAD
-import { userAtom } from "@/lib/atoms/UserAtom";
+import { userAtom } from '@/lib/atoms/UserAtom';
 import { Domain, FirebaseUrl } from "@/lib/Domain";
 import UseAuth from "@/lib/hooks/UseUser";
 =======
-import { userAtom } from "@/lib/atoms/userAtom";
+import { userAtom } from '@/lib/atoms/UserAtom';
 import { Domain } from "@/lib/Domain";
 import UseAuth from "@/lib/hooks/UseAuth";
 >>>>>>> 424c7fdf58032563af88996072e9526472fd67d1

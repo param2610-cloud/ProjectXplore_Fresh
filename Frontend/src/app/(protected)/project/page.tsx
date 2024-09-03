@@ -1,6 +1,6 @@
 'use client'
 import ProjectList from '@/components/project/ProjectList'
-import { userAtom } from '@/lib/atoms/userAtom';
+import { userAtom } from '@/lib/atoms/UserAtom';
 import UseAuth from '@/lib/hooks/UseAuth';
 import { useAtom } from 'jotai';
 import { useRouter } from 'next/navigation';

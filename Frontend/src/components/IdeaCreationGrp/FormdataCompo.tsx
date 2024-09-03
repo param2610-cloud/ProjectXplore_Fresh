@@ -17,7 +17,7 @@ import {
 import { Domain } from "@/lib/Domain";
 import UploadOnCloudinary from "@/lib/control/UploadOnCloudinary";
 import { useAtom } from "jotai";
-import { userAtom } from "@/lib/atoms/userAtom";
+import { userAtom } from '@/lib/atoms/UserAtom';
 import UseAuth from "@/lib/hooks/UseAuth";
 import { usePathname } from "next/navigation";
 import useFirebaseNotifications from "@/lib/control/FirebaseNotification";
