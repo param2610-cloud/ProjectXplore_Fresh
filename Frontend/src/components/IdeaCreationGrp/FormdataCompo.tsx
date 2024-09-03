@@ -17,8 +17,8 @@ import {
 import { Domain } from "@/lib/Domain";
 import UploadOnCloudinary from "@/lib/control/UploadOnCloudinary";
 import { useAtom } from "jotai";
-import { userAtom } from "@/lib/atoms/UserAtom";
-import UseAuth from "@/lib/hooks/UseUser";
+import { userAtom } from "@/lib/atoms/userAtom";
+import UseAuth from "@/lib/hooks/UseAuth";
 import { usePathname } from "next/navigation";
 import useFirebaseNotifications from "@/lib/control/FirebaseNotification";
 
@@ -193,6 +193,10 @@ const Formdata_ = ({setSubmitted}:{setSubmitted:React.Dispatch<React.SetStateAct
                             setpreviews([]);
                             setMediaLinks([]);
                         }else{
+<<<<<<< HEAD
+=======
+
+>>>>>>> 424c7fdf58032563af88996072e9526472fd67d1
                             toast({
                                 title: "Error",
                                 description: "There was an error submitting your idea.",
@@ -202,7 +206,10 @@ const Formdata_ = ({setSubmitted}:{setSubmitted:React.Dispatch<React.SetStateAct
                     }
                 }
             setisloading(false);
+<<<<<<< HEAD
             
+=======
+>>>>>>> 424c7fdf58032563af88996072e9526472fd67d1
             setSubmitted(true)
             setisloading(false);
     };

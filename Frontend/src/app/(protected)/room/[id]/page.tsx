@@ -15,9 +15,15 @@ import {
 } from "@/components/ui/popover";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/use-toast";
+<<<<<<< HEAD
 import { userAtom } from "@/lib/atoms/UserAtom";
 import { Domain, FirebaseUrl } from "@/lib/Domain";
 import UseAuth from "@/lib/hooks/UseUser";
+=======
+import { userAtom } from "@/lib/atoms/userAtom";
+import { Domain } from "@/lib/Domain";
+import UseAuth from "@/lib/hooks/UseAuth";
+>>>>>>> 424c7fdf58032563af88996072e9526472fd67d1
 import { Ideas, update, Rooms } from "@/lib/interface/INTERFACE";
 import axios from "axios";
 import { useAtom } from "jotai";
@@ -25,6 +31,7 @@ import {
     ArrowRight,
     ChevronLeft,
     ChevronRight,
+    LightbulbIcon,
     List,
     Loader2,
     Paperclip,
@@ -46,6 +53,11 @@ const Page = () => {
     const { loading, authenticated } = UseAuth();
     const [userId] = useAtom(userAtom);
     const router = useRouter();
+    useEffect(()=>{
+        if(!userId && !loading){
+            router.push("/auth/signin")
+        }
+    },[userId,loading])
     const [DataLoading, setDataloading] = useState<boolean>(false);
     const [startupRender, setstartupRender] = useState<boolean>(true);
     const [CreateIdeaCard, setCreateIdeaCard] = useState<boolean>(false);
@@ -167,9 +179,7 @@ const Page = () => {
     useEffect(() => {
         console.log(update_list);
     }, [update_list]);
-    if (!userId) {
-        router.push("/auth/signin");
-    }
+
 
     return (
         <div className="w-full h-full flex flex-col justify-start items-start bg-radial-grid bg-[length:20px_20px] overflow-hidden">
@@ -232,32 +242,30 @@ const Page = () => {
                     <div>Settings Component (to be implemented)</div>
                 )}
                 {startupRender && (
-                    <div className="flex w-full h-full flex-col justify-center items-center">
-                        <div
-                            className={`w-[60%] h-[30%] rounded-lg flex flex-col justify-center items-center p-5 gap-4 ${
-                                isFadingOut ? "animate-fadeOut" : ""
-                            }`}
-                        >
-                            <div className="w-full h-full flex flex-col justify-center items-center p-5 gap-2">
-                                <div className="font-extrabold text-[50px]">
-                                    Initialize Journey by Posting Idea
-                                </div>
-                                <div className="w-[80%] text-gray-600">
-                                    If you are looking to submit your project,
-                                    the first step is to present your idea.
-                                    Without a clear idea, your project lacks
-                                    direction and purpose.
-                                </div>
-                            </div>
-                            <div className="flex gap-4">
-                                <Button onClick={CreateButtonHandlerStartup}>
-                                    Create Idea
-                                </Button>
-                            </div>
-                        </div>
+                    <div className="flex w-full h-full flex-col justify-center items-center  p-8">
+                    <div
+                      className={`w-full max-w-3xl rounded-xl shadow-lg  flex flex-col justify-center items-center p-8 gap-6 transition-all duration-300 ${
+                        isFadingOut ? "opacity-0 scale-95" : "opacity-100 scale-100"
+                      }`}
+                    >
+                      <LightbulbIcon className="w-20 h-20 text-yellow-400" />
+                      <h1 className="font-extrabold text-4xl md:text-5xl text-center text-gray-800 leading-tight">
+                        Initialize Journey by Posting Idea
+                      </h1>
+                      <p className="text-center text-gray-600 max-w-xl">
+                        If you are looking to submit your project, the first step is to present your idea.
+                        Without a clear idea, your project lacks direction and purpose.
+                      </p>
+                      <Button 
+                        onClick={CreateButtonHandlerStartup}
+                        className="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-6 rounded-full transition-colors duration-300"
+                      >
+                        Create Idea
+                      </Button>
                     </div>
+                  </div>
                 )}
-                {CreateIdeaCard && (
+                {CreateIdeaCard && setideaSubmitted && (
                     <div className="flex w-full h-full flex-col justify-center items-center">
                         <div className="flex items-center flex-col h-full lg:max-h-[calc(100vh-60px)]">
                             <div className="text-[40px] font-serif m-10">
@@ -282,6 +290,23 @@ const Page = () => {
                                 {ideaData?.idea_text}
                             </div>
                             <div className="px-4 text-blue-500">
+                                <div className="flex w-full">
+
+                                {
+                                    ideaData?.image_link && ideaData.image_link.map((link:string,index:number)=>{
+                                        return(
+                                            <img className="w-[130px]"  key={index} src={link}/>
+                                        )
+                                    })
+                                }
+                                {
+                                    ideaData?.video_link && ideaData.video_link.map((link:string,index:number)=>{
+                                        return(
+                                            <video className="w-[130px]" autoPlay  key={index} src={link}/>
+                                        )
+                                    })
+                                }
+                                </div>
                                 {ideaData?.usefull_links &&
                                 Array.isArray(ideaData.usefull_links) ? (
                                     ideaData.usefull_links.map(

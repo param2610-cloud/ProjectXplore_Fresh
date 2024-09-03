@@ -33,9 +33,9 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
-import { userAtom } from "@/lib/atoms/UserAtom";
+import { userAtom } from "@/lib/atoms/userAtom";
 import { Domain, FrontendDomain } from "@/lib/Domain";
-import UseAuth from "@/lib/hooks/UseUser";
+import UseAuth from "@/lib/hooks/UseAuth";
 import { TeamData } from "@/lib/interface/teamdata";
 import { Avatar } from "@radix-ui/react-avatar";
 import axios from "axios";
@@ -57,6 +57,7 @@ const Page = () => {
     const [teamId, setteamId] = useState<string | null>();
     const [teamOwnerDetails, setteamOwnerDetails] = useState<any>();
     const [activePanel, setActivePanel] = useState<"details" | "requests" | "ranking" | null>(null);
+    
     useEffect(()=>{
         if(crossClick){
             setcreatebuttonpress(false)

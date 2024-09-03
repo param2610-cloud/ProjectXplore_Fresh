@@ -17,11 +17,11 @@ import { useToast } from "@/components/ui/use-toast";
 import { Toaster } from "@/components/ui/toaster";
 import { Domain } from "@/lib/Domain";
 import { useRouter } from "next/navigation";
-import useAuth from "@/lib/hooks/UseUser";
+import UseAuth from "@/lib/hooks/UseAuth";
 
 export default function Page() {
     const [pageloading, setPageloading] = useState<boolean>(false);
-    const { loading, authenticated } = useAuth();
+    const { loading, authenticated } = UseAuth();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState<string | null>(null);

@@ -7,8 +7,8 @@ import { Textarea } from "@/components/ui/textarea"
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
 import { Alert, AlertDescription } from "@/components/ui/alert"
-import UseAuth from '@/lib/hooks/UseUser';
-import { userAtom } from '@/lib/atoms/UserAtom';
+import UseAuth from '@/lib/hooks/UseAuth';
+import { userAtom } from '@/lib/atoms/userAtom';
 import { Domain } from '@/lib/Domain';
 import CloudinaryFileUpload from '../FileInputCompo';
 

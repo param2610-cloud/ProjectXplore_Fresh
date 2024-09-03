@@ -3,8 +3,8 @@ import React, { useState, useEffect } from 'react';
 import { useAtom } from 'jotai';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card"
 import { Alert, AlertDescription } from "@/components/ui/alert"
-import UseAuth from '@/lib/hooks/UseUser';
-import { userAtom } from '@/lib/atoms/UserAtom';
+import UseAuth from '@/lib/hooks/UseAuth';
+import { userAtom } from '@/lib/atoms/userAtom';
 import { user_achievements } from '@/lib/interface/INTERFACE';
 import { Domain } from '@/lib/Domain';
 
