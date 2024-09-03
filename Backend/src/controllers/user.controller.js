@@ -356,13 +356,13 @@ const NoOfProject = asyncHandler(async (req, res, next) => {
             let index = 0
             for(const rooms of data.rooms){
                 for(const project of rooms.New_Project_table){
-                    index++;
+                    index=index+1;
                 }
             }
+            return res.status(200).json(new ApiResponse(200, index, "successfull"));
         } else {
             return next(new ApiError(500, "Internal Server Error"));
         }
-        return res.status(200).json(new ApiResponse(200, index, "successfull"));
     } catch (error) {
         console.log(error);
         return next(new ApiError(500, "Internal Server Error"));
@@ -415,6 +415,32 @@ const listofachievements = asyncHandler(async (req, res) => {
         res.status(500).json({ error: "Error fetching achievements" });
     }
 });
+const listofteam = asyncHandler(async (req, res) => {
+    try {
+        const { user_id } = req.query;
+        console.log(user_id);
+        
+
+        if (!user_id) {
+            return res.status(400).json({ error: "User ID is required" });
+        }
+
+        const rooms = await prisma.users.findUnique({
+            where: {
+                user_id:user_id
+            },
+            include:{
+                rooms:true
+            }
+        });
+        console.log(rooms.rooms.length);
+        
+        res.status(200).json(rooms.rooms.length);
+    } catch (error) {
+        console.error("Error fetching achievements:", error);
+        res.status(500).json({ error: "Error fetching achievements" });
+    }
+});
 
 export {
     getUserDetails,
@@ -426,5 +452,6 @@ export {
     getProfileCompleted,
     NoOfProject,
     Createachievements,
-    listofachievements
+    listofachievements,
+    listofteam
 };

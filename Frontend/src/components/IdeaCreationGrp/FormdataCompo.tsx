@@ -20,6 +20,7 @@ import { useAtom } from "jotai";
 import { userAtom } from "@/lib/atoms/userAtom";
 import UseAuth from "@/lib/hooks/useUser";
 import { usePathname } from "next/navigation";
+import useFirebaseNotifications from "@/lib/control/FirebaseNotification";
 
 const Formdata_ = ({setSubmitted}:{setSubmitted:React.Dispatch<React.SetStateAction<boolean>>}) => {
     const { loading, authenticated } = UseAuth();
@@ -177,6 +178,8 @@ const Formdata_ = ({setSubmitted}:{setSubmitted:React.Dispatch<React.SetStateAct
                             `${Domain}/api/v1/idea/create`,
                             ideaData
                         );
+                        console.log(response);
+                        
                         if (response.status === 200) {
                             toast({
                                 title: "Success",
@@ -189,20 +192,20 @@ const Formdata_ = ({setSubmitted}:{setSubmitted:React.Dispatch<React.SetStateAct
                             setMediaFiles([]);
                             setpreviews([]);
                             setMediaLinks([]);
+                        }else{
+                            toast({
+                                title: "Error",
+                                description: "There was an error submitting your idea.",
+                                variant: "destructive",
+                            });
                         }
                     }
                 }
             setisloading(false);
-            toast({
-                title: "Error",
-                description: "There was an error submitting your idea.",
-                variant: "destructive",
-            });
+            
             setSubmitted(true)
             setisloading(false);
     };
-
-    
     if(!userId && !authenticated){
         return(<div>
             No Access

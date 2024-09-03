@@ -15,12 +15,14 @@ import {
 } from "@/lib/interface/INTERFACE";
 import { Button } from "../ui/button";
 import axios from "axios";
-import { Domain, FrontendDomain } from "@/lib/Domain";
+import { Domain, FirebaseUrl, FrontendDomain } from "@/lib/Domain";
 import { useToast } from "../ui/use-toast";
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
 import { usePathname } from "next/navigation";
 import CopyButton from "../ui/Copytoclipboard";
+import useFirebaseNotifications from "@/lib/control/FirebaseNotification";
+import { Loader2 } from "lucide-react";
 
 const RequestList = () => {
     const [roomId, setroomId] = useState<string>("");
@@ -44,13 +46,16 @@ const RequestList = () => {
         request_text: "",
         domain_expertise_required: "",
     });
-
+    const [loading,setloading] = useState<boolean>(false)
+    const {notifications,error} = useFirebaseNotifications(FirebaseUrl)
     useEffect(() => {
         if (roomId) {
+            setloading(true)
             console.log(roomId);
             fetchRequestDetails();
+            setloading(false)
         }
-    }, [roomId]);
+    }, [roomId,notifications]);
 
     const fetchRequestDetails = async () => {
         try {
@@ -229,7 +234,10 @@ const RequestList = () => {
                     </p>
                 </div>
             )}
-
+            {
+                loading && 
+                <Loader2 className="w-6 h-6 animate-spin"/>
+            }
             {responses.length > 0 && (
                 <Table>
                     <TableCaption>Collaboration Request Reviews</TableCaption>
