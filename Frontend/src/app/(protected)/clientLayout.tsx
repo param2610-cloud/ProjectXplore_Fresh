@@ -62,7 +62,7 @@ import {
 } from "@/components/ui/table";
 import { useToast } from "@/components/ui/use-toast";
 import { userAtom } from "@/lib/atoms/userAtom";
-import UseAuth from "@/lib/hooks/useUser";
+import UseAuth from "@/lib/hooks/UseAuth";
 import { PopoverContent } from "@radix-ui/react-popover";
 import axios from "axios";
 import { useAtom } from "jotai";

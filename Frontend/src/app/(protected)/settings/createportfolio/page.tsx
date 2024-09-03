@@ -12,7 +12,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Domain } from '@/lib/Domain';
-import UseAuth from '@/lib/hooks/UseUser';
+import UseAuth from '@/lib/hooks/UseAuth';
 import { useAtom } from 'jotai';
 import { userAtom } from '@/lib/atoms/userAtom';
 

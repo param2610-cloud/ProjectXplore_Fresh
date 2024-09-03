@@ -18,7 +18,7 @@ import { Domain } from "@/lib/Domain";
 import UploadOnCloudinary from "@/lib/control/UploadOnCloudinary";
 import { useAtom } from "jotai";
 import { userAtom } from "@/lib/atoms/userAtom";
-import UseAuth from "@/lib/hooks/useUser";
+import UseAuth from "@/lib/hooks/UseAuth";
 import { usePathname } from "next/navigation";
 
 const Formdata_ = ({setSubmitted}:{setSubmitted:React.Dispatch<React.SetStateAction<boolean>>}) => {
@@ -189,15 +189,17 @@ const Formdata_ = ({setSubmitted}:{setSubmitted:React.Dispatch<React.SetStateAct
                             setMediaFiles([]);
                             setpreviews([]);
                             setMediaLinks([]);
+                        }else{
+
+                            toast({
+                                title: "Error",
+                                description: "There was an error submitting your idea.",
+                                variant: "destructive",
+                            });
                         }
                     }
                 }
             setisloading(false);
-            toast({
-                title: "Error",
-                description: "There was an error submitting your idea.",
-                variant: "destructive",
-            });
             setSubmitted(true)
             setisloading(false);
     };

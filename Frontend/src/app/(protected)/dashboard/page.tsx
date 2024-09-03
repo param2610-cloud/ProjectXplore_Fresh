@@ -13,7 +13,7 @@ import {
     RefreshCw,
     UserPlus,
 } from "lucide-react";
-import UseAuth from "@/lib/hooks/useUser";
+import UseAuth from "@/lib/hooks/UseAuth";
 import { useAtom } from "jotai";
 import { userAtom } from "@/lib/atoms/userAtom";
 import { useRouter } from "next/navigation";
