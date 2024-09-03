@@ -1,7 +1,7 @@
 'use client'
 import RoomCard from '@/components/room/RoomCard'
 import { Button } from '@/components/ui/button'
-import { userAtom } from '@/lib/atoms/userAtom'
+import { userAtom } from '@/lib/atoms/UserAtom'
 import { Domain } from '@/lib/Domain'
 import UseAuth from '@/lib/hooks/UseAuth'
 import { RoomGetData } from '@/lib/interface/INTERFACE'
@@ -29,6 +29,8 @@ const RoomPage = () => {
                 const fetchedData = await axios.get(`${Domain}/api/v1/room/user-room-data`, {
                     params: { userId }
                 })
+                console.log(fetchedData);
+                
                 setRoomData(fetchedData.data.data)
             } catch (error) {
                 console.error('Error fetching room data:', error)
