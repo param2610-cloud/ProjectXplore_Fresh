@@ -15,7 +15,7 @@ import {
 } from "lucide-react";
 import UseAuth from "@/lib/hooks/UseAuth";
 import { useAtom } from "jotai";
-import { userAtom } from "@/lib/atoms/userAtom";
+import { userAtom } from '@/lib/atoms/UserAtom';
 import { useRouter } from "next/navigation";
 import { Domain, FirebaseUrl } from "@/lib/Domain";
 import Notification from "@/components/Notification";

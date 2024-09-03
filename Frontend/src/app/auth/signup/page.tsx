@@ -18,7 +18,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Domain } from "@/lib/Domain";
 import { useRouter } from "next/navigation";
 import { useAtom } from "jotai";
-import { userAtom } from "@/lib/atoms/userAtom";
+import { userAtom } from '@/lib/atoms/UserAtom';
 interface ErrorMessage {
     error: boolean;
     title: string;
