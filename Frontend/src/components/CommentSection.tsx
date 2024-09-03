@@ -3,7 +3,7 @@ import axios from "axios";
 import { Domain } from "@/lib/Domain";
 import { HeartIcon } from "lucide-react";
 import { useAtom } from "jotai";
-import { userAtom } from "@/lib/atoms/userAtom";
+import { userAtom } from '@/lib/atoms/UserAtom';
 import { Avatar, AvatarImage } from "./ui/avatar";
 
 export default function CommentsSection({ projectId }: { projectId: string }) {

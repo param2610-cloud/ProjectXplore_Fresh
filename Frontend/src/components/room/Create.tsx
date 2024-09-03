@@ -9,7 +9,7 @@ import axios from "axios";
 import { Domain } from "@/lib/Domain";
 import UseAuth from "@/lib/hooks/UseAuth";
 import { useAtom } from "jotai";
-import { userAtom } from "@/lib/atoms/userAtom";
+import { userAtom } from '@/lib/atoms/UserAtom';
 import { useToast } from "../ui/use-toast";
 import { useRouter } from "next/navigation";
 

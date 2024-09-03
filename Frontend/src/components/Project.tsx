@@ -1,5 +1,5 @@
 "use client";
-import { userAtom } from "@/lib/atoms/userAtom";
+import { userAtom } from '@/lib/atoms/UserAtom';
 import { Domain } from "@/lib/Domain";
 import { Label } from "@radix-ui/react-label";
 import axios from "axios";
