@@ -2,6 +2,7 @@ import prisma from "../db/prismaClient.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
+import { sendNotification } from "../utils/Firebase.js";
 
 const getAllUpdateFromRoomId = asyncHandler(async (req, res, next) => {
     const { RoomId } = req.query;
@@ -47,6 +48,7 @@ const createUpdate = asyncHandler(async (req, res, next) => {
                 },
             });
             if (createData) {
+                sendNotification({ message: `New Update: \"${update_text}\"` });
                 return res
                     .status(200)
                     .json(

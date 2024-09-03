@@ -69,23 +69,8 @@ const NavbarCompo = ({ userDetails }: { userDetails: Users | null }) => {
 
                                         </Badge>
                                     </Link>
-                                    <Link
-                                        href="/idea"
-                                        className={`flex items-center gap-3 rounded-lg  bg-muted/40 px-3 py-2 ${pathname.includes("projects")?`text-primary`:`text-muted-foreground    `} transition-all hover:text-primary`}
-                                    >
-                                        <Lightbulb className="h-4 w-4" />
-                                        My Ideas
-                                        <Badge className="ml-auto flex h-6 w-6 shrink-0 items-center justify-center rounded-full">
-                                            {userDetails?.ideas && userDetails.ideas.length}
-                                        </Badge>
-                                    </Link>
-                                    <Link
-                                        href="#"
-                                        className={`flex items-center gap-3 rounded-lg  bg-muted/40 px-3 py-2 ${pathname.includes("explore-projects")?`text-primary`:`text-muted-foreground    `} transition-all hover:text-primary`}
-                                    >
-                                        <Earth className="h-4 w-4" />
-                                        Browse Projects
-                                    </Link>
+                                    
+                                    
                                     <Link
                                         href="/teams"
                                         className={`flex items-center gap-3 rounded-lg  bg-muted/40 px-3 py-2 ${pathname.includes("teams")?`text-primary`:`text-muted-foreground    `} transition-all hover:text-primary`}

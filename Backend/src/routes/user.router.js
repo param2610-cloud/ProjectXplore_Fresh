@@ -1,5 +1,5 @@
 import express from "express";
-import {  getUserDetails, loginUser, logoutUser, refreshAccessToken, registerUser, validateAccessToken,getProfileCompleted, NoOfProject, Createachievements, listofachievements } from "../controllers/user.controller.js";
+import {  getUserDetails, loginUser, logoutUser, refreshAccessToken, registerUser, validateAccessToken,getProfileCompleted, NoOfProject, Createachievements, listofachievements, listofteam } from "../controllers/user.controller.js";
 import { upload } from "../middlewares/multer.middleware.js";
 import { verifyJWT } from "../middlewares/auth.middleware.js";
 import { addInstitutionToUser, addSkill, checkUsernameAvailability, deleteInstitutionOfNonVerifiedUser, deleteSkill, getInstitutionDetails, getSkill, Moreinfo } from "../controllers/userinfo.controller.js";
@@ -27,6 +27,7 @@ router.get("/get-skill",getSkill)
 router.get("/username-status",checkUsernameAvailability)
 router.get("/no-of-project",NoOfProject)
 router.get('/achievements',listofachievements)
+router.get('/teams',listofteam)
 
 
 export default router;
