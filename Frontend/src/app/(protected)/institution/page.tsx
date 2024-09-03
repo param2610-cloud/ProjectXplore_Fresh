@@ -5,7 +5,7 @@ import axios from 'axios';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { Domain } from '@/lib/Domain';
-import UseAuth from '@/lib/hooks/UseUser';
+import UseAuth from '@/lib/hooks/UseAuth';
 import { useAtom } from 'jotai';
 import { userAtom } from '@/lib/atoms/userAtom';
 

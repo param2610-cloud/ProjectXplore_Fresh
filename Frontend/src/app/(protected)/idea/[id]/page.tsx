@@ -33,7 +33,7 @@ import {
 } from "@/components/ui/table";
 import { userAtom } from "@/lib/atoms/userAtom";
 import { Domain, FrontendDomain } from "@/lib/Domain";
-import UseAuth from "@/lib/hooks/useUser";
+import UseAuth from "@/lib/hooks/UseAuth";
 import { Ideas } from "@/lib/interface/INTERFACE";
 import { TeamData } from "@/lib/interface/teamdata";
 import { Avatar } from "@radix-ui/react-avatar";

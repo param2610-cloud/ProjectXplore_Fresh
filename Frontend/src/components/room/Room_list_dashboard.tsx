@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Card, CardContent, CardTitle } from '../ui/card'
-import UseAuth from '@/lib/hooks/UseUser'
+import UseAuth from '@/lib/hooks/UseAuth'
 import { useAtom } from 'jotai'
 import { userAtom } from '@/lib/atoms/userAtom'
 import axios from 'axios'

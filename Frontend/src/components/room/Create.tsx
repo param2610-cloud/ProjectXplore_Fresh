@@ -7,7 +7,7 @@ import Avataruploader from "@/lib/control/Avataruploader";
 import { Button } from "../ui/button";
 import axios from "axios";
 import { Domain } from "@/lib/Domain";
-import UseAuth from "@/lib/hooks/useUser";
+import UseAuth from "@/lib/hooks/UseAuth";
 import { useAtom } from "jotai";
 import { userAtom } from "@/lib/atoms/userAtom";
 import { useToast } from "../ui/use-toast";
