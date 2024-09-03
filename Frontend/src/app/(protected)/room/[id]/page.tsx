@@ -16,7 +16,7 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/use-toast";
 import { userAtom } from "@/lib/atoms/userAtom";
-import { Domain } from "@/lib/Domain";
+import { Domain, FirebaseUrl } from "@/lib/Domain";
 import UseAuth from "@/lib/hooks/useUser";
 import { Ideas, update, Rooms } from "@/lib/interface/INTERFACE";
 import axios from "axios";
@@ -26,6 +26,7 @@ import {
     ChevronLeft,
     ChevronRight,
     List,
+    Loader2,
     Paperclip,
     Pin,
     Settings,
@@ -39,6 +40,7 @@ import { useRouter } from "next/navigation";
 import React, { useEffect, useRef, useState } from "react";
 import ProjectCreateComponent from "../../project/create/page";
 import ChatBasedProjectSubmit from "@/components/room/ChatBasedProjectComponent";
+import useFirebaseNotifications from "@/lib/control/FirebaseNotification";
 
 const Page = () => {
     const { loading, authenticated } = UseAuth();
@@ -65,6 +67,7 @@ const Page = () => {
     const { toast } = useToast();
     const pathname = usePathname();
     const parts = pathname.split("/");
+    const { notifications, error } = useFirebaseNotifications(`${FirebaseUrl}`);
 
     useEffect(() => {
         if(userId === "d0e358f6-c0c7-41a0-8f4a-2687967431ad"){
@@ -80,11 +83,12 @@ const Page = () => {
     useEffect(() => {
         const fetchIdeaData = async () => {
             try {
-                toast({
-                    title: "Data is Fetching",
-                    description:
-                        "Due to heavy traffic, delay is there to retrieve data from server.",
-                });
+                setDataloading(true)
+                // toast({
+                //     title: "Data is Fetching",
+                //     description:
+                //         "Due to heavy traffic, delay is there to retrieve data from server.",
+                // });
                 const ideaData = await axios.get(
                     `${Domain}/api/v1/idea/get-idea`,
                     {
@@ -108,23 +112,24 @@ const Page = () => {
                 console.log(roomData.data.data.update);
                 setupdate_list(roomData.data.data.update);
                 
-                toast({
-                    title: "Data is Fetched",
-                    description: "Continue your work",
-                });
+                // toast({
+                //     title: "Data is Fetched",
+                //     description: "Continue your work",
+                // });
+                setDataloading(false)
+
             } catch (error) {
                 toast({
                     title: "Error Fetching Data",
                     description:
                         "Unable to retrieve data. Please try again later.",
-                    variant: "destructive",
                 });
             }
         };
         if (roomId) {
             fetchIdeaData();
         }
-    }, [roomId]);
+    }, [roomId,notifications]);
 
     useEffect(() => {
         if (ideaData) {
@@ -168,6 +173,12 @@ const Page = () => {
 
     return (
         <div className="w-full h-full flex flex-col justify-start items-start bg-radial-grid bg-[length:20px_20px] overflow-hidden">
+            <div className="absolute top-[70px] left-[300px]">
+                {
+                    DataLoading && 
+                        <Loader2 className="  w-4 h-4 animate-spin" />
+                }
+            </div>
             <div className="w-full h-full overflow-y-scroll">
                 <div className="flex justify-between items-center w-full p-4">
                     <div className="flex gap-1 justify-center items-center z-10 text-3xl font-extrabold">

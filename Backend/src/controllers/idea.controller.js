@@ -33,7 +33,8 @@ export const createIdea = asyncHandler(async (req, res, next) => {
             },
         });
         console.log(idea);
-
+        sendNotification({ message: `Idea is uploaded` });
+        
         return res
             .status(200)
             .json(new ApiResponse(200, idea, "Idea is created successfully!"));

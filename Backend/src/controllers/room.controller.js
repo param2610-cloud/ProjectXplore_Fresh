@@ -542,6 +542,7 @@ export const requestReviewStatusUpdate = asyncHandler(async (req, res, next) => 
                         role_name
                     }
                 });
+                sendNotification({ message: `Member is added.` });
 
                 console.log('Member added successfully:', AddMember);
 
