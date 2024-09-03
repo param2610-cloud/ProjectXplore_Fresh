@@ -6,7 +6,7 @@ import { Button } from "./ui/button";
 import axios from "axios";
 import { Domain } from "@/lib/Domain";
 import { useAtom } from "jotai";
-import { userAtom } from "@/lib/atoms/UserAtom";
+import { userAtom } from "@/lib/atoms/userAtom";
 
 interface Skillprops {
     skill_name: string;

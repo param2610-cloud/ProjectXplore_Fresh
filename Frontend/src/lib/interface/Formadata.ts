@@ -8,4 +8,4 @@ export interface UserFormData {
     institution: string;
     skills: string;
     interest: string;
-  }
+  } 

@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Domain } from '@/lib/Domain';
 import UseAuth from '@/lib/hooks/UseUser';
 import { useAtom } from 'jotai';
-import { userAtom } from '@/lib/atoms/UserAtom';
+import { userAtom } from '@/lib/atoms/userAtom';
 
 interface User {
   full_name: string;

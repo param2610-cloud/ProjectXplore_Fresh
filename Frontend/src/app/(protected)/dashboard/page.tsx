@@ -13,9 +13,9 @@ import {
     RefreshCw,
     UserPlus,
 } from "lucide-react";
-import UseAuth from "@/lib/hooks/UseUser";
+import UseAuth from "@/lib/hooks/useUser";
 import { useAtom } from "jotai";
-import { userAtom } from "@/lib/atoms/UserAtom";
+import { userAtom } from "@/lib/atoms/userAtom";
 import { useRouter } from "next/navigation";
 
 const Dashboard = () => {

@@ -26,9 +26,9 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
-import { userAtom } from "@/lib/atoms/UserAtom";
+import { userAtom } from "@/lib/atoms/userAtom";
 import { Domain, FrontendDomain } from "@/lib/Domain";
-import UseAuth from "@/lib/hooks/UseUser";
+import UseAuth from "@/lib/hooks/useUser";
 import { TeamMemberRoles } from "@/lib/interface/INTERFACE";
 import { TeamData } from "@/lib/interface/teamdata";
 import { Avatar } from "@radix-ui/react-avatar";
