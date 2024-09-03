@@ -2,7 +2,7 @@
 import Ideacard from "@/components/Ideacard";
 import { userAtom } from "@/lib/atoms/userAtom";
 import { Domain } from "@/lib/Domain";
-import UseAuth from "@/lib/hooks/useUser";
+import UseAuth from "@/lib/hooks/UseAuth";
 import { Users } from "@/lib/interface/INTERFACE";
 import axios from "axios";
 import { useAtom } from "jotai";

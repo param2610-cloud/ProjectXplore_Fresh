@@ -15,7 +15,7 @@ import {
 import { Button } from "../ui/button";
 import { userAtom } from "@/lib/atoms/userAtom";
 import { useAtom } from "jotai";
-import UseAuth from "@/lib/hooks/useUser";
+import UseAuth from "@/lib/hooks/UseAuth";
 import { usePathname } from "next/navigation";
 import axios from "axios";
 import { Domain } from "@/lib/Domain";
