@@ -15,9 +15,9 @@ import {
 } from "@/components/ui/popover";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/use-toast";
-import { userAtom } from "@/lib/atoms/UserAtom";
+import { userAtom } from "@/lib/atoms/userAtom";
 import { Domain } from "@/lib/Domain";
-import UseAuth from "@/lib/hooks/UseUser";
+import UseAuth from "@/lib/hooks/useUser";
 import { Ideas, update, Rooms } from "@/lib/interface/INTERFACE";
 import axios from "axios";
 import { useAtom } from "jotai";

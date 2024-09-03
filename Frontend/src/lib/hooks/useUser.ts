@@ -2,7 +2,7 @@ import axios from "axios";
 import { Domain } from "../Domain";
 import { useEffect, useState } from "react";
 import { useAtom } from "jotai";
-import { userAtom } from "../atoms/UserAtom";
+import { userAtom } from "../atoms/userAtom";
 
 function UseAuth() {
     const [, setUserid] = useAtom(userAtom);

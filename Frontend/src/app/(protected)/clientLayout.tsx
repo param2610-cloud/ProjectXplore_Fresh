@@ -61,8 +61,8 @@ import {
     TableRow,
 } from "@/components/ui/table";
 import { useToast } from "@/components/ui/use-toast";
-import { userAtom } from "../../lib/atoms/UserAtom";
-import UseAuth from "@/lib/hooks/UseUser";
+import { userAtom } from "@/lib/atoms/userAtom";
+import UseAuth from "@/lib/hooks/useUser";
 import { PopoverContent } from "@radix-ui/react-popover";
 import axios from "axios";
 import { useAtom } from "jotai";
@@ -70,7 +70,7 @@ import { LogOut, Settings, UserCircle } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import NavbarCompo from "@/components/NavbarCompo";
-import { ProjectnumberAtom } from "@/lib/atoms/UseProjectnumber";
+import { ProjectnumberAtom } from "@/lib/atoms/useProjectnumber";
 import { Domain } from "@/lib/Domain";
 import { Users } from "@/lib/interface/INTERFACE";
 import { useTheme } from "next-themes";

@@ -1,5 +1,5 @@
 'use client';
-import { userAtom } from '@/lib/atoms/UserAtom';
+import { userAtom } from '@/lib/atoms/userAtom';
 import UseAuth from '@/lib/hooks/UseUser';
 import { useAtom } from 'jotai';
 import { usePathname, useRouter } from 'next/navigation';
