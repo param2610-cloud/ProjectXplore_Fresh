@@ -70,13 +70,8 @@ import { LogOut, Settings, UserCircle } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import NavbarCompo from "@/components/NavbarCompo";
-<<<<<<< HEAD
 import { ProjectnumberAtom } from "@/lib/atoms/UseProjectnumber";
 import { Domain, FirebaseUrl } from "@/lib/Domain";
-=======
-import { ProjectnumberAtom } from "@/lib/atoms/useProjectnumber";
-import { Domain } from "@/lib/Domain";
->>>>>>> 424c7fdf58032563af88996072e9526472fd67d1
 import { Users } from "@/lib/interface/INTERFACE";
 import { useTheme } from "next-themes";
 import Notification from "@/components/Notification";
@@ -145,6 +140,8 @@ export default function ClientLayout({
             }
         }
     };
+    console.log(userid,Isprofile);
+    
     if (!userid || Isprofile) {
         return (
             <main className="box-order w-full h-screen overflow-hidden m-0 p-0">

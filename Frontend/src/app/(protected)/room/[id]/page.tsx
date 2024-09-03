@@ -15,15 +15,7 @@ import {
 } from "@/components/ui/popover";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/use-toast";
-<<<<<<< HEAD
-import { userAtom } from '@/lib/atoms/UserAtom';
-import { Domain, FirebaseUrl } from "@/lib/Domain";
-import UseAuth from "@/lib/hooks/UseUser";
-=======
-import { userAtom } from '@/lib/atoms/UserAtom';
-import { Domain } from "@/lib/Domain";
-import UseAuth from "@/lib/hooks/UseAuth";
->>>>>>> 424c7fdf58032563af88996072e9526472fd67d1
+
 import { Ideas, update, Rooms } from "@/lib/interface/INTERFACE";
 import axios from "axios";
 import { useAtom } from "jotai";
@@ -48,6 +40,9 @@ import React, { useEffect, useRef, useState } from "react";
 import ProjectCreateComponent from "../../project/create/page";
 import ChatBasedProjectSubmit from "@/components/room/ChatBasedProjectComponent";
 import useFirebaseNotifications from "@/lib/control/FirebaseNotification";
+import { userAtom } from "@/lib/atoms/UserAtom";
+import UseAuth from "@/lib/hooks/UseAuth";
+import { Domain, FirebaseUrl } from "@/lib/Domain";
 
 const Page = () => {
     const { loading, authenticated } = UseAuth();
