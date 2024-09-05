@@ -1,8 +1,8 @@
 import express, { text } from 'express';
-import { logger, logEvents } from './middlewares/logger.js';
-import ErrorHandler from './middlewares/errorHandler.js';
+import { logger, logEvents } from './src/middlewares/logger.js';
+import ErrorHandler from './src/middlewares/errorHandler.js';
 import cors from 'cors';
-import { corsoptions } from './config/corsOptions.js';
+import { corsoptions } from './src/config/corsOptions.js';
 import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
 
@@ -22,16 +22,16 @@ app.use('/', express.static("public"));
 app.use(cookieParser());
 
 //router import 
-import userRouter from './routes/user.router.js';
-import selfRouter from './routes/data.router.js'
-import thirdpartyRouter from './routes/thirdParty.router.js'
-import teamrouter from './routes/team.router.js'
-import idearouter from './routes/idea.router.js'
-import projectRouter from './routes/project.router.js'
-import roomRouter from './routes/room.router.js'
-import updateRouter from './routes/update.router.js'
-import portfolioRouter from './routes/portfolio.router.js'
-import coordinator from './routes/mentor.router.js';
+import userRouter from './src/routes/user.router.js';
+import selfRouter from './src/routes/data.router.js'
+import thirdpartyRouter from './src/routes/thirdParty.router.js'
+import teamrouter from './src/routes/team.router.js'
+import idearouter from './src/routes/idea.router.js'
+import projectRouter from './src/routes/project.router.js'
+import roomRouter from './src/routes/room.router.js'
+import updateRouter from './src/routes/update.router.js'
+import portfolioRouter from './src/routes/portfolio.router.js'
+import coordinator from './src/routes/mentor.router.js';
 
 //router declaration
 app.use('/api/v1/users', userRouter);

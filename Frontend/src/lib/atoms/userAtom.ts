@@ -1,4 +1,5 @@
 // atoms/userAtom.ts
 import { atom } from 'jotai';
 
-export const userAtom = atom< string | null>(null);
+const UserAtom = atom< string | null>(null);
+export default UserAtom

@@ -209,6 +209,7 @@ const Formdata_ = ({setSubmitted}:{setSubmitted:React.Dispatch<React.SetStateAct
                     }
                 }
             setisloading(false);
+            
             setSubmitted(true)
             setisloading(false);
     };
