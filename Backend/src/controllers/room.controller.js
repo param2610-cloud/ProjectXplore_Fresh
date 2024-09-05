@@ -3,6 +3,7 @@ import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import nodemailer from "nodemailer";
+import { sendNotification } from "../utils/Firebase.js";
 
 //get room details on a specific user
 export const get_room_details_for_specific_user = asyncHandler(

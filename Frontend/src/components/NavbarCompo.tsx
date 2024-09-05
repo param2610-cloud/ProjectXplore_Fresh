@@ -20,6 +20,7 @@ const NavbarCompo = ({ userDetails }: { userDetails: Users | null }) => {
                                         <LucideLayoutDashboard className="h-4 w-4" />
                                         Dashboard
                                     </Link>
+                                    
                                     <Link
                                         href="/institution"
                                         className={`flex items-center gap-3 rounded-lg bg-muted/40 px-3 py-2 ${pathname.includes("error")?`text-primary`:`text-muted-foreground    `} transition-all hover:text-primary`}
@@ -77,13 +78,6 @@ const NavbarCompo = ({ userDetails }: { userDetails: Users | null }) => {
                                     >
                                         <Package className="h-4 w-4" />
                                         Teams{" "}
-                                    </Link>
-                                    <Link
-                                        href="/institution"
-                                        className={`flex items-center gap-3 rounded-lg  bg-muted/40 px-3 py-2 ${pathname.includes("error")?`text-primary`:`text-muted-foreground    `} transition-all hover:text-primary`}
-                                    >
-                                        <School className="h-4 w-4" />
-                                        Institution
                                     </Link>
                                     <Link
                                         href="/settings/achievements"

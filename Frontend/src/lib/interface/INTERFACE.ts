@@ -628,3 +628,9 @@ export interface Developer {
     users            :User;
     usersUser_id    :string;
   }
+export interface OptionProps {
+    id: string | null;
+    components_name: string;
+  components_image_link:string |null;
+  }
+  

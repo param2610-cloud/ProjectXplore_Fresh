@@ -1,4 +1,5 @@
 // atoms/userAtom.ts
 import { atom } from 'jotai';
 
-export const ProjectnumberAtom = atom<{ Projectnumber: number } | null>(null);
+const ProjectnumberAtom = atom<{ Projectnumber: number } | null>(null);
+export default ProjectnumberAtom;
