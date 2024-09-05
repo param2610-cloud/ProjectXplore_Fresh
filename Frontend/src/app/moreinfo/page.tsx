@@ -4,7 +4,7 @@ import axios from 'axios';
 import { Domain } from '@/lib/Domain';
 import UseAuth from '@/lib/hooks/UseAuth';
 import { useAtom } from 'jotai';
-import { userAtom } from '@/lib/atoms/UserAtom';
+import userAtom from '@/lib/atoms/UserAtom';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
