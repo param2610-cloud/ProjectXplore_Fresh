@@ -13,7 +13,7 @@ import {
     TableRow,
 } from "../ui/table";
 import { Button } from "../ui/button";
-import { userAtom } from '@/lib/atoms/UserAtom';
+import userAtom from '@/lib/atoms/UserAtom';
 import { useAtom } from "jotai";
 import UseAuth from "@/lib/hooks/UseAuth";
 import { usePathname } from "next/navigation";

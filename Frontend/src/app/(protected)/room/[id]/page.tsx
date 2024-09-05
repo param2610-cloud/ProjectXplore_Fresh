@@ -40,7 +40,7 @@ import React, { useEffect, useRef, useState } from "react";
 import ProjectCreateComponent from "../../project/create/page";
 import ChatBasedProjectSubmit from "@/components/room/ChatBasedProjectComponent";
 import useFirebaseNotifications from "@/lib/control/FirebaseNotification";
-import { userAtom } from "@/lib/atoms/UserAtom";
+import userAtom from "@/lib/atoms/UserAtom";
 import UseAuth from "@/lib/hooks/UseAuth";
 import { Domain, FirebaseUrl } from "@/lib/Domain";
 

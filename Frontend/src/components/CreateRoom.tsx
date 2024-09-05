@@ -8,7 +8,7 @@ import { Button } from "../components/ui/button";
 import axios from "axios";
 import { Domain } from "../lib/Domain"; 
 import { useAtom } from "jotai";
-import { userAtom } from "../lib/atoms/userAtom"; 
+import userAtom from "../lib/atoms/UserAtom"; 
 import { useToast } from "../components/ui/use-toast";
 
 const CreateRoomPage = () => {
