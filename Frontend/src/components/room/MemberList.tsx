@@ -9,7 +9,7 @@ import { usePathname } from 'next/navigation';
 import { User } from '../SearchDialouge';
 import { Rooms } from '@/lib/interface/INTERFACE';
 import { useAtom } from 'jotai';
-import { userAtom } from '@/lib/atoms/UserAtom';
+import userAtom from '@/lib/atoms/UserAtom';
 
 
 

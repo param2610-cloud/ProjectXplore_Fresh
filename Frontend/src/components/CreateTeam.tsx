@@ -6,7 +6,7 @@ import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
 import { Button } from "./ui/button";
 import { useAtom } from "jotai";
-import { userAtom } from '@/lib/atoms/UserAtom';
+import userAtom from '@/lib/atoms/UserAtom';
 import { ChevronLeft } from "lucide-react";
 import { Domain } from "@/lib/Domain";
 import axios from "axios";

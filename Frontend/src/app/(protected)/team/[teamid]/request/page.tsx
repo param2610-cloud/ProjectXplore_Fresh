@@ -11,7 +11,7 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
-import { userAtom } from '@/lib/atoms/UserAtom';
+import userAtom from '@/lib/atoms/UserAtom';
 import { Domain } from "@/lib/Domain";
 import UseAuth from "@/lib/hooks/UseAuth";
 import { team_request_response_record, TeamMemberRoles, Users } from "@/lib/interface/INTERFACE";
