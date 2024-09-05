@@ -2,10 +2,10 @@ import axios from "axios";
 import { Domain } from "../Domain";
 import { useEffect, useState } from "react";
 import { useAtom } from "jotai";
-import { userAtom } from "../atoms/UserAtom";
+import UserAtom from "../atoms/UserAtom";
 
 function UseAuth() {
-    const [, setUserid] = useAtom(userAtom);
+    const [, setUserid] = useAtom(UserAtom);
     const [authenticated, setIsAuthenticated] = useState(false);
     const [loading, setIsLoading] = useState(true);
 

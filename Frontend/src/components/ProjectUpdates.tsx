@@ -30,7 +30,7 @@ const ProjectUpdates = ({ updateList, currentUserId }:{updateList:update[],curre
                       key={imgIndex}
                       src={image}
                       alt={`Update image ${imgIndex + 1}`}
-                      className="max-w-full h-auto rounded"
+                      className="w-32 h-auto rounded"
                     />
                   ))}
                 </div>

@@ -6,6 +6,7 @@ import { Textarea } from "@/components/ui/textarea";
 import React, { useState } from "react";
 import { useForm, useFieldArray } from "react-hook-form";
 import { FreshSearchBar } from "@/components/FreshSearchBar";
+import { OptionProps } from "@/lib/interface/INTERFACE";
 
 type Feature = {
     input: { text: string; media: File | null; link: string };
@@ -26,12 +27,7 @@ interface ProjectFormInputs {
     softwareTechnologies: string[]; // searched technologies
     features: Feature[];
 }
-interface OptionProps {
-    id: string | null;
-    components_name: string;
-  components_image_link:string |null;
-  }
-  
+
 
 const ProjectCreateComponent: React.FC = () => {
     const { register, control, handleSubmit, setValue } = useForm<ProjectFormInputs>({

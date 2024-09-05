@@ -193,10 +193,6 @@ const Formdata_ = ({setSubmitted}:{setSubmitted:React.Dispatch<React.SetStateAct
                             setpreviews([]);
                             setMediaLinks([]);
                         }else{
-<<<<<<< HEAD
-=======
-
->>>>>>> 424c7fdf58032563af88996072e9526472fd67d1
                             toast({
                                 title: "Error",
                                 description: "There was an error submitting your idea.",
@@ -206,10 +202,7 @@ const Formdata_ = ({setSubmitted}:{setSubmitted:React.Dispatch<React.SetStateAct
                     }
                 }
             setisloading(false);
-<<<<<<< HEAD
             
-=======
->>>>>>> 424c7fdf58032563af88996072e9526472fd67d1
             setSubmitted(true)
             setisloading(false);
     };
