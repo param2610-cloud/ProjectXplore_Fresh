@@ -27,6 +27,8 @@ function UseAuth() {
                     const { user } = response.data.data;
                     setIsAuthenticated(true);
                     setIsLoading(false);
+                    console.log(user);
+                    
                     setUserid(user.user_id);    
                 }
             } catch (error) {
@@ -48,7 +50,9 @@ function UseAuth() {
                     setIsLoading(false);
                     setIsAuthenticated(false);
                 }
+                console.log(response);
                 if (response.status === 200) {
+                    
                     if (response.data.data.user.user_id) {
                         const userid = response.data.data.user.user_id;
                         setIsAuthenticated(true);
