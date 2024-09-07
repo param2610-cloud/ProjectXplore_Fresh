@@ -175,7 +175,8 @@ const refreshAccessToken = asyncHandler(async (req, res, next) => {
 
 const validateAccessToken = asyncHandler(async (req, res, next) => {
     const incomingAccessToken = req.cookies.accessToken;
-
+    console.log(re.cookies);
+    
     if (!incomingAccessToken) {
         return res
             .status(200)
