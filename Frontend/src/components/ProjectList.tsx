@@ -1,4 +1,4 @@
-import { userAtom } from '@/lib/atoms/UserAtom';
+import userAtom from '@/lib/atoms/UserAtom';
 import { Domain } from '@/lib/Domain';
 import axios from 'axios';
 import { useAtom } from 'jotai';
