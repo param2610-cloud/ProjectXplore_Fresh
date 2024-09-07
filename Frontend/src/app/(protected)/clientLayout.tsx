@@ -140,7 +140,6 @@ export default function ClientLayout({
             }
         }
     };
-    console.log(userid,Isprofile);
     
     if (!userid || Isprofile) {
         return (
