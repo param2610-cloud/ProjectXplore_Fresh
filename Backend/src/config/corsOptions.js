@@ -9,4 +9,6 @@ export const corsoptions = {
         }
     },
     credentials: true,
+    secure:true,
+    sameSite:'lax'
 }
