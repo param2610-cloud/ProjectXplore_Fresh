@@ -6,7 +6,7 @@ import { Menu, Package2 } from "lucide-react";
 import TeamDetailsNavbar from "./TeamDetailsNavbar";
 import axios from "axios";
 import { useAtom } from "jotai";
-import { userAtom } from '@/lib/atoms/UserAtom';
+import userAtom from '@/lib/atoms/UserAtom';
 import { Domain } from "@/lib/Domain";
 import { TeamData } from "@/lib/interface/teamdata";
 import { Teams } from "@/lib/interface/INTERFACE";
