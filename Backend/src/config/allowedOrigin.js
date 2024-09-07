@@ -3,6 +3,6 @@ export const allowedOrigins = [
     'http://localhost:3000',
     'http://localhost:5173',
     'http://192.168.0.158:3000',
-    "https://projectxplore.vercel.app/"
+    "https://projectxplore.vercel.app"
 
 ]
