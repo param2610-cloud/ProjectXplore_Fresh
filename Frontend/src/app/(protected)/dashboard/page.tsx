@@ -23,15 +23,26 @@ import { useToast } from "@/components/ui/use-toast";
 import { ProjectData } from "../../../../lib/interface/INTERFACE";
 import Link from "next/link";
 import Image from "next/image";
+import { getCookie } from 'cookies-next';
+
+
 
 const Dashboard = () => {
+    const [cookie,setcookie] = useState<string | undefined>('')
+    useEffect(()=>{
+        console.log("triggert");
+        
+        const myCookie = getCookie('accessToken');
+        setcookie(myCookie)
+    },[cookie])
+    
     const { loading, authenticated } = UseAuth();
     const [userId] = useAtom(userAtom);
     const router = useRouter();
     const [teamsCount, setTeamsCount] = useState(0);
     const [projectsCount, setProjectsCount] = useState(0);
     const [achievementsCount, setAchievementsCount] = useState(0);
-
+    
     useEffect(() => {
         if (userId === "0c33131a-5771-424e-87a7-bf788bb656e4") {
             router.push("/institution");
@@ -112,8 +123,12 @@ const Dashboard = () => {
 
     if (!authenticated) {
         return (
-            <div className="text-center p-4">
-                Please log in to view your projects.
+            <div className="text-center p-4 w-screen h-screen flex justify-center items-center">
+                <div className="flex flex-col">
+                cookies: {cookie?cookie:"no token"}
+
+                <button onClick={()=>{setcookie('abc')}}>Refresh</button>
+                </div>
             </div>
         );
     }
