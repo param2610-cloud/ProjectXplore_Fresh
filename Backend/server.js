@@ -46,7 +46,7 @@ app.use('/api/v1/update',updateRouter)
 app.use("/api/v1/portfolio",portfolioRouter)
 app.use("/api/v1/mentor",coordinator)
 app.get("/",(req,res)=>{
-    res.send(<h1>ProjectXplore Backend</h1>)
+    res.send("<h1>ProjectXplore Backend</h1>")
 })
 
 
