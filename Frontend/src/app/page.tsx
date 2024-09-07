@@ -20,12 +20,13 @@ export default function Home() {
                 </div>
             </div>
             <Separator orientation="horizontal" />
-            <div className="w-screen h-screen">
+            <div className="relative w-screen h-[calc(100vh-64px)] mt-16">
                 <Image
-                fill
                     src={"/banner.jpg"}
                     alt="banner"
-                    className="w-full h-full object-cover"
+                    layout="fill"
+                    objectFit="cover"
+                    className="w-full h-full"
                 />
             </div>
         </main>
