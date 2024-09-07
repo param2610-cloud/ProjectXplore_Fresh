@@ -9,8 +9,8 @@ import {
     TableRow,
 } from "./ui/table";
 import axios from "axios";
-import { Domain } from "@/lib/Domain";
-import { GlobalTeam } from "@/lib/interface/teamdata";
+import { Domain } from "../../lib/Domain";
+import { GlobalTeam } from "../../lib/interface/teamdata";
 
 const GlobalTeamRankingTable = () => {
     const [TeamListData,setTeamListData] = useState<GlobalTeam[]>()

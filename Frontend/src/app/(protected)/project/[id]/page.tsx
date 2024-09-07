@@ -3,9 +3,9 @@
 import { useEffect, useState } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import ProjectDetailsPage from '@/components/project/View';
-import { Domain } from '@/lib/Domain';
+import { Domain } from '../../../../../lib/Domain';
 import axios from 'axios';
-import { ProjectApiResponse, ProjectData, Rooms } from '@/lib/interface/INTERFACE';
+import { ProjectApiResponse, ProjectData, Rooms } from '../../../../../lib/interface/INTERFACE';
 
 export default function Page() {
   const [roomData, setRoomData] = useState<Rooms|null>(null);

@@ -2,7 +2,7 @@ import React, { useState, useRef, useCallback } from 'react';
 import axios from 'axios';
 import { Paperclip, X, Loader2 } from 'lucide-react';
 import { Textarea } from '@/components/ui/textarea';
-import { Domain } from '@/lib/Domain';
+import { Domain } from '../../lib/Domain';
 
 interface CloudinaryFileUploadProps {
   textareaValue: string;

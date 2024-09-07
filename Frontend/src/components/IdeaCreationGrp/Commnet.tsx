@@ -1,4 +1,4 @@
-import { Ideas } from '@/lib/interface/INTERFACE'
+import { Ideas } from '../../../lib/interface/INTERFACE'
 import React from 'react'
 import dayjs from 'dayjs' // Ensure you have dayjs installed for timestamp formatting
 

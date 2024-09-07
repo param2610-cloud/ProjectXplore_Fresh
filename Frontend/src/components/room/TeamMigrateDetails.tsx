@@ -10,14 +10,14 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import userAtom from '@/lib/atoms/UserAtom';
-import { Req_send_handler } from "@/lib/control/Req_send_handler";
-import { Domain, FrontendDomain } from "@/lib/Domain";
-import UseAuth from "@/lib/hooks/UseAuth";
+import userAtom from '../../../lib/atoms/UserAtom';
+import { Req_send_handler } from "../../../lib/control/Req_send_handler";
+import { Domain, FrontendDomain } from "../../../lib/Domain";
+import UseAuth from "../../../lib/hooks/UseAuth";
 import { useAtom } from "jotai";
 import { useState } from "react";
 import { useToast } from "../ui/use-toast";
-import Avataruploader from "@/lib/control/Avataruploader";
+import Avataruploader from "../../../lib/control/Avataruploader";
 import axios from "axios";
 
 export function MIgrateRoom({teamId}:{teamId:string}) {

@@ -1,8 +1,8 @@
 import React from 'react'
 import { Card, CardContent, CardHeader } from './ui/card'
 import Link from 'next/link'
-import { Ideas } from '@/lib/interface/INTERFACE'
-import { FrontendDomain } from '@/lib/Domain'
+import { Ideas } from '../../lib/interface/INTERFACE'
+import { FrontendDomain } from '../../lib/Domain'
 import { Badge } from './ui/badge'
 import { ThumbsUp } from 'lucide-react'
 

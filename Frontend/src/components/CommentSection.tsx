@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Domain } from "@/lib/Domain";
+import { Domain } from "../../lib/Domain";
 import { HeartIcon } from "lucide-react";
 import { useAtom } from "jotai";
-import userAtom from '@/lib/atoms/UserAtom';
+import userAtom from '../../lib/atoms/UserAtom';
 import { Avatar, AvatarImage } from "./ui/avatar";
 
 export default function CommentsSection({ projectId }: { projectId: string }) {

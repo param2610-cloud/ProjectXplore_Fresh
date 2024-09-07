@@ -13,14 +13,14 @@ import {
     RefreshCw,
     UserPlus,
 } from "lucide-react";
-import UseAuth from "@/lib/hooks/UseAuth";
+import UseAuth from "../../../../lib/hooks/UseAuth";
 import { useAtom } from "jotai";
-import userAtom from '@/lib/atoms/UserAtom';
+import userAtom from '../../../../lib/atoms/UserAtom';
 import { useRouter } from "next/navigation";
-import { Domain,FirebaseUrl } from "@/lib/Domain";
+import { Domain,FirebaseUrl } from "../../../../lib/Domain";
 import Notification from "@/components/Notification";
 import { useToast } from "@/components/ui/use-toast";
-import { ProjectData } from "@/lib/interface/INTERFACE";
+import { ProjectData } from "../../../../lib/interface/INTERFACE";
 import Link from "next/link";
 
 const Dashboard = () => {

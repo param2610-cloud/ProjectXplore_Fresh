@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { Domain } from "@/lib/Domain"; // Adjust the path to your Domain module
+import { Domain } from "../../lib/Domain"; // Adjust the path to your Domain module
 import { Label } from "./ui/label";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { X } from "lucide-react";
-import { OptionProps } from "@/lib/interface/INTERFACE";
+import { OptionProps } from "../../lib/interface/INTERFACE";
 
 
 const FreshSearchBar = ({
