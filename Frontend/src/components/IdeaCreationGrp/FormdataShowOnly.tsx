@@ -1,4 +1,4 @@
-import { Ideas } from "@/lib/interface/INTERFACE";
+import { Ideas } from "../../../lib/interface/INTERFACE";
 import React from "react";
 import { Card, CardContent, CardHeader } from "../ui/card";
 

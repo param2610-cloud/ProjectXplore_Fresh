@@ -3,13 +3,13 @@ import { roboto } from "@/app/fonts";
 import React, { useState } from "react";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
-import Avataruploader from "@/lib/control/Avataruploader";
+import Avataruploader from "../../../lib/control/Avataruploader";
 import { Button } from "../ui/button";
 import axios from "axios";
-import { Domain } from "@/lib/Domain";
-import UseAuth from "@/lib/hooks/UseAuth";
+import { Domain } from "../../../lib/Domain";
+import UseAuth from "../../../lib/hooks/UseAuth";
 import { useAtom } from "jotai";
-import userAtom from '@/lib/atoms/UserAtom';
+import userAtom from '../../../lib/atoms/UserAtom';
 import { useToast } from "../ui/use-toast";
 import { useRouter } from "next/navigation";
 

@@ -3,7 +3,7 @@ import { Bell, X } from 'lucide-react';
 import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Button } from '@/components/ui/button';
-import useFirebaseNotifications from '@/lib/control/FirebaseNotification';
+import useFirebaseNotifications from '../../lib/control/FirebaseNotification';
 
 const NotificationItem = ({ notification, onDismiss }:{ notification:any, onDismiss:any }) => (
   <div className="flex items-center justify-between p-4 border-b last:border-b-0">

@@ -1,9 +1,9 @@
 "use client";
 import Ideacard from "@/components/Ideacard";
-import userAtom from '@/lib/atoms/UserAtom';
-import { Domain } from "@/lib/Domain";
-import UseAuth from "@/lib/hooks/UseAuth";
-import { Users } from "@/lib/interface/INTERFACE";
+import userAtom from '../../../../lib/atoms/UserAtom';
+import { Domain } from "../../../../lib/Domain";
+import UseAuth from "../../../../lib/hooks/UseAuth";
+import { Users } from "../../../../lib/interface/INTERFACE";
 import axios from "axios";
 import { useAtom } from "jotai";
 import React, { useEffect, useState } from "react";

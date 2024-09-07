@@ -4,9 +4,9 @@ import { X } from "lucide-react";
 import { Label } from "./ui/label";
 import { Button } from "./ui/button";
 import axios from "axios";
-import { Domain } from "@/lib/Domain";
+import { Domain } from "../../lib/Domain";
 import { useAtom } from "jotai";
-import userAtom from '@/lib/atoms/UserAtom';
+import userAtom from '../../lib/atoms/UserAtom';
 
 interface Skillprops {
     skill_name: string;

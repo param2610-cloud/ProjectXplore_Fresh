@@ -2,10 +2,10 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter,usePathname } from 'next/navigation';
 import axios from 'axios';
-import { Domain } from '@/lib/Domain';
-import { UserPortfolioGetDataResponse, Users } from '@/lib/interface/INTERFACE';
+import { Domain } from '../../../../../lib/Domain';
+import { UserPortfolioGetDataResponse, Users } from '../../../../../lib/interface/INTERFACE';
 import DeveloperPortfolio from '@/components/users/DeveloperPostfolio';
-import { dummyData, sampleUserData } from '@/lib/SampleData';
+import { dummyData, sampleUserData } from '../../../../../lib/SampleData';
 
 const Page = () => {
   const [userId, setuserId] = useState<string | null>(null);

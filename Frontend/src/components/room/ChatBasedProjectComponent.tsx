@@ -15,12 +15,12 @@ import {
     Risk,
     SuccessMetric,
     TechnicalRequirement,
-} from "@/lib/interface/INTERFACE";
-import fea from "@/lib/control/project/HandleFeatureChange";
-import useFeatureHandler from "@/lib/control/project/HandleFeatureChange";
+} from "../../../lib/interface/INTERFACE";
+import fea from "../../../lib/control/project/HandleFeatureChange";
+import useFeatureHandler from "../../../lib/control/project/HandleFeatureChange";
 import CloudinaryFileUpload from "../FileInputCompo";
 import axios from "axios";
-import { Domain } from "@/lib/Domain";
+import { Domain } from "../../../lib/Domain";
 import { useToast } from "../ui/use-toast";
 import { usePathname } from "next/navigation";
 import { useRouter } from "next/navigation";

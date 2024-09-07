@@ -1,6 +1,6 @@
 import React from 'react';
 import { format } from 'date-fns';
-import { update } from '@/lib/interface/INTERFACE';
+import { update } from '../../lib/interface/INTERFACE';
 
 const ProjectUpdates = ({ updateList, currentUserId }:{updateList:update[],currentUserId:string}) => {
   return (

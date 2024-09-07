@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import { Domain } from "@/lib/Domain";
+import { Domain } from "../../../../lib/Domain";
 
 const Page = ({ params }: { params: { requestId: string } }) => {
     const [request, setRequest] = useState<any>(null);

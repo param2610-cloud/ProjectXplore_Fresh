@@ -4,12 +4,12 @@ import axios from 'axios';
 import { useToast } from "@/components/ui/use-toast";
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { Domain } from "@/lib/Domain";
+import { Domain } from "../../../lib/Domain";
 import { usePathname } from 'next/navigation';
 import { User } from '../SearchDialouge';
-import { Rooms } from '@/lib/interface/INTERFACE';
+import { Rooms } from '../../../lib/interface/INTERFACE';
 import { useAtom } from 'jotai';
-import userAtom from '@/lib/atoms/UserAtom';
+import userAtom from '../../../lib/atoms/UserAtom';
 
 
 

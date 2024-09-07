@@ -17,7 +17,7 @@ import {
 } from "@/components/ui/table";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
-import { Domain } from "@/lib/Domain";
+import { Domain } from "../../lib/Domain";
 
 export interface User {
     id: number;

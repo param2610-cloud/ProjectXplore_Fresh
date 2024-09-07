@@ -11,10 +11,10 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Domain } from '@/lib/Domain';
-import UseAuth from '@/lib/hooks/UseAuth';
+import { Domain } from '../../../../../lib/Domain';
+import UseAuth from '../../../../../lib/hooks/UseAuth';
 import { useAtom } from 'jotai';
-import userAtom from '@/lib/atoms/UserAtom';
+import userAtom from '../../../../../lib/atoms/UserAtom';
 
 
 

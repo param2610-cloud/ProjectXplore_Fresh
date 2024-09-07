@@ -33,10 +33,10 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
-import userAtom from '@/lib/atoms/UserAtom';
-import { Domain, FrontendDomain } from "@/lib/Domain";
-import UseAuth from "@/lib/hooks/UseAuth";
-import { TeamData } from "@/lib/interface/teamdata";
+import userAtom from '../../../../lib/atoms/UserAtom';
+import { Domain, FrontendDomain } from "../../../../lib/Domain";
+import UseAuth from "../../../../lib/hooks/UseAuth";
+import { TeamData } from "../../../../lib/interface/teamdata";
 import { Avatar } from "@radix-ui/react-avatar";
 import axios from "axios";
 import { useAtom } from "jotai";

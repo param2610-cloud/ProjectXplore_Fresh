@@ -8,7 +8,7 @@ import { AlertTriangle, Anvil, Calendar, Code, Database, DollarSign, MessageSqua
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { ProjectData,media } from '@/lib/interface/INTERFACE';
+import { ProjectData,media } from '../../../lib/interface/INTERFACE';
 
 const ProjectDetailsPage = ({ projectData }:{projectData:ProjectData}) => {
   const budgetData = [
