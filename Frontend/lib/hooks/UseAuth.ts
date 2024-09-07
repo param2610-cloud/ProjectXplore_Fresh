@@ -19,6 +19,8 @@ function UseAuth() {
                         withCredentials: true,
                     }
                 );
+                console.log(response);
+                
                 if (response.data == false) {
                     setIsLoading(false);
                     setIsAuthenticated(false);
@@ -46,11 +48,11 @@ function UseAuth() {
                         withCredentials: true,
                     }
                 );
+                console.log(response);
                 if (response.data == false) {
                     setIsLoading(false);
                     setIsAuthenticated(false);
                 }
-                console.log(response);
                 if (response.status === 200) {
                     
                     if (response.data.data.user.user_id) {
