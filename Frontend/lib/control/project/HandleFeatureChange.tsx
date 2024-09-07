@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { ProjectData } from "@/lib/interface/INTERFACE";
+import { ProjectData } from "../../interface/INTERFACE";
 
 interface Media {
     image: string[];

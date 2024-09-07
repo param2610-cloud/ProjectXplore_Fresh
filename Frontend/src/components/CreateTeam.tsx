@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import { Card, CardContent, CardTitle } from "./ui/card";
-import Avataruploader from "@/lib/control/Avataruploader";
+import Avataruploader from "../../lib/control/Avataruploader";
 import { Label } from "./ui/label";
 import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
 import { Button } from "./ui/button";
 import { useAtom } from "jotai";
-import userAtom from '@/lib/atoms/UserAtom';
+import userAtom from '../../lib/atoms/UserAtom';
 import { ChevronLeft } from "lucide-react";
-import { Domain } from "@/lib/Domain";
+import { Domain } from "../../lib/Domain";
 import axios from "axios";
 import { useToast } from "./ui/use-toast";
 

@@ -9,10 +9,10 @@ import {
     CardDescription,
     CardContent,
 } from "@/components/ui/card";
-import UseAuth from "@/lib/hooks/UseAuth";
-import userAtom from '@/lib/atoms/UserAtom';
+import UseAuth from "../../../lib/hooks/UseAuth";
+import userAtom from '../../../lib/atoms/UserAtom';
 import { useToast } from "../ui/use-toast";
-import { ProjectData } from "@/lib/interface/INTERFACE";
+import { ProjectData } from "../../../lib/interface/INTERFACE";
 
 const ProjectList = () => {
     const [projects, setProjects] = useState<ProjectData[]>([]);

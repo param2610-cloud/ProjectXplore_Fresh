@@ -5,9 +5,9 @@ import axios from "axios";
 import { useAtom } from "jotai";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
-import { Domain } from "@/lib/Domain";
-import UseAuth from "@/lib/hooks/UseAuth";
-import userAtom from '@/lib/atoms/UserAtom';
+import { Domain } from "../../../../../../lib/Domain";
+import UseAuth from "../../../../../../lib/hooks/UseAuth";
+import userAtom from '../../../../../../lib/atoms/UserAtom';
 
 interface CollaborationRequest {
     request_id: string;

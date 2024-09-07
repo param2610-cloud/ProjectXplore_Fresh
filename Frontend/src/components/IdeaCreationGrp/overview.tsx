@@ -1,4 +1,4 @@
-import { Ideas } from "@/lib/interface/INTERFACE";
+import { Ideas } from "../../../lib/interface/INTERFACE";
 import React from "react";
 
 const Overview = ({ IdeaDetails }: { IdeaDetails: Ideas }) => {

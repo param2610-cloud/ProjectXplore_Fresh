@@ -12,16 +12,16 @@ import {
     CollaborationRequestReviews,
     CollaborationRequests,
     Rooms,
-} from "@/lib/interface/INTERFACE";
+} from "../../../lib/interface/INTERFACE";
 import { Button } from "../ui/button";
 import axios from "axios";
-import { Domain, FirebaseUrl, FrontendDomain } from "@/lib/Domain";
+import { Domain, FirebaseUrl, FrontendDomain } from "../../../lib/Domain";
 import { useToast } from "../ui/use-toast";
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
 import { usePathname } from "next/navigation";
 import CopyButton from "../ui/Copytoclipboard";
-import useFirebaseNotifications from "@/lib/control/FirebaseNotification";
+import useFirebaseNotifications from "../../../lib/control/FirebaseNotification";
 import { Loader2 } from "lucide-react";
 
 const RequestList = () => {

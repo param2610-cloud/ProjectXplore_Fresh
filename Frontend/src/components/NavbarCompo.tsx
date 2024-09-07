@@ -4,7 +4,7 @@ import React from 'react'
 import { Badge } from './ui/badge'
 import { Separator } from '@radix-ui/react-separator'
 import { usePathname } from 'next/navigation'
-import { Users } from '@/lib/interface/INTERFACE'
+import { Users } from '../../lib/interface/INTERFACE'
 
 
 const NavbarCompo = ({ userDetails }: { userDetails: Users | null }) => {

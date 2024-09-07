@@ -1,6 +1,6 @@
 'use client'
 import React, { useEffect, useState } from 'react';
-import { Domain } from '@/lib/Domain';
+import { Domain } from '../../../lib/Domain';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card';
 
 const ProjectHistory = ({team_id}:{team_id:string}) => {

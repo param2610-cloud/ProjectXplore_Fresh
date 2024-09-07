@@ -1,8 +1,8 @@
 "use client";
-import { GlobalTeam, TeamData } from "@/lib/interface/teamdata";
+import { GlobalTeam, TeamData } from "../../../lib/interface/teamdata";
 import React, { useEffect, useState } from "react";
 import { Avatar, AvatarImage } from "../ui/avatar";
-import { TeamMemberRoles, Teams } from "@/lib/interface/INTERFACE";
+import { TeamMemberRoles, Teams } from "../../../lib/interface/INTERFACE";
 import {
     Table,
     TableBody,
@@ -13,12 +13,12 @@ import {
     TableRow,
 } from "../ui/table";
 import { Button } from "../ui/button";
-import userAtom from '@/lib/atoms/UserAtom';
+import userAtom from '../../../lib/atoms/UserAtom';
 import { useAtom } from "jotai";
-import UseAuth from "@/lib/hooks/UseAuth";
+import UseAuth from "../../../lib/hooks/UseAuth";
 import { usePathname } from "next/navigation";
 import axios from "axios";
-import { Domain } from "@/lib/Domain";
+import { Domain } from "../../../lib/Domain";
 import { useToast } from "../ui/use-toast";
 
 const Member = ({ teamDetails }: { teamDetails: TeamData | null }) => {

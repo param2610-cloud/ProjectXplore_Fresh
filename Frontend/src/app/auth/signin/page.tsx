@@ -15,9 +15,9 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import { useToast } from "@/components/ui/use-toast";
 import { Toaster } from "@/components/ui/toaster";
-import { Domain } from "@/lib/Domain";
+import { Domain } from "../../../../lib/Domain";
 import { useRouter } from "next/navigation";
-import UseAuth from "@/lib/hooks/UseAuth";
+import UseAuth from "../../../../lib/hooks/UseAuth";
 
 export default function Page() {
     const [pageloading, setPageloading] = useState<boolean>(false);

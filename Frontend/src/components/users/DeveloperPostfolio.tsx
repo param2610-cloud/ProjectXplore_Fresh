@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Github, Linkedin, Twitter, MapPin, Calendar, Briefcase, GraduationCap, Mail, Phone } from 'lucide-react';
-import { UserPortfolioGetDataResponse } from '@/lib/interface/INTERFACE';
+import { UserPortfolioGetDataResponse } from '../../../lib/interface/INTERFACE';
 
 const DeveloperPortfolio = ({ data }:{data:UserPortfolioGetDataResponse}) => {
   console.log(data);

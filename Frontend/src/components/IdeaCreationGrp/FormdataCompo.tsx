@@ -14,13 +14,13 @@ import {
     HoverCardContent,
     HoverCardTrigger,
 } from "../ui/hover-card";
-import { Domain } from "@/lib/Domain";
-import UploadOnCloudinary from "@/lib/control/UploadOnCloudinary";
+import { Domain } from "../../../lib/Domain";
+import UploadOnCloudinary from "../../../lib/control/UploadOnCloudinary";
 import { useAtom } from "jotai";
-import userAtom from '@/lib/atoms/UserAtom';
-import UseAuth from "@/lib/hooks/UseAuth";
+import userAtom from '../../../lib/atoms/UserAtom';
+import UseAuth from "../../../lib/hooks/UseAuth";
 import { usePathname } from "next/navigation";
-import useFirebaseNotifications from "@/lib/control/FirebaseNotification";
+import useFirebaseNotifications from "../../../lib/control/FirebaseNotification";
 
 const Formdata_ = ({setSubmitted}:{setSubmitted:React.Dispatch<React.SetStateAction<boolean>>}) => {
     const { loading, authenticated } = UseAuth();

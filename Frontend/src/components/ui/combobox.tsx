@@ -11,13 +11,13 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { cn } from "@/lib/utils"
+import { cn } from "../../../lib/utils"
 import { useRouter } from "next/navigation"
 import axios from "axios"
-import { Domain } from "@/lib/Domain"
+import { Domain } from "../../../lib/Domain"
 import { useAtom } from "jotai"
 import { userAtom } from "@/lib/atoms/userAtom"
-import UseAuth from "@/lib/hooks/UseAuth"
+import UseAuth from "../../../lib/hooks/UseAuth"
 
 interface Framework {
   value: string

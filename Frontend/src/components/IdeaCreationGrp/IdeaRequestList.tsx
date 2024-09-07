@@ -9,11 +9,11 @@ import {
     TableHeader,
     TableRow,
 } from "../ui/table";
-import { Ideas, team_request_response_record } from "@/lib/interface/INTERFACE";
-import { TeamData } from "@/lib/interface/teamdata";
+import { Ideas, team_request_response_record } from "../../../lib/interface/INTERFACE";
+import { TeamData } from "../../../lib/interface/teamdata";
 import { Button } from "../ui/button";
 import axios from "axios";
-import { Domain } from "@/lib/Domain";
+import { Domain } from "../../../lib/Domain";
 import { useToast } from "../ui/use-toast";
 
 const IdeaREquestList = ({IdeaDetails}:{IdeaDetails:Ideas}) => {

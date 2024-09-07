@@ -1,5 +1,5 @@
-import { FrontendDomain } from '@/lib/Domain'
-import { Rooms } from '@/lib/interface/INTERFACE'
+import { FrontendDomain } from '../../../lib/Domain'
+import { Rooms } from '../../../lib/interface/INTERFACE'
 import React from 'react'
 import { Card, CardContent, CardHeader } from '../ui/card'
 import Link from 'next/link'

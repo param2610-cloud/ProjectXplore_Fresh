@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import Avataruploader from "@/lib/control/Avataruploader";
+import Avataruploader from "../../../../lib/control/Avataruploader";
 import { useToast } from "@/components/ui/use-toast";
 import axios from "axios";
 import {
@@ -15,10 +15,10 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Toaster } from "@/components/ui/toaster";
-import { Domain } from "@/lib/Domain";
+import { Domain } from "../../../../lib/Domain";
 import { useRouter } from "next/navigation";
 import { useAtom } from "jotai";
-import userAtom from '@/lib/atoms/UserAtom';
+import userAtom from '../../../../lib/atoms/UserAtom';
 interface ErrorMessage {
     error: boolean;
     title: string;

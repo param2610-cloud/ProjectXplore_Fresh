@@ -1,5 +1,5 @@
-import userAtom from '@/lib/atoms/UserAtom';
-import { Domain } from '@/lib/Domain';
+import userAtom from '../../lib/atoms/UserAtom';
+import { Domain } from '../../lib/Domain';
 import axios from 'axios';
 import { useAtom } from 'jotai';
 import { useCallback, useEffect, useState } from 'react';

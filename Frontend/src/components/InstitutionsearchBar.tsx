@@ -4,8 +4,8 @@ import { Button } from "./ui/button";
 import { Label } from "./ui/label";
 import axios from "axios";
 import { useAtom } from "jotai";
-import userAtom from '@/lib/atoms/UserAtom';
-import { Domain } from "@/lib/Domain";
+import userAtom from '../../lib/atoms/UserAtom';
+import { Domain } from "../../lib/Domain";
 
 interface InstitutionProps {
     institution_id: string;
