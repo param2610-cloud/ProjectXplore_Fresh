@@ -35,7 +35,7 @@ const RequestList = () => {
             setroomId(roomIdFromPath);
         }
         console.log(roomId);
-    }, [pathname, roomId]);
+    }, [pathname, roomId,parts]);
     const [roomDetails, setRoomDetails] = useState<Rooms>();
     const [pastReq, setPastReq] = useState<CollaborationRequests | null>(null);
     const [responses, setResponses] = useState<CollaborationRequestReviews[]>(
@@ -48,15 +48,6 @@ const RequestList = () => {
     });
     const [loading,setloading] = useState<boolean>(false)
     const {notifications,error} = useFirebaseNotifications(FirebaseUrl)
-    useEffect(() => {
-        if (roomId) {
-            setloading(true)
-            console.log(roomId);
-            fetchRequestDetails();
-            setloading(false)
-        }
-    }, [roomId,notifications]);
-
     const fetchRequestDetails = async () => {
         try {
             console.log("trigger");
@@ -103,6 +94,15 @@ const RequestList = () => {
             });
         }
     };
+    useEffect(() => {
+        if (roomId) {
+            setloading(true)
+            console.log(roomId);
+            fetchRequestDetails();
+            setloading(false)
+        }
+    }, [roomId,notifications,fetchRequestDetails]);
+
 
     const handleCreateRequest = async (e: React.FormEvent) => {
         console.log("trigger");

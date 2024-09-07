@@ -30,8 +30,8 @@ const Avataruploader = ({setselecetedfile}:{setselecetedfile:any})=>{
             style={{display:'none'}}
             onChange={fileselectedhandler}
             />
-            {!previewUrl && <img src="/usericon.png" width={100} height={100} alt="Avatar Preview" className="w-[50px] h-[50px] object-cover rounded-full"/>}
-            {previewUrl && <img src={previewUrl} alt="Avatar Preview" className="w-[50px] h-[50px] object-cover rounded-full"/>}
+            {!previewUrl && <Image src="/usericon.png" width={100} height={100} alt="Avatar Preview" className="w-[50px] h-[50px] object-cover rounded-full"/>}
+            {previewUrl && <Image src={previewUrl} alt="Avatar Preview" width={50} height={50} className="w-[50px] h-[50px] object-cover rounded-full"/>}
             <Button onClick={triggerfileinput} className="bg-blue-600 px-3 py-1 rounded-xl text-white font-semibold font-inter  flex justify-center items-center">Upload Profile Image</Button>
         </div>
     )

@@ -89,7 +89,7 @@ const CloudinaryFileUpload: React.FC<CloudinaryFileUploadProps> = ({
       console.error('Error generating signature:', error);
       throw error;
     }
-  }, [Domain]);
+  }, []);
 
   const handleRemoveFile = useCallback(async (index: number, public_id: string) => {
     setPreviews((prev) => prev.filter((_, i) => i !== index));

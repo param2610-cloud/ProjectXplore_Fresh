@@ -49,6 +49,7 @@ import useFirebaseNotifications from "../../../../../lib/control/FirebaseNotific
 import userAtom from "../../../../../lib/atoms/UserAtom";
 import UseAuth from "../../../../../lib/hooks/UseAuth";
 import { Domain, FirebaseUrl } from "../../../../../lib/Domain";
+import Image from "next/image";
 
 const Page = () => {
     const { loading, authenticated } = UseAuth();
@@ -58,7 +59,7 @@ const Page = () => {
         if(!userId && !loading){
             router.push("/auth/signin")
         }
-    },[userId,loading])
+    },[userId,loading,router])
     const [DataLoading, setDataloading] = useState<boolean>(false);
     const [startupRender, setstartupRender] = useState<boolean>(true);
     const [CreateIdeaCard, setCreateIdeaCard] = useState<boolean>(false);
@@ -91,7 +92,7 @@ const Page = () => {
             setroomId(roomIdFromPath);
         }
         console.log(roomId);
-    }, [pathname, roomId,userId]);
+    }, [pathname, roomId,userId,router,parts]);
 
     useEffect(() => {
         const fetchIdeaData = async () => {
@@ -142,7 +143,7 @@ const Page = () => {
         if (roomId) {
             fetchIdeaData();
         }
-    }, [roomId,notifications]);
+    }, [roomId,notifications,toast]);
 
     useEffect(() => {
         if (ideaData) {
@@ -296,7 +297,7 @@ const Page = () => {
                                 {
                                     ideaData?.image_link && ideaData.image_link.map((link:string,index:number)=>{
                                         return(
-                                            <img className="w-[130px]"  key={index} src={link}/>
+                                            <Image alt="Image" width={130} height={0} layout="responsive" className="w-[130px]"  key={index} src={link}/>
                                         )
                                     })
                                 }

@@ -1,6 +1,7 @@
 import React from 'react';
 import { format } from 'date-fns';
 import { update } from '../../lib/interface/INTERFACE';
+import Image from 'next/image';
 
 const ProjectUpdates = ({ updateList, currentUserId }:{updateList:update[],currentUserId:string}) => {
   return (
@@ -26,7 +27,10 @@ const ProjectUpdates = ({ updateList, currentUserId }:{updateList:update[],curre
               {update.image_link && update.image_link.length > 0 && (
                 <div className="flex flex-wrap gap-2 mb-2">
                   {update.image_link.map((image, imgIndex) => (
-                    <img
+                    <Image
+                    width={128}
+                    height={0}
+                    style={{objectFit:'cover'}}
                       key={imgIndex}
                       src={image}
                       alt={`Update image ${imgIndex + 1}`}

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Input } from "./input";
 import { X } from "lucide-react";
+import Image from "next/image";
 
 const Mediainput = ({onChange}:{onChange:any}) => {
     const [img, setimg] = useState<File[]>([]);
@@ -30,12 +31,12 @@ const Mediainput = ({onChange}:{onChange:any}) => {
                         >
                             <X/>
                         </button>
-                        <img
+                        <Image
+                        width={100}
+                        height={100}
                             src={URL.createObjectURL(file)}
                             alt={`uploaded-${index}`}
                             style={{
-                                width: "100px",
-                                height: "100px",
                                 objectFit: "cover",
                             }}
                             className="rounded-md m-2"

@@ -56,7 +56,7 @@ const ProjectList = () => {
         };
 
         fetchProjects();
-    }, [authenticated, userId]);
+    }, [authenticated, userId,toast]);
 
     const handleProjectClick = (projectId: string) => {
         router.push(`/project/${projectId}`);

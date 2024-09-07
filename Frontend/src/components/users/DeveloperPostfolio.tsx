@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Github, Linkedin, Twitter, MapPin, Calendar, Briefcase, GraduationCap, Mail, Phone } from 'lucide-react';
 import { UserPortfolioGetDataResponse } from '../../../lib/interface/INTERFACE';
+import Image from 'next/image';
 
 const DeveloperPortfolio = ({ data }:{data:UserPortfolioGetDataResponse}) => {
   console.log(data);
@@ -103,7 +104,7 @@ const DeveloperPortfolio = ({ data }:{data:UserPortfolioGetDataResponse}) => {
                   <p>{exp.responsibilities}</p>
                   {exp.technologies && (
                     <div className="mt-2 flex flex-wrap gap-2">
-                      {exp.technologies.map((tech, index) => (
+                      {exp.technologies.map(({tech, index}:{tech:any, index:any}) => (
                         <Badge key={index} variant="outline">{tech}</Badge>
                       ))}
                     </div>
@@ -152,8 +153,8 @@ const DeveloperPortfolio = ({ data }:{data:UserPortfolioGetDataResponse}) => {
                   <p>{achievement.description}</p>
                   {achievement.images && achievement.images.length > 0 && (
                     <div className="mt-4 flex gap-2 overflow-x-auto">
-                      {achievement.images.map((image, index) => (
-                        <img key={index} src={image} alt={`Achievement ${index + 1}`} className="w-24 h-24 object-cover rounded" />
+                      {achievement.images.map(({image, index}:{image:any, index:any}) => (
+                        <Image width={96} height={96} key={index} src={image} alt={`Achievement ${index + 1}`} className="w-24 h-24 object-cover rounded" />
                       ))}
                     </div>
                   )}

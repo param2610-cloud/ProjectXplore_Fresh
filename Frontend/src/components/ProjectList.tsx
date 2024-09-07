@@ -31,10 +31,10 @@ const ProjectList = () => {
             });
         }
     },[user]);
-
     useEffect(() => {
+
         getdata();
-    }, [user]);
+    }, [user,toast,getdata]);
     return (
         <>
             {projectList.length > 0 ? (

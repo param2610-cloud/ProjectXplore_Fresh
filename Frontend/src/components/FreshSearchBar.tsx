@@ -6,6 +6,7 @@ import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { X } from "lucide-react";
 import { OptionProps } from "../../lib/interface/INTERFACE";
+import Image from "next/image";
 
 
 const FreshSearchBar = ({
@@ -101,7 +102,7 @@ const FreshSearchBar = ({
               onClick={() => handleOptionClick(suggestion)}
             >
                 <div className="flex gap-4 justify-start items-center">
-                    {suggestion.components_image_link && (<img className="w-14 h-full" src={suggestion.components_image_link} alt="" />)}
+                    {suggestion.components_image_link && (<Image width={56} style={{objectFit:'cover'}} className="w-14 h-full" src={suggestion.components_image_link} alt="" />)}
                     <div className="whitespace-nowrap">
               {suggestion.components_name}
                     </div>

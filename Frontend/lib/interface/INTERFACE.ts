@@ -440,7 +440,7 @@ export interface ProjectData {
     mentor: string;
     reference: string;
     demoLink: string;
-    hardwareComponents: HardwareComponent[]; // Adjust based on FreshSearchBar return type
+    hardwareComponents: OptionProps[]; // Adjust based on FreshSearchBar return type
     softwareTechnologies: string[];
     features: Feature[];
     technicalRequirements: TechnicalRequirement;

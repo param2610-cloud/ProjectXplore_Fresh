@@ -15,27 +15,27 @@ export default function ListAchievements() {
   const [error, setError] = useState('');
 
   useEffect(() => {
+    const fetchAchievements = async () => {
+      try {
+        const response = await fetch(`${Domain}/api/v1/users/achievements?user_id=${userId}`);
+        console.log(response);
+        
+        if (response.ok) {
+          const data = await response.json();
+          setAchievements(data);
+        } else {
+          const errorData = await response.json();
+          setError(errorData.error || 'Failed to fetch achievements');
+        }
+      } catch (error) {
+        setError('An error occurred while fetching achievements');
+      }
+    };
     if (authenticated && userId) {
       fetchAchievements();
     }
   }, [authenticated, userId]);
 
-  const fetchAchievements = async () => {
-    try {
-      const response = await fetch(`${Domain}/api/v1/users/achievements?user_id=${userId}`);
-      console.log(response);
-      
-      if (response.ok) {
-        const data = await response.json();
-        setAchievements(data);
-      } else {
-        const errorData = await response.json();
-        setError(errorData.error || 'Failed to fetch achievements');
-      }
-    } catch (error) {
-      setError('An error occurred while fetching achievements');
-    }
-  };
 
   if (loading) {
     return <div>Loading...</div>;

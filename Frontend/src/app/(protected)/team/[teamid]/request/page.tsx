@@ -87,12 +87,16 @@ const Page = () => {
             <div className="w-full h-full flex justify-start items-center flex-col">
             <div className="m-10 w-full">
                 <div className="flex justify-start items-center ml-10 gap-3">
-                    <img
-                        src={TeamDetails?.teamDetails?.profile_pic_link}
-                        className="rounded-lg"
-                        width={100}
-                        height={100}
+                    {
+                        TeamDetails?.teamDetails?.profile_pic_link && 
+                    <Image
+                    alt="image"
+                    src={TeamDetails?.teamDetails?.profile_pic_link}
+                    className="rounded-lg"
+                    width={100}
+                    height={100}
                     />
+                }
                     <div className="text-3xl font-bold ">
                         {TeamDetails?.teamDetails.team_name}
                     </div>
