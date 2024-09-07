@@ -35,7 +35,7 @@ const RequestPage = () => {
             setroomId(roomIdFromPath);
         }
         console.log(roomId);
-    }, [pathname, roomId]);
+    }, [pathname, roomId,parts]);
     const { toast } = useToast();
     const { loading, authenticated } = UseAuth();
     const [userId] = useAtom(userAtom);
@@ -49,28 +49,29 @@ const RequestPage = () => {
     }, [authenticated, loading, router]);
 
     useEffect(() => {
+        const fetchRoomDetails = async () => {
+            try {
+                const response = await axios.get(
+                    `${Domain}/api/v1/room/get-room-data-by-id`,
+                    {
+                        params: { roomId: roomId },
+                    }
+                );
+                setRoomDetails(response.data.data);
+            } catch (error) {
+                console.error("Error fetching room details:", error);
+                toast({
+                    title: "Error",
+                    description: "Failed to fetch room details. Please try again.",
+                });
+            }
+        };
         if (roomId && userId) {
             fetchRoomDetails();
         }
     }, [roomId, userId]);
 
-    const fetchRoomDetails = async () => {
-        try {
-            const response = await axios.get(
-                `${Domain}/api/v1/room/get-room-data-by-id`,
-                {
-                    params: { roomId: roomId },
-                }
-            );
-            setRoomDetails(response.data.data);
-        } catch (error) {
-            console.error("Error fetching room details:", error);
-            toast({
-                title: "Error",
-                description: "Failed to fetch room details. Please try again.",
-            });
-        }
-    };
+    
 
     const handleAcceptRequest = async (requestId: string) => {
         try {

@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
+import Image from "next/image";
 import Link from "next/link";
 
 export default function Home() {
@@ -20,10 +21,12 @@ export default function Home() {
             </div>
             <Separator orientation="horizontal" />
             <div className="w-screen h-screen">
-                <img
+                <Image
+                fill
                     src={"/banner.jpg"}
                     alt="banner"
                     className="w-full h-full object-cover"
+                    style={{objectFit:'cover'}}
                 />
             </div>
         </main>

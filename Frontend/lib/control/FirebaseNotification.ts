@@ -29,7 +29,7 @@ const useFirebaseNotifications = (url:string) => {
 
     // Cleanup interval on unmount
     return () => clearInterval(intervalId);
-  }, [url]); // Re-run if the URL changes
+  }, [url,fetchNotifications]); // Re-run if the URL changes
 
   return { notifications, error };
 };

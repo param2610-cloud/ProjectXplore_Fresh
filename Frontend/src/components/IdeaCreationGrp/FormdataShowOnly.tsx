@@ -1,6 +1,7 @@
 import { Ideas } from "../../../lib/interface/INTERFACE";
 import React from "react";
 import { Card, CardContent, CardHeader } from "../ui/card";
+import Image from "next/image";
 
 const FormdataShowOnly = ({ ideaDetails }: { ideaDetails: Ideas }) => {
     return (
@@ -40,7 +41,9 @@ const FormdataShowOnly = ({ ideaDetails }: { ideaDetails: Ideas }) => {
                         <CardContent className="grid grid-cols-2 gap-4">
                             {ideaDetails?.image_link?.map((link, index) => (
                                 <div key={index} className="flex justify-center">
-                                    <img
+                                    <Image
+                                    width={128}
+                                    height={128}
                                         src={link}
                                         alt={`Preview ${index}`}
                                         className="w-32 h-32 object-contain rounded-md border"

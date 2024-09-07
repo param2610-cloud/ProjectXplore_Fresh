@@ -71,7 +71,7 @@ export default function UserForm() {
     if(!loading){
         fetchUserData();
     }
-  }, [loading]);
+  }, [loading,setFormData]);
 
   // Update form data and store in localStorage
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
