@@ -22,6 +22,7 @@ app.use('/', express.static("public"));
 app.use(cookieParser());
 
 //router import 
+import prisma from './src/db/prismaClient.js';
 import userRouter from './src/routes/user.router.js';
 import selfRouter from './src/routes/data.router.js'
 import thirdpartyRouter from './src/routes/thirdParty.router.js'
@@ -44,6 +45,9 @@ app.use('/api/v1/room',roomRouter)
 app.use('/api/v1/update',updateRouter)
 app.use("/api/v1/portfolio",portfolioRouter)
 app.use("/api/v1/mentor",coordinator)
+app.get("/",(req,res)=>{
+    res.send(<h1>ProjectXplore Backend</h1>)
+})
 
 
 app.use(ErrorHandler);
