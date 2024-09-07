@@ -39,7 +39,7 @@ const TeamDetails = () => {
         if(userId){
             fetchdata()
         }
-    },[])
+    },[userId])
     return (
         <div className="flex min-h-[calc(100vh-60px)] w-full flex-col">
             <header className="sticky top-0 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6">

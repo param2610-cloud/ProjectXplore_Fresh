@@ -22,7 +22,7 @@ const ProjectHistory = ({team_id}:{team_id:string}) => {
     };
 
     fetchProjectHistory();
-  }, []);
+  }, [team_id]);
 
   return (
     <div className="p-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">

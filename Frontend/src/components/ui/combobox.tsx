@@ -16,7 +16,7 @@ import { useRouter } from "next/navigation"
 import axios from "axios"
 import { Domain } from "../../../lib/Domain"
 import { useAtom } from "jotai"
-import { userAtom } from "@/lib/atoms/userAtom"
+import UserAtom from "../../../lib/atoms/UserAtom"
 import UseAuth from "../../../lib/hooks/UseAuth"
 
 interface Framework {
@@ -50,6 +50,7 @@ export function ComboboxDemo({
   onValueChange,
   setCreateRoomClick
 }: ComboboxDemoProps) {
+  const [user] = useAtom(UserAtom);
   React.useEffect(() => {
     // Fetch rooms from API
     const fetchRooms = async () => {
@@ -65,13 +66,12 @@ export function ComboboxDemo({
     }
   
     fetchRooms()
-  }, [])
+  }, [user])
   const [open, setOpen] = React.useState(false)
   const [value, setValue] = React.useState(defaultValue)
   const [User, setUser] = React.useState<any>()
   const [rooms, setRooms] = React.useState<UserRoomsResponse>()
   const router = useRouter();
-  const [user] = useAtom(userAtom);
   React.useEffect(()=>{
     console.log(rooms)
   },[rooms])

@@ -22,6 +22,7 @@ import Notification from "@/components/Notification";
 import { useToast } from "@/components/ui/use-toast";
 import { ProjectData } from "../../../../lib/interface/INTERFACE";
 import Link from "next/link";
+import Image from "next/image";
 
 const Dashboard = () => {
     const { loading, authenticated } = UseAuth();
@@ -35,34 +36,35 @@ const Dashboard = () => {
         if (userId === "0c33131a-5771-424e-87a7-bf788bb656e4") {
             router.push("/institution");
         }
-    }, [userId]);
+    }, [userId,router]);
 
     useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const [teamsResponse, projectsResponse, achievementsResponse] = await Promise.all([
+                    fetch(`${Domain}/api/v1/users/teams?user_id=${userId}`),
+                    fetch(`${Domain}/api/v1/users/no-of-project?userId=${userId}`),
+                    fetch(`${Domain}/api/v1/users/achievements?user_id=${userId}`)
+                ]);
+    
+                const teamsData = await teamsResponse.json();
+                const projectsData = await projectsResponse.json();
+                const achievementsData = await achievementsResponse.json();
+                console.log(teamsData,projectsData,achievementsData);
+                
+                setTeamsCount(teamsData);
+                setProjectsCount(projectsData.data);
+                setAchievementsCount(achievementsData.length);
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        };
         if (userId) {
             fetchData();
         }
     }, [userId]);
 
-    const fetchData = async () => {
-        try {
-            const [teamsResponse, projectsResponse, achievementsResponse] = await Promise.all([
-                fetch(`${Domain}/api/v1/users/teams?user_id=${userId}`),
-                fetch(`${Domain}/api/v1/users/no-of-project?userId=${userId}`),
-                fetch(`${Domain}/api/v1/users/achievements?user_id=${userId}`)
-            ]);
-
-            const teamsData = await teamsResponse.json();
-            const projectsData = await projectsResponse.json();
-            const achievementsData = await achievementsResponse.json();
-            console.log(teamsData,projectsData,achievementsData);
-            
-            setTeamsCount(teamsData);
-            setProjectsCount(projectsData.data);
-            setAchievementsCount(achievementsData.length);
-        } catch (error) {
-            console.error("Error fetching data:", error);
-        }
-    };
+    
     const [projects, setProjects] = useState<ProjectData[]>([]);
     const [error, setError] = useState<any>(null);
     const { toast } = useToast();
@@ -168,7 +170,9 @@ const Dashboard = () => {
                         </p>
                         <div className="flex -space-x-2 overflow-hidden mt-2">
                             {[...Array(Math.min(5, teamsCount))].map((_, i) => (
-                                <img
+                                <Image
+                                width={32}
+                                height={32}
                                     key={i}
                                     className="inline-block h-8 w-8 rounded-full ring-2 ring-white"
                                     src={`/api/placeholder/${30 + i}/30`}

@@ -9,6 +9,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { ProjectData,media } from '../../../lib/interface/INTERFACE';
+import Image from 'next/image';
 
 const ProjectDetailsPage = ({ projectData }:{projectData:ProjectData}) => {
   const budgetData = [
@@ -36,7 +37,7 @@ const ProjectDetailsPage = ({ projectData }:{projectData:ProjectData}) => {
   const MediaDisplay = ({ media }:{media:media}) => (
     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
       {media?.images?.map((image, index) => (
-        <img key={index} src={image} alt={`Image ${index + 1}`} className="w-full h-48 object-cover rounded-lg" />
+        <Image height={192} width={0} style={{objectFit:'cover'}} key={index} src={image} alt={`Image ${index + 1}`} className="w-full h-48 object-cover rounded-lg" />
       ))}
       {media?.videos?.map((video, index) => (
         <video key={index} src={video} controls className="w-full h-48 object-cover rounded-lg">

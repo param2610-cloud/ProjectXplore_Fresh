@@ -31,7 +31,7 @@ const Member = ({ teamDetails }: { teamDetails: TeamData | null }) => {
         if (parts[2]) {
             setURLstatus(parts[1]);
         }
-    }, [pathname]);
+    }, [pathname,parts]);
     const [userId] = useAtom(userAtom);
     console.log(userId);
     const removeTeamMember = async (UserId: string) => {

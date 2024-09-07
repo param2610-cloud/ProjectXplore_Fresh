@@ -66,7 +66,7 @@ function UseAuth() {
         };
 
         checkAuth();
-    }, [Domain]);
+    }, [setUserid]);
 
     return { loading, authenticated };
 }

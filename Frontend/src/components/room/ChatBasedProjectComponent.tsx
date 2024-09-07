@@ -25,12 +25,11 @@ import { useToast } from "../ui/use-toast";
 import { usePathname } from "next/navigation";
 import { useRouter } from "next/navigation";
 
-
 const ChatBasedProjectSubmit: React.FC = () => {
     const [step, setStep] = useState(0);
-    const {toast} = useToast()
-    const router = useRouter()
-    const [roomId,setroomId] = useState<string>("")
+    const { toast } = useToast();
+    const router = useRouter();
+    const [roomId, setroomId] = useState<string>("");
     const pathname = usePathname();
     const parts = pathname.split("/");
     useEffect(() => {
@@ -39,7 +38,7 @@ const ChatBasedProjectSubmit: React.FC = () => {
             setroomId(roomIdFromPath);
         }
         console.log(roomId);
-    }, [pathname, roomId]);
+    }, [pathname, roomId,parts]);
     const [projectData, setProjectData] = useState<ProjectData>({
         projectType: "",
         projectName: "",
@@ -71,11 +70,18 @@ const ChatBasedProjectSubmit: React.FC = () => {
         handleFileUpload,
         addFeature,
         handleFileRemove,
-    } = useFeatureHandler(projectData,setProjectData);
-    useEffect(()=>{
-        console.log(features,currentFeature,projectData);
-        
-    },[features,currentFeature,handleTextChange,handleFileUpload,handleFileRemove,addFeature])
+    } = useFeatureHandler(projectData, setProjectData);
+    useEffect(() => {
+        console.log(features, currentFeature, projectData);
+    }, [
+        features,
+        currentFeature,
+        handleTextChange,
+        handleFileUpload,
+        handleFileRemove,
+        addFeature,
+        projectData
+    ]);
 
     const handleHardwareComponentsChange = (components: any[]) => {
         setProjectData((prev) => ({ ...prev, hardwareComponents: components }));
@@ -135,14 +141,13 @@ const ChatBasedProjectSubmit: React.FC = () => {
     const SubmitFeature = () => {
         try {
             // Increment step if needed
-            addFeature()
-            
+            addFeature();
+
             setStep((prev) => prev + 1);
         } catch (error) {
             console.error(error);
         }
     };
-    
 
     const renderStep = () => {
         switch (step) {
@@ -163,8 +168,9 @@ const ChatBasedProjectSubmit: React.FC = () => {
                 return (
                     <div className="space-y-4">
                         <h2 className="text-2xl font-bold mb-4">
-                            Let's start with the basics
+                            Let&apos;s start with the basics
                         </h2>
+
                         <div>
                             <Label>Project Type</Label>
                             <select
@@ -867,21 +873,26 @@ const ChatBasedProjectSubmit: React.FC = () => {
         try {
             console.log(projectData);
 
-            const response = await axios.post(`${Domain}/api/v1/project/create`,{roomId,projectData})
+            const response = await axios.post(
+                `${Domain}/api/v1/project/create`,
+                { roomId, projectData }
+            );
 
-            if (response.status===200) {
+            if (response.status === 200) {
                 alert("Project submitted successfully!");
                 toast({
-                    title:"Project Submitted Succesfully",
-                    description:"As the project is submitted, we are closing the room."
-                })
-                router.push(`/project/${response.data.data.id}`)
+                    title: "Project Submitted Succesfully",
+                    description:
+                        "As the project is submitted, we are closing the room.",
+                });
+                router.push(`/project/${response.data.data.id}`);
             } else {
                 toast({
                     variant: "destructive",
-                    title:"Project Submission Update",
-                    description:"Unfortunately, the project has not been successfully submitted."
-                })
+                    title: "Project Submission Update",
+                    description:
+                        "Unfortunately, the project has not been successfully submitted.",
+                });
                 throw new Error("Failed to submit project");
             }
         } catch (error) {

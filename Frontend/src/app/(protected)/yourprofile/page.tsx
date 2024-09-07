@@ -14,7 +14,7 @@ const Page = () => {
         if(userId){
             router.push(`/yourprofile/${userId}`)
         }
-    },[userId])
+    },[userId,router])
   return (
     <div>
       Loading

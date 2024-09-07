@@ -304,6 +304,23 @@ const CloudinaryFileUpload: React.FC<CloudinaryFileUploadProps> = ({
         },
         [uploadFile]
     );
+    const generateSignature = useCallback(
+        async (public_id: string, timestamp: number) => {
+            try {
+                const response = await axios.get(
+                    `${Domain}/api/v1/self/get-signature`,
+                    {
+                        params: { public_id, timestamp },
+                    }
+                );
+                return response.data;
+            } catch (error) {
+                console.error("Error generating signature:", error);
+                throw error;
+            }
+        },
+        []
+    );
 
     const handleRemoveFile = useCallback(
         async (index: number, public_id: string) => {
@@ -344,26 +361,10 @@ const CloudinaryFileUpload: React.FC<CloudinaryFileUploadProps> = ({
                 }
             }
         },
-        [CLOUD_NAME, API_KEY, onFileRemove, section, previews]
+        [CLOUD_NAME, API_KEY, onFileRemove, section, previews,generateSignature]
     );
 
-    const generateSignature = useCallback(
-        async (public_id: string, timestamp: number) => {
-            try {
-                const response = await axios.get(
-                    `${Domain}/api/v1/self/get-signature`,
-                    {
-                        params: { public_id, timestamp },
-                    }
-                );
-                return response.data;
-            } catch (error) {
-                console.error("Error generating signature:", error);
-                throw error;
-            }
-        },
-        []
-    );
+
 
     return (
         <div className="w-full rounded-md border border-gray-300 p-2">

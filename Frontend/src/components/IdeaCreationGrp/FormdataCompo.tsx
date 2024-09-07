@@ -21,6 +21,7 @@ import userAtom from '../../../lib/atoms/UserAtom';
 import UseAuth from "../../../lib/hooks/UseAuth";
 import { usePathname } from "next/navigation";
 import useFirebaseNotifications from "../../../lib/control/FirebaseNotification";
+import Image from "next/image";
 
 const Formdata_ = ({setSubmitted}:{setSubmitted:React.Dispatch<React.SetStateAction<boolean>>}) => {
     const { loading, authenticated } = UseAuth();
@@ -33,7 +34,7 @@ const Formdata_ = ({setSubmitted}:{setSubmitted:React.Dispatch<React.SetStateAct
         if (parts[2]) {
             setroomId(parts[2]);
         }
-    }, [pathname]);
+    }, [pathname,parts]);
     const [isloading, setisloading] = useState<boolean>(false);
     const [ideaName, setIdeaName] = useState("");
     const [ideaDescription, setIdeaDescription] = useState("");
@@ -312,7 +313,9 @@ const Formdata_ = ({setSubmitted}:{setSubmitted:React.Dispatch<React.SetStateAct
                                                         {file_name}
                                                     </HoverCardTrigger>
                                                     <HoverCardContent>
-                                                        <img
+                                                        <Image
+                                                        width={128}
+                                                        height={128}
                                                             src={preview.url}
                                                             alt={`Preview ${index}`}
                                                             className="w-32 h-32 object-cover"

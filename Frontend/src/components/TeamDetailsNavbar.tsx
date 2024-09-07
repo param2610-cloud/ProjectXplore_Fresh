@@ -14,7 +14,7 @@ const TeamDetailsNavbar = ({setActiveTab}:{setActiveTab:React.Dispatch<SetStateA
         if (parts[2]) {
             setURLstatus(parts[1]);
         }
-    }, [pathname]);
+    }, [pathname,parts]);
     return (
         <>
             <Link

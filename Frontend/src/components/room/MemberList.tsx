@@ -25,13 +25,9 @@ const MemberList = () => {
         }
         console.log(roomId);
         
-    }, [pathname, roomId]);
+    }, [pathname, roomId,parts]);
   const { toast } = useToast();
   const [roomDetails, setRoomDetails] = useState<Rooms | null>(null);
-
-  useEffect(() => {
-    fetchRoomDetails();
-  }, [roomId]);
 
   const fetchRoomDetails = async () => {
     try {
@@ -49,6 +45,10 @@ const MemberList = () => {
       });
     }
   };
+  useEffect(() => {
+    fetchRoomDetails();
+  }, [roomId,fetchRoomDetails]);
+
 
   const handleRemoveMember = async (memberId: string) => {
     try {
