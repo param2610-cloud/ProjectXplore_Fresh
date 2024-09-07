@@ -26,7 +26,6 @@ export default function Home() {
                     src={"/banner.jpg"}
                     alt="banner"
                     className="w-full h-full object-cover"
-                    style={{objectFit:'cover'}}
                 />
             </div>
         </main>
