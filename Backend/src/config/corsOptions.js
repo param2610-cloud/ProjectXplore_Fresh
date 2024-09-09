@@ -1,6 +1,6 @@
 import { allowedOrigins } from "./allowedOrigin.js";
 
-export const corsoptions = {
+export const corsOptions = {
     origin: (origin, callback) => {
         if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
             callback(null, true);
@@ -8,7 +8,5 @@ export const corsoptions = {
             callback(new Error('Not allowed by CORS'));
         }
     },
-    credentials: true,
-    secure:true,
-    sameSite:'lax'
-}
+    credentials: true, 
+};

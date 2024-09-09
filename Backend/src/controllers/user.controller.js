@@ -92,9 +92,9 @@ const loginUser = asyncHandler(async (req, res, next) => {
 
     const options = {
         httpOnly: true,
-        secure: false, // HTTP for development
-        sameSite: "Lax", // or 'Strict' based on your needs
-        maxAge: 24 * 60 * 60 * 1000, // Optional: Set expiration time
+        secure: true, 
+        sameSite: "Strict", 
+        maxAge: 24 * 60 * 60 * 1000, 
     };
 
     return res
@@ -116,7 +116,7 @@ const logoutUser = asyncHandler(async (req, res, next) => {
 
     const options = {
         httpOnly: true,
-        secure: true, // Set to true if you're using HTTPS
+        secure: true, 
         sameSite: "Strict",
     };
 
@@ -153,7 +153,7 @@ const refreshAccessToken = asyncHandler(async (req, res, next) => {
 
         const options = {
             httpOnly: true,
-            secure: true, // Set to true if you're using HTTPS
+            secure: true, 
             sameSite: "Strict",
         };
 
