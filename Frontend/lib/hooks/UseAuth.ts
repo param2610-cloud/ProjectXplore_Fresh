@@ -54,6 +54,7 @@ function UseAuth() {
                     setIsAuthenticated(false);
                 }
                 if (response.status === 200) {
+                    console.log(response);
                     
                     if (response.data.data.user.user_id) {
                         const userid = response.data.data.user.user_id;

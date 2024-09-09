@@ -28,13 +28,19 @@ import { getCookie } from 'cookies-next';
 
 
 const Dashboard = () => {
-    const [cookie,setcookie] = useState<string | undefined>('')
-    useEffect(()=>{
-        console.log("triggert");
-        
+    const [cookie, setCookie] = useState<string | undefined>('');
+    useEffect(() => {
+        const fetchCookie = () => {
+            const myCookie = getCookie('accessToken');
+            setCookie(myCookie?.toString());
+        };
+
+        fetchCookie();
+    }, []);
+    const refreshCookie = () => {
         const myCookie = getCookie('accessToken');
-        setcookie(myCookie)
-    },[cookie])
+        setCookie(myCookie?.toString());
+    };
     
     const { loading, authenticated } = UseAuth();
     const [userId] = useAtom(userAtom);
@@ -125,13 +131,13 @@ const Dashboard = () => {
         return (
             <div className="text-center p-4 w-screen h-screen flex justify-center items-center">
                 <div className="flex flex-col">
-                cookies: {cookie?cookie:"no token"}
-
-                <button onClick={()=>{setcookie('abc')}}>Refresh</button>
+                    cookies: {cookie ? cookie : "no token"}
+                    <button onClick={refreshCookie}>Refresh</button>
                 </div>
             </div>
         );
     }
+
 
     if (error) {
         return <div className="text-center text-red-500 p-4">{error}</div>;
