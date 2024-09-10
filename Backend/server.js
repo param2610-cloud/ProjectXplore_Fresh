@@ -2,7 +2,7 @@ import express, { text } from 'express';
 import { logger, logEvents } from './src/middlewares/logger.js';
 import ErrorHandler from './src/middlewares/errorHandler.js';
 import cors from 'cors';
-import { corsoptions } from './src/config/corsOptions.js';
+import { corsOptions } from './src/config/corsOptions.js';
 import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
 
@@ -15,7 +15,7 @@ const port = process.env.PORT || 3000;
 
 
 // app.use(logger);
-app.use(cors(corsoptions));
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false}));
 app.use('/', express.static("public"));
