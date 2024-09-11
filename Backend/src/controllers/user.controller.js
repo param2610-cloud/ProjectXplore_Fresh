@@ -14,6 +14,12 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
 import prisma from "../db/prismaClient.js";
+const options = {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production', 
+    sameSite: "Strict",
+    maxAge: 24 * 60 * 60 * 1000, 
+};
 
 const registerUser = asyncHandler(async (req, res, next) => {
     const { full_name, username, email, password } = req.body;
@@ -90,12 +96,6 @@ const loginUser = asyncHandler(async (req, res, next) => {
     console.log(user.user_id);
     const { accessToken, refreshToken } = await generateTokens(user.user_id);
 
-    const options = {
-        httpOnly: true,
-        secure: true, 
-        sameSite: "Strict", 
-        maxAge: 24 * 60 * 60 * 1000, 
-    };
 
     return res
         .status(200)
@@ -114,11 +114,6 @@ const logoutUser = asyncHandler(async (req, res, next) => {
     const { user_id } = req.body;
     await clearUserRefreshToken(user_id);
 
-    const options = {
-        httpOnly: true,
-        secure: true, 
-        sameSite: "Strict",
-    };
 
     return res
         .status(200)
@@ -151,11 +146,6 @@ const refreshAccessToken = asyncHandler(async (req, res, next) => {
 
         const { accessToken, refreshToken } = await generateTokens(user.id);
 
-        const options = {
-            httpOnly: true,
-            secure: true, 
-            sameSite: "Strict",
-        };
 
         return res
             .status(200)
@@ -175,7 +165,7 @@ const refreshAccessToken = asyncHandler(async (req, res, next) => {
 
 const validateAccessToken = asyncHandler(async (req, res, next) => {
     const incomingAccessToken = req.cookies.accessToken;
-    console.log(res.cookies);
+    console.log(req.cookies);
     
     if (!incomingAccessToken) {
         return res
