@@ -21,6 +21,8 @@ app.use(express.urlencoded({ extended: false}));
 app.use('/', express.static("public"));
 app.use(cookieParser());
 
+
+
 //router import 
 import prisma from './src/db/prismaClient.js';
 import userRouter from './src/routes/user.router.js';
