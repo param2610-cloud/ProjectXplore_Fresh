@@ -164,7 +164,9 @@ const refreshAccessToken = asyncHandler(async (req, res, next) => {
 });
 
 const validateAccessToken = asyncHandler(async (req, res, next) => {
-    const incomingAccessToken = req.cookies.accessToken;
+    const incomingAccessToken = req.cookies.accessToken || 
+                                req.headers['authorization']?.split(' ')[1] ||
+                                req.query.token;
     console.log(req.cookies);
     
     if (!incomingAccessToken) {

@@ -4,6 +4,7 @@ import { Domain } from "../Domain";
 import { useEffect, useState } from "react";
 import { useAtom } from "jotai";
 import UserAtom from "../atoms/UserAtom";
+import { getCookie } from "cookies-next";
 
 function UseAuth() {
     const [, setUserid] = useAtom(UserAtom);
@@ -47,6 +48,9 @@ function UseAuth() {
                     {},
                     {
                         withCredentials: true,
+                        headers: {
+                            'Authorization': `Bearer ${getCookie('accessToken')}`
+                        }
                     }
                 );
                 console.log(response);
