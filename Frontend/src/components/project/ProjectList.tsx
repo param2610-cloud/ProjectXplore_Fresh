@@ -13,6 +13,7 @@ import UseAuth from "../../../lib/hooks/UseAuth";
 import userAtom from '../../../lib/atoms/UserAtom';
 import { useToast } from "../ui/use-toast";
 import { ProjectData } from "../../../lib/interface/INTERFACE";
+import { Domain } from "../../../lib/Domain";
 
 const ProjectList = () => {
     const [projects, setProjects] = useState<ProjectData[]>([]);
@@ -27,7 +28,7 @@ const ProjectList = () => {
             if (authenticated && userId) {
                 try {
                     const response = await fetch(
-                        `http://localhost:8080/api/v1/project/users/projects?userId=${userId}`
+                        `${Domain}/api/v1/project/users/projects?userId=${userId}`
                     );
                     if (!response.ok) {
                         throw new Error("Failed to fetch projects");
