@@ -25,7 +25,7 @@ const useFirebaseNotifications = (url:string) => {
   // Polling logic
   useEffect(() => {
     fetchNotifications(); // Fetch once on mount
-    const intervalId = setInterval(fetchNotifications, 30000); // Poll every 30 seconds
+    const intervalId = setInterval(fetchNotifications, 1000000); // Poll every 30 seconds
 
     // Cleanup interval on unmount
     return () => clearInterval(intervalId);
