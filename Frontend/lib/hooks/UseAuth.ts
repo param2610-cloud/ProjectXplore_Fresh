@@ -21,6 +21,9 @@ function UseAuth() {
                     {accessToken,refreshToken},
                     {
                         withCredentials: true,
+                        headers: {
+                            'Authorization': `Bearer ${refreshToken}`
+                        }
                     }
                 );
                 console.log(response);
@@ -53,7 +56,7 @@ function UseAuth() {
                     {
                         withCredentials: true,
                         headers: {
-                            'Authorization': `Bearer ${getCookie('accessToken')}`
+                            'Authorization': `Bearer ${accessToken}`
                         }
                     }
                 );
