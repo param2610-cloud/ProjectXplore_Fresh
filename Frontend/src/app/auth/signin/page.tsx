@@ -42,9 +42,10 @@ export default function Page() {
                 },
                 withCredentials: true
             });
-            const { user } = response.data.data;
-            console.log(user);
-            
+            const { user,accessToken,refreshToken } = response.data.data;
+            console.log(response);
+            localStorage.setItem('accessToken',accessToken)
+            localStorage.setItem('refreshToken',refreshToken)
             toast({
                 title: `Welcome ${user.full_name}`,
                 description: "Logged In successfully"
