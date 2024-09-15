@@ -91,7 +91,7 @@ const Dashboard = () => {
             if (authenticated && userId) {
                 try {
                     const response = await fetch(
-                        `http://localhost:8080/api/v1/project/users/projects?userId=${userId}`
+                        `${Domain}/api/v1/project/users/projects?userId=${userId}`
                     );
                     if (!response.ok) {
                         throw new Error("Failed to fetch projects");
