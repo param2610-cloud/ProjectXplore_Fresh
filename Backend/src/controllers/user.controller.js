@@ -123,10 +123,14 @@ const logoutUser = asyncHandler(async (req, res, next) => {
 });
 
 const refreshAccessToken = asyncHandler(async (req, res, next) => {
+    const {accessToken,refreshToken} = req.body;
     const incomingRefreshToken =
         req.cookies.refreshToken || req.headers["authorization"]?.substring(7);
 
-    if (!incomingRefreshToken) {
+        if(!incomingRefreshToken && refreshToken){
+            incomingRefreshToken = refreshToken;
+        }
+    if (!incomingRefreshToken && !refreshToken) {
         return res
             .status(200)
             .json(new ApiResponse(200, false, "Token is not available"));
@@ -164,12 +168,16 @@ const refreshAccessToken = asyncHandler(async (req, res, next) => {
 });
 
 const validateAccessToken = asyncHandler(async (req, res, next) => {
+    const {accessToken,refreshToken} = req.body;
     const incomingAccessToken = req.cookies.accessToken || 
                                 req.headers['authorization']?.split(' ')[1] ||
                                 req.query.token;
     console.log(req.cookies);
     
-    if (!incomingAccessToken) {
+    if(!incomingAccessToken && accessToken){
+        incomingAccessToken = accessToken;
+    }
+    if (!incomingAccessToken && !accessToken) {
         return res
             .status(200)
             .json(new ApiResponse(200, false, "Token is not available"));

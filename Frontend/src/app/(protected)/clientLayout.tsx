@@ -129,9 +129,11 @@ export default function ClientLayout({
     }, [userid]);
     const handlelogout = async () => {
         if (userid) {
+            const accessToken = localStorage.getItem("accessToken")
+                const refreshToken = localStorage.getItem("refreshToken")
             const response = await axios.post(
                 `${Domain}/api/v1/users/logout`,
-                { user_id: userid },
+                { user_id: userid,accessToken,refreshToken },
                 { withCredentials: true }
             );
             if (response.status === 200) {

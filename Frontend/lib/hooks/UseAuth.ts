@@ -14,9 +14,11 @@ function UseAuth() {
     useEffect(() => {
         const refreshAccesstoken = async () => {
             try {
+                const accessToken = localStorage.getItem("accessToken")
+                const refreshToken = localStorage.getItem("refreshToken")
                 const response = await axios.post(
                     `${Domain}/api/v1/users/refresh-token`,
-                    {},
+                    {accessToken,refreshToken},
                     {
                         withCredentials: true,
                     }
@@ -43,9 +45,11 @@ function UseAuth() {
 
         const checkAuth = async () => {
             try {
+                const accessToken = localStorage.getItem("accessToken")
+                const refreshToken = localStorage.getItem("refreshToken")
                 const response = await axios.post(
                     `${Domain}/api/v1/users/validate-token`,
-                    {},
+                    {accessToken,refreshToken},
                     {
                         withCredentials: true,
                         headers: {
