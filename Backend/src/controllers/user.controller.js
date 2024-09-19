@@ -22,43 +22,40 @@ const options = {
 };
 
 const registerUser = asyncHandler(async (req, res, next) => {
-    const { full_name, username, email, password } = req.body;
-
-    if ([username, email, password].some((field) => field?.trim() === "")) {
+    try {
+        console.log(req.body);
+        const { full_name, username, email, password,avatarUrl } = req.body;
+        console.log("full name:",full_name,"username:",username,"email:",email,"password:",password,"avatarUrl:",avatarUrl)
+        if ([username, email, password,avatarUrl].some((field) => field?.trim() === "")) {
         throw next(new ApiError(400, "All fields are required"));
     }
-
+    
     const existedUser = await findUserByEmail(email);
 
     if (existedUser) {
         throw next(new ApiError(409, "Email already exists"));
     }
-
-    const avatarlocalpath = req.file?.path;
-    if (!avatarlocalpath) {
-        throw next(new ApiError(400, "Avatar file is required"));
-    }
-
-    const avatarUrl = await uploadOnCloudinary(avatarlocalpath);
-    if (!avatarUrl) {
-        throw next(new ApiError(400, "Failed to upload avatar"));
-    }
-
+    
+    
+    
     const user = await createUser({
         full_name,
         username,
         email,
         password,
-        avatarUrl: avatarUrl.url,
+        avatarUrl: avatarUrl,
     });
-
+    
     if (!user) {
         throw next(new ApiError(500, "Error registering user"));
     }
-
+    
     return res
-        .status(201)
-        .json(new ApiResponse(200, user, "User registered successfully"));
+    .status(201)
+    .json(new ApiResponse(200, user, "User registered successfully"));
+} catch (error) {
+    console.log(error)
+}
 });
 
 const generateTokens = async (userId) => {
