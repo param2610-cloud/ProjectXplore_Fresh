@@ -23,7 +23,6 @@ const UploadOnCloudinary = async ({
     }
 
     for (const file of mediaFiles) {
-        setuploadedImageMediaLinks(["hojoborolo"])
         try {
             const formData = new FormData();
             formData.append("file", file);
@@ -37,7 +36,8 @@ const UploadOnCloudinary = async ({
                     'Content-Type': 'multipart/form-data',
                 },
             });
-
+            console.log(response);
+            
             if (response.status === 200) {
                 const result = response.data;
                 const uploadedUrl = result.secure_url;

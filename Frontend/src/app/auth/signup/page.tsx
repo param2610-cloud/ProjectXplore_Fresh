@@ -19,6 +19,7 @@ import { Domain } from "../../../../lib/Domain";
 import { useRouter } from "next/navigation";
 import { useAtom } from "jotai";
 import userAtom from '../../../../lib/atoms/UserAtom';
+import UploadOnCloudinary from "../../../../lib/control/UploadOnCloudinary";
 interface ErrorMessage {
     error: boolean;
     title: string;
@@ -39,7 +40,7 @@ function Signup() {
     const [firstname, setfirstName] = useState("");
     const [lastname, setlastName] = useState("");
     const [Confirmpassword, setConfirmPassword] = useState("");
-    const [selectedfile, setselecetedfile] = useState(null);
+    const [selectedfile, setselecetedfile] = useState<File | null>(null);
     const [error, setError] = useState<ErrorMessage>();
     const [message, setMessage] = useState<Message>();
     const [same, setSame] = useState<boolean | null>(false);
@@ -48,6 +49,7 @@ function Signup() {
     const [userId, setUserId] = useState<string | null>(null);
     const [loading, setloading] = useState(false);
     const [available,setavailable] = useState<boolean>(true)
+    const [imageLink,setimageLink] = useState<string[]>([])
     const [,setuserId] = useAtom(userAtom)
     useEffect(() => {
         const login = async (): Promise<string | null> => {
@@ -67,7 +69,9 @@ function Signup() {
                             withCredentials: true,
                         }
                     );
-                    const { user } = response.data.data;
+                    const { user,accessToken,refreshToken } = response.data.data;
+                    localStorage.setItem('accessToken',accessToken)
+            localStorage.setItem('refreshToken',refreshToken)
                     setMessage({
                         message: true,
                         title: "Successfully logged in",
@@ -135,6 +139,7 @@ function Signup() {
     const handleSubmit = async (event: any) => {
         event.preventDefault();
         setloading(true);
+    
         if (
             email &&
             password &&
@@ -145,39 +150,59 @@ function Signup() {
             selectedfile
         ) {
             try {
+                console.log(email, password, firstname, lastname, selectedfile);
+                
+                // Upload image to Cloudinary
+                await UploadOnCloudinary({
+                    mediaFiles: [selectedfile], 
+                    setuploadedImageMediaLinks: setimageLink, 
+                    setuploadedVideoMediaLinks: () => {}
+                });
+    
+                // Wait until imageLink is updated properly
+                if (imageLink.length === 0) {
+                    throw new Error("Image upload failed, no link available.");
+                }
+    
+                // Create form data
                 const formdata = new FormData();
                 formdata.append("full_name", firstname + " " + lastname);
                 formdata.append("email", email);
                 formdata.append("password", password);
-                formdata.append("avatar", selectedfile, "Avatar.jpg");
-                formdata.append("username",username)
-
+                formdata.append("avatarUrl", imageLink[0]);  // Make sure imageLink[0] is correct
+                formdata.append("username", username);
+    
+                console.log(formdata);  // Check form data before sending
+    
+                // Send the registration request
                 const response = await axios.post(
                     `${Domain}/api/v1/users/register`,
-                    formdata,
                     {
-                        headers: {
-                            "Content-Type": "multipart/form-data",
-                        },
-                    }
+                        full_name: firstname + " " + lastname,
+                        email,
+                        password,
+                        avatarUrl: imageLink[0],
+                        username
+                    },
+                    
                 );
-
+    
                 const user = response.data.data;
-                setuserId(user.user_id)
+                setuserId(user.user_id);
                 setMessage({
                     message: true,
                     title: "Successfully Registered.",
                     description: user.name,
                 });
                 setRegisterSuccess(true);
+    
             } catch (error: any) {
+                console.log(error);
                 if (error.response) {
                     setError({
                         error: true,
                         title: "Registration Failed",
-                        description:
-                            error.response.data.message ||
-                            "An unexpected error occurred",
+                        description: error.response.data.message || "An unexpected error occurred",
                     });
                 } else {
                     setError({
@@ -191,12 +216,12 @@ function Signup() {
             setError({
                 error: true,
                 title: "Registration Failed",
-                description:
-                    "Please fill Full Name, Email, password and confirm password",
+                description: "Please fill Full Name, Email, password and confirm password",
             });
         }
         setloading(false);
     };
+    
     useEffect(() => {
         if (error?.error == true) {
             toast({
@@ -237,7 +262,7 @@ function Signup() {
                     <div className="grid gap-4">
                         <div className="">
                             <Avataruploader
-                                setselecetedfile={setselecetedfile}
+                                setSelectedFile={setselecetedfile}
                             />
                         </div>
                         <div className="grid grid-cols-2 gap-4">

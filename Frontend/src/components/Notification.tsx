@@ -38,9 +38,9 @@ const Notification = ({ url }:{url:string}) => {
           {notifications.length === 0 ? (
             <p className="text-center text-gray-500 p-4">No new notifications</p>
           ) : (
-            notifications.map((notification) => (
+            notifications.map((notification,index) => (
               <NotificationItem
-                key={notification.id}
+                key={index}
                 notification={notification}
                 onDismiss={handleDismiss}
               />

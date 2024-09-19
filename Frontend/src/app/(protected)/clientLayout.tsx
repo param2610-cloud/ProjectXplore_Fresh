@@ -131,12 +131,16 @@ export default function ClientLayout({
         if (userid) {
             const accessToken = localStorage.getItem("accessToken")
                 const refreshToken = localStorage.getItem("refreshToken")
+                console.log(accessToken,refreshToken);
+                
             const response = await axios.post(
                 `${Domain}/api/v1/users/logout`,
                 { user_id: userid,accessToken,refreshToken },
                 { withCredentials: true }
             );
             if (response.status === 200) {
+                localStorage.removeItem("accessToken")
+                localStorage.removeItem("refreshToken")
                 setUserId(null);
                 router.push("/auth/signin");
             }
