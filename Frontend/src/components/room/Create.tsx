@@ -53,7 +53,7 @@ const Create = () => {
             <div className="flex flex-col gap-5">
                 <div className="w-[50%]">
 
-                <Avataruploader setselecetedfile={setprofile}/>
+                <Avataruploader setSelectedFile={setprofile}/>
                 </div>
                 <div>
 

@@ -122,5 +122,4 @@ const AvatarUploader = ({ setSelectedFile }: AvatarUploaderProps) => {
     </div>
   );
 };
-
 export default AvatarUploader;

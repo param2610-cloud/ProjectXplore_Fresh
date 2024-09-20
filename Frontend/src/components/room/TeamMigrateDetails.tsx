@@ -63,7 +63,7 @@ export function MIgrateRoom({teamId}:{teamId:string}) {
                     <DialogDescription>Room</DialogDescription>
                 </DialogHeader>
                 <div className="grid gap-4 py-4">
-                    <Avataruploader setselecetedfile={setprofile_Pic_link} />
+                    <Avataruploader setSelectedFile={setprofile_Pic_link} />
                     <div className="grid grid-cols-4 items-center gap-4">
                         <Label htmlFor="name" className="text-right">
                             Room Name

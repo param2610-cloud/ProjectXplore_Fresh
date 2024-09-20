@@ -50,7 +50,7 @@ const CreateTeam = ({setcrossClick,setteamdetails}:{setcrossClick:React.Dispatch
             Create Team
         </CardTitle>
         <CardContent className="flex flex-col gap-7">
-            <Avataruploader setselecetedfile={setteamavatar}/>
+            <Avataruploader setSelectedFile={setteamavatar}/>
             <div>
             <Label className="text-lg">
                 Team Name
