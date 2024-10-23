@@ -1,12 +1,11 @@
 "use client";
-import { useEffect, useState } from "react";
-import Avataruploader from "../../../../lib/control/Avataruploader";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { useToast } from "@/components/ui/use-toast";
 import axios from "axios";
 import {
     Card,
     CardContent,
-    CardDescription,
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
@@ -16,349 +15,256 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Toaster } from "@/components/ui/toaster";
 import { Domain } from "../../../../lib/Domain";
-import { useRouter } from "next/navigation";
 import { useAtom } from "jotai";
 import userAtom from '../../../../lib/atoms/UserAtom';
+import { ArrowLeft } from "lucide-react";
+import Avataruploader from "../../../../lib/control/Avataruploader";
 import UploadOnCloudinary from "../../../../lib/control/UploadOnCloudinary";
-interface ErrorMessage {
-    error: boolean;
-    title: string;
-    description: string;
-}
 
-interface Message {
-    message: boolean;
-    title: string;
-    description: string;
+interface FormData {
+    email: string;
+    username: string;
+    password: string;
+    firstname: string;
+    lastname: string;
+    confirmPassword: string;
 }
 
 function Signup() {
     const router = useRouter();
-    const [email, setemail] = useState("");
-    const [username, setusername] = useState("");
-    const [password, setPassword] = useState("");
-    const [firstname, setfirstName] = useState("");
-    const [lastname, setlastName] = useState("");
-    const [Confirmpassword, setConfirmPassword] = useState("");
-    const [selectedfile, setselecetedfile] = useState<File | null>(null);
-    const [error, setError] = useState<ErrorMessage>();
-    const [message, setMessage] = useState<Message>();
-    const [same, setSame] = useState<boolean | null>(false);
-    const [registerSuccess, setRegisterSuccess] = useState<boolean>(false);
-    const [loginSuccess, setLoginSuccess] = useState<boolean>(false);
-    const [userId, setUserId] = useState<string | null>(null);
-    const [loading, setloading] = useState(false);
-    const [available,setavailable] = useState<boolean>(true)
-    const [imageLink,setimageLink] = useState<string[]>([])
-    const [,setuserId] = useAtom(userAtom)
-    useEffect(() => {
-        const login = async (): Promise<string | null> => {
-            setloading(true);
-            if (email && password) {
-                try {
-                    const response = await axios.post(
-                        `${Domain}/api/v1/users/login`,
-                        {
-                            email,
-                            password,
-                        },
-                        {
-                            headers: {
-                                "Content-Type": "application/json",
-                            },
-                            withCredentials: true,
-                        }
-                    );
-                    const { user,accessToken,refreshToken } = response.data.data;
-                    localStorage.setItem('accessToken',accessToken)
-            localStorage.setItem('refreshToken',refreshToken)
-                    setMessage({
-                        message: true,
-                        title: "Successfully logged in",
-                        description: user.name,
-                    });
-                    router.push("/dashboard");
-                    return user._id;
-                } catch (error: any) {
-                    if (error.response) {
-                        setError({
-                            error: true,
-                            title: "Login Failed",
-                            description:
-                                error.response.data.message ||
-                                "An unexpected error occurred",
-                        });
-                    } else {
-                        setError({
-                            error: true,
-                            title: "Login Failed",
-                            description: "An unexpected error occurred",
-                        });
-                    }
-                }
-            } else {
-                setError({
-                    error: true,
-                    title: "Login Failed",
-                    description:
-                        "Please fill in the email and password sections",
-                });
-            }
-            setloading(false);
-            return null;
-        };
-
-        if (registerSuccess) {
-            const loginUser = async () => {
-                const userId_ = await login();
-                console.log(userId_);
-                if (userId_) {
-                    setUserId(userId_);
-                    setLoginSuccess(true);
-                }
-            };
-
-            loginUser();
-        }
-    }, [registerSuccess, email, password, router]);
-
-    useEffect(() => {
-        if (
-            Confirmpassword === password &&
-            Confirmpassword !== "" &&
-            password !== ""
-        ) {
-            setSame(true);
-        } else {
-            setSame(false);
-        }
-    }, [Confirmpassword, password]);
-
     const { toast } = useToast();
+    const [, setUserId] = useAtom(userAtom);
+    const [loading, setLoading] = useState(false);
+    const [selectedFile, setSelectedFile] = useState<File | null>(null);
+    const [formData, setFormData] = useState<FormData>({
+        email: "",
+        username: "",
+        password: "",
+        firstname: "",
+        lastname: "",
+        confirmPassword: "",
+    });
 
-    const handleSubmit = async (event: any) => {
-        event.preventDefault();
-        setloading(true);
-    
-        if (
-            email &&
-            password &&
-            firstname &&
-            lastname &&
-            Confirmpassword &&
-            password === Confirmpassword &&
-            selectedfile
-        ) {
-            try {
-                console.log(email, password, firstname, lastname, selectedfile);
-                
-                // Upload image to Cloudinary
-                await UploadOnCloudinary({
-                    mediaFiles: [selectedfile], 
-                    setuploadedImageMediaLinks: setimageLink, 
-                    setuploadedVideoMediaLinks: () => {}
-                });
-    
-                // Wait until imageLink is updated properly
-                if (imageLink.length === 0) {
-                    throw new Error("Image upload failed, no link available.");
-                }
-    
-                // Create form data
-                const formdata = new FormData();
-                formdata.append("full_name", firstname + " " + lastname);
-                formdata.append("email", email);
-                formdata.append("password", password);
-                formdata.append("avatarUrl", imageLink[0]);  // Make sure imageLink[0] is correct
-                formdata.append("username", username);
-    
-                console.log(formdata);  // Check form data before sending
-    
-                // Send the registration request
-                const response = await axios.post(
-                    `${Domain}/api/v1/users/register`,
-                    {
-                        full_name: firstname + " " + lastname,
-                        email,
-                        password,
-                        avatarUrl: imageLink[0],
-                        username
-                    },
-                    
-                );
-    
-                const user = response.data.data;
-                setuserId(user.user_id);
-                setMessage({
-                    message: true,
-                    title: "Successfully Registered.",
-                    description: user.name,
-                });
-                setRegisterSuccess(true);
-    
-            } catch (error: any) {
-                console.log(error);
-                if (error.response) {
-                    setError({
-                        error: true,
-                        title: "Registration Failed",
-                        description: error.response.data.message || "An unexpected error occurred",
-                    });
-                } else {
-                    setError({
-                        error: true,
-                        title: "Registration Failed",
-                        description: "An unexpected error occurred",
-                    });
-                }
-            }
-        } else {
-            setError({
-                error: true,
-                title: "Registration Failed",
-                description: "Please fill Full Name, Email, password and confirm password",
-            });
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+        setFormData(prev => ({ ...prev, [name]: value }));
+    };
+
+    const validateForm = () => {
+        if (!formData.email || !formData.username || !formData.password || 
+            !formData.firstname || !formData.lastname || !formData.confirmPassword) {
+            throw new Error("All fields are required");
         }
-        setloading(false);
+        if (formData.password !== formData.confirmPassword) {
+            throw new Error("Passwords do not match");
+        }
+        if (formData.password.length < 6) {
+            throw new Error("Password must be at least 6 characters long");
+        }
+    };
+
+    const handleLogin = async (email: string, password: string) => {
+        try {
+            const response = await axios.post(
+                `${Domain}/api/v1/users/login`,
+                { email, password },
+                {
+                    headers: { "Content-Type": "application/json" },
+                    withCredentials: true,
+                }
+            );
+
+            const { user, accessToken, refreshToken } = response.data.data;
+            localStorage.setItem('accessToken', accessToken);
+            localStorage.setItem('refreshToken', refreshToken);
+            setUserId(user.user_id);
+            
+            toast({
+                title: "Success",
+                description: "Logged in successfully",
+            });
+            
+            router.push("/dashboard");
+        } catch (error: any) {
+            throw new Error(error.response?.data?.message || "Login failed");
+        }
     };
     
-    useEffect(() => {
-        if (error?.error == true) {
-            toast({
-                title: error.title,
-                description: error.description,
-            });
-        }
-    }, [error, toast]);
-    useEffect(() => {
-        if (message?.message == true) {
-            toast({
-                title: message.title,
-                description: message.description,
-            });
-        }
-    }, [message, toast]);
-    useEffect(()=>{
-        const fetchdata = async ()=>{
-            if(username){
-                const response  = await axios.get(`${Domain}/api/v1/users/username-status`,{params:{username:username}})
-                setavailable(response.data.available)
+    const [imageLinks, setImageLinks] = useState<string[]>([]);
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setLoading(true);
+
+        try {
+            // Validate form
+            validateForm();
+
+            // Handle avatar upload if file is selected
+            let avatarUrl = "";
+            if (selectedFile) {
+                await UploadOnCloudinary({
+                    mediaFiles: [selectedFile],
+                    setuploadedImageMediaLinks: (links:any) => imageLinks.push(...links),
+                    setuploadedVideoMediaLinks: () => {},
+                });
+                avatarUrl = imageLinks[0] || "";
             }
+
+            // Register user
+            const response = await axios.post(`${Domain}/api/v1/users/register`, {
+                full_name: `${formData.firstname} ${formData.lastname}`,
+                email: formData.email,
+                password: formData.password,
+                username: formData.username,
+                avatarUrl,
+            });
+
+            toast({
+                title: "Success",
+                description: "Account created successfully",
+            });
+
+            // Automatically login after successful registration
+            await handleLogin(formData.email, formData.password);
+
+        } catch (error: any) {
+            toast({
+                title: "Error",
+                description: error.response?.data?.message || error.message || "An error occurred",
+                variant: "destructive",
+            });
+        } finally {
+            setLoading(false);
         }
-        fetchdata()
-    },[username])
+    };
 
     return (
-        <div className="w-screen min-h-screen max-h-full flex justify-center items-center">
-            <Toaster />
-            <Card className="mx-auto max-w-sm">
-                <CardHeader>
-                    <CardTitle className="text-xl">Sign Up</CardTitle>
-                    <CardDescription>
-                        Enter your information to create an account
-                    </CardDescription>
-                </CardHeader>
-                <CardContent>
-                    <div className="grid gap-4">
-                        <div className="">
-                            <Avataruploader
-                                setSelectedFile={setselecetedfile}
-                            />
-                        </div>
-                        <div className="grid grid-cols-2 gap-4">
-                            <div className="grid gap-2">
-                                <Label htmlFor="first-name">First name</Label>
-                                <Input
-                                    id="first-name"
-                                    placeholder="Max"
-                                    required
-                                    value={firstname}
-                                    onChange={(e: any) =>
-                                        setfirstName(e.target.value)
-                                    }
-                                />
-                            </div>
-                            <div className="grid gap-2">
-                                <Label htmlFor="last-name">Last name</Label>
-                                <Input
-                                    id="last-name"
-                                    placeholder="Robinson"
-                                    required
-                                    value={lastname}
-                                    onChange={(e: any) =>
-                                        setlastName(e.target.value)
-                                    }
-                                />
-                            </div>
-                        </div>
-                        <div className="grid gap-2">
-                            <Label htmlFor="email">Email</Label>
-                            <Input
-                                id="email"
-                                type="email"
-                                placeholder="m@example.com"
-                                required
-                                value={email}
-                                onChange={(e: any) => setemail(e.target.value)}
-                                
-                            />
-                        </div>
-                        <div className="grid gap-2">
-                            <Label htmlFor="email">Username</Label>
-                            <Input
-                                id="username"
-                                type="text"
-                                placeholder="name123"
-                                required
-                                value={username}
-                                onChange={(e: any) =>
-                                    setusername(e.target.value)
-                                }
-                                
-                            />
-                            {!available && <p className="text-red-500">Username is already taken</p>}
-                        </div>
-                        <div className="grid gap-2">
-                            <Label htmlFor="password">Password</Label>
-                            <Input
-                                id="password"
-                                type="password"
-                                value={password}
-                                onChange={(e: any) =>
-                                    setPassword(e.target.value)
-                                }
-                            />
-                        </div>
-                        <div className="grid gap-2">
-                            <Label htmlFor="confirmpassword">
-                                Confirm Password
-                            </Label>
-                            <Input
-                                id="confirmpassword"
-                                type="password"
-                                value={Confirmpassword}
-                                onChange={(e: any) =>
-                                    setConfirmPassword(e.target.value)
-                                }
-                            />
-                        </div>
-                        <Button
-                            type="submit"
-                            className="w-full"
-                            onClick={handleSubmit}
-                            disabled={loading ? true : false}
-                        >
-                            Create an account
-                        </Button>
-                    </div>
-                    <div className="mt-4 text-center text-sm">
-                        Already have an account?{" "}
-                        <Link href="/auth/signin" className="underline">
-                            Sign in
+        <div className="min-h-screen bg-black">
+            <nav className="fixed top-0 w-full z-50 bg-black/50 backdrop-blur-sm border-b border-neutral-800">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="flex justify-between h-16 items-center">
+                        <Link href="/" className="flex items-center gap-2 text-neutral-200 hover:text-white">
+                            <ArrowLeft className="w-4 h-4" />
+                            <span>Back to Home</span>
                         </Link>
+                        <div className="text-2xl font-bold text-white">
+                            ProjectXplore
+                        </div>
                     </div>
-                </CardContent>
-            </Card>
+                </div>
+            </nav>
+
+            <div className="w-full min-h-screen pt-24 pb-12 flex justify-center items-center px-4">
+                <Toaster />
+                <div className="relative w-full max-w-md">
+                    <div className="absolute inset-0 h-full w-full bg-gradient-to-r from-blue-400 to-violet-400 transform scale-[0.80] rounded-3xl blur-3xl opacity-30" />
+                    
+                    <Card className="relative border-neutral-800 bg-neutral-900/70 backdrop-blur-sm">
+                        <CardHeader className="space-y-1">
+                            <CardTitle className="text-2xl font-bold text-white">
+                                Create an account
+                            </CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                            <form onSubmit={handleSubmit} className="grid gap-4">
+                                {/* Optional Avatar Upload */}
+                                <div className="flex justify-center mb-4">
+                                    <Avataruploader setSelectedFile={setSelectedFile} />
+                                </div>
+
+                                <div className="grid grid-cols-2 gap-4">
+                                    <div className="space-y-2">
+                                        <Label htmlFor="firstname" className="text-neutral-200">First name</Label>
+                                        <Input
+                                            id="firstname"
+                                            name="firstname"
+                                            placeholder="John"
+                                            value={formData.firstname}
+                                            onChange={handleInputChange}
+                                            className="bg-neutral-800 border-neutral-700 text-neutral-200"
+                                        />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <Label htmlFor="lastname" className="text-neutral-200">Last name</Label>
+                                        <Input
+                                            id="lastname"
+                                            name="lastname"
+                                            placeholder="Doe"
+                                            value={formData.lastname}
+                                            onChange={handleInputChange}
+                                            className="bg-neutral-800 border-neutral-700 text-neutral-200"
+                                        />
+                                    </div>
+                                </div>
+
+                                <div className="space-y-2">
+                                    <Label htmlFor="username" className="text-neutral-200">Username</Label>
+                                    <Input
+                                        id="username"
+                                        name="username"
+                                        placeholder="johndoe"
+                                        value={formData.username}
+                                        onChange={handleInputChange}
+                                        className="bg-neutral-800 border-neutral-700 text-neutral-200"
+                                    />
+                                </div>
+
+                                <div className="space-y-2">
+                                    <Label htmlFor="email" className="text-neutral-200">Email</Label>
+                                    <Input
+                                        id="email"
+                                        name="email"
+                                        type="email"
+                                        placeholder="john@example.com"
+                                        value={formData.email}
+                                        onChange={handleInputChange}
+                                        className="bg-neutral-800 border-neutral-700 text-neutral-200"
+                                    />
+                                </div>
+
+                                <div className="space-y-2">
+                                    <Label htmlFor="password" className="text-neutral-200">Password</Label>
+                                    <Input
+                                        id="password"
+                                        name="password"
+                                        type="password"
+                                        value={formData.password}
+                                        onChange={handleInputChange}
+                                        className="bg-neutral-800 border-neutral-700 text-neutral-200"
+                                    />
+                                </div>
+
+                                <div className="space-y-2">
+                                    <Label htmlFor="confirmPassword" className="text-neutral-200">Confirm Password</Label>
+                                    <Input
+                                        id="confirmPassword"
+                                        name="confirmPassword"
+                                        type="password"
+                                        value={formData.confirmPassword}
+                                        onChange={handleInputChange}
+                                        className="bg-neutral-800 border-neutral-700 text-neutral-200"
+                                    />
+                                </div>
+
+                                <Button 
+                                    type="submit"
+                                    className="w-full bg-gradient-to-r from-blue-400 to-violet-400 hover:from-blue-500 hover:to-violet-500 text-white"
+                                    disabled={loading}
+                                >
+                                    {loading ? "Creating account..." : "Create account"}
+                                </Button>
+
+                                <p className="text-center text-neutral-400">
+                                    Already have an account?{" "}
+                                    <Link href="/auth/signin" className="text-blue-400 hover:text-blue-300">
+                                        Sign in
+                                    </Link>
+                                </p>
+                            </form>
+                        </CardContent>
+                    </Card>
+                </div>
+            </div>
         </div>
     );
 }
