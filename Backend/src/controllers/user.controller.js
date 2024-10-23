@@ -26,9 +26,10 @@ const registerUser = asyncHandler(async (req, res, next) => {
         console.log(req.body);
         const { full_name, username, email, password,avatarUrl } = req.body;
         console.log("full name:",full_name,"username:",username,"email:",email,"password:",password,"avatarUrl:",avatarUrl)
-        if ([username, email, password,avatarUrl].some((field) => field?.trim() === "")) {
-        throw next(new ApiError(400, "All fields are required"));
-    }
+        const emptyFields = [username, email, password].filter((field) => field?.trim() === "");
+        if (emptyFields.length > 0) {
+            throw next(new ApiError(400, `The following fields are empty: ${emptyFields.join(", ")}`));
+        }
     
     const existedUser = await findUserByEmail(email);
 
@@ -37,7 +38,9 @@ const registerUser = asyncHandler(async (req, res, next) => {
     }
     
     
-    
+    if (!avatarUrl) {
+        avatarUrl=""
+    }
     const user = await createUser({
         full_name,
         username,

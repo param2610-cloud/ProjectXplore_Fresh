@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { User } from "lucide-react";
 import Image from "next/image";
 import { useRef, useState } from "react";
 
@@ -95,13 +96,7 @@ const AvatarUploader = ({ setSelectedFile }: AvatarUploaderProps) => {
         onChange={fileSelectedHandler}
       />
       {!previewUrl && (
-        <Image
-          src="/usericon.png"
-          width={100}
-          height={100}
-          alt="Avatar Preview"
-          className="w-[50px] h-[50px] object-cover rounded-full"
-        />
+        <User/>
       )}
       {previewUrl && (
         <Image
