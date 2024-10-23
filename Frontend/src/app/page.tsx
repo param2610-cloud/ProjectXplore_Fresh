@@ -5,6 +5,7 @@ import { ArrowRight, Book, Rocket, Users } from "lucide-react";
 import dynamic from "next/dynamic";
 import { globeConfig, sampleArcs } from '@/components/home/Globeconts';
 import { Meteors } from "@/components/ui/meteors";
+import Link from "next/link";
 
 const World = dynamic(
     () => import("@/components/ui/globe").then((m) => m.World),
@@ -26,13 +27,18 @@ const Hero = () => (
                         ProjectXplore
                     </div>
                     <div className="flex gap-4">
+                        <Link href={"/auth/signin"}>
                         <Button
                             variant="ghost"
                             className="text-neutral-200 hover:text-white"
-                        >
+                            >
                             Sign In
                         </Button>
-                        <Button>Sign Up</Button>
+                            </Link>
+                        <Link href={"/auth/signup"}>
+                        <Button
+                        >Sign Up</Button>
+                        </Link>
                     </div>
                 </div>
             </div>

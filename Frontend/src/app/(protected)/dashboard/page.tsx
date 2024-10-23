@@ -4,329 +4,214 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import {
-    Folder,
-    Users,
-    Award,
     Bell,
-    Search,
     PlusCircle,
-    RefreshCw,
-    UserPlus,
+    Search,
+    Rocket,
+    Target,
+    Users,
+    Trophy,
+    ArrowRight,
 } from "lucide-react";
-import UseAuth from "../../../../lib/hooks/UseAuth";
-import { useAtom } from "jotai";
-import userAtom from '../../../../lib/atoms/UserAtom';
-import { useRouter } from "next/navigation";
-import { Domain,FirebaseUrl } from "../../../../lib/Domain";
-import Notification from "@/components/Notification";
-import { useToast } from "@/components/ui/use-toast";
-import { ProjectData } from "../../../../lib/interface/INTERFACE";
+import { BackgroundBeams } from "@/components/ui/background-beams";
+import { SparklesCore } from "@/components/ui/sparkles";
+import { TextGenerateEffect } from "@/components/ui/text-generate-effect";
 import Link from "next/link";
-import Image from "next/image";
-import { getCookie } from 'cookies-next';
-
-
 
 const Dashboard = () => {
-    const [cookie, setCookie] = useState<string | undefined>('');
-    useEffect(() => {
-        const fetchCookie = () => {
-            const myCookie = getCookie('accessToken');
-            setCookie(myCookie?.toString());
-        };
+    const [activeTab, setActiveTab] = useState("getting-started");
 
-        fetchCookie();
-    }, []);
-    const refreshCookie = () => {
-        const myCookie = getCookie('accessToken');
-        setCookie(myCookie?.toString());
-    };
-    
-    const { loading, authenticated } = UseAuth();
-    const [userId] = useAtom(userAtom);
-    const router = useRouter();
-    const [teamsCount, setTeamsCount] = useState(0);
-    const [projectsCount, setProjectsCount] = useState(0);
-    const [achievementsCount, setAchievementsCount] = useState(0);
-    
-    useEffect(() => {
-        if (userId === "0c33131a-5771-424e-87a7-bf788bb656e4") {
-            router.push("/institution");
-        }
-    }, [userId,router]);
+    // Placeholder project templates
+    const projectTemplates = [
+        {
+            name: "Personal Blog",
+            difficulty: "Easy",
+            duration: "2-3 days",
+            category: "Web Development",
+        },
+        {
+            name: "Task Manager",
+            difficulty: "Medium",
+            duration: "1 week",
+            category: "Productivity",
+        },
+        {
+            name: "Portfolio Site",
+            difficulty: "Easy",
+            duration: "2-4 days",
+            category: "Web Development",
+        },
+        {
+            name: "Weather App",
+            difficulty: "Medium",
+            duration: "3-5 days",
+            category: "Mobile",
+        },
+    ];
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const [teamsResponse, projectsResponse, achievementsResponse] = await Promise.all([
-                    fetch(`${Domain}/api/v1/users/teams?user_id=${userId}`),
-                    fetch(`${Domain}/api/v1/users/no-of-project?userId=${userId}`),
-                    fetch(`${Domain}/api/v1/users/achievements?user_id=${userId}`)
-                ]);
-    
-                const teamsData = await teamsResponse.json();
-                const projectsData = await projectsResponse.json();
-                const achievementsData = await achievementsResponse.json();
-                console.log(teamsData,projectsData,achievementsData);
-                
-                setTeamsCount(teamsData);
-                setProjectsCount(projectsData.data);
-                setAchievementsCount(achievementsData.length);
-            } catch (error) {
-                console.error("Error fetching data:", error);
-            }
-        };
-        if (userId) {
-            fetchData();
-        }
-    }, [userId]);
-
-    
-    const [projects, setProjects] = useState<ProjectData[]>([]);
-    const [error, setError] = useState<any>(null);
-    const { toast } = useToast();
-
-    useEffect(() => {
-        const fetchProjects = async () => {
-            if (authenticated && userId) {
-                try {
-                    const response = await fetch(
-                        `${Domain}/api/v1/project/users/projects?userId=${userId}`
-                    );
-                    if (!response.ok) {
-                        throw new Error("Failed to fetch projects");
-                    }
-                    const data = await response.json();
-                    
-                    let fetchedProjects: ProjectData[] = [];
-                    for (const rooms of data.data.rooms) {
-                        for (const project of rooms.New_Project_table) {
-                            fetchedProjects.push(project);
-                        }
-                    }
-                    setProjects(fetchedProjects);
-                } catch (err) {
-                    toast({
-                        title: "Error",
-                        description: "Error fetching projects. Please try again later.",
-                    });
-                    console.error("Error fetching projects:", err);
-                    setError("Failed to fetch projects");
-                }
-            }
-        };
-
-        fetchProjects();
-    }, [authenticated, userId, toast]);
-
-    const handleProjectClick = (projectId: string) => {
-        router.push(`/project/${projectId}`);
-    };
-
-    if (loading) {
-        return <div className="text-center p-4">Loading...</div>;
-    }
-
-    if (!authenticated) {
-        return (
-            <div className="text-center p-4 w-screen h-screen flex justify-center items-center">
-                <div className="flex flex-col">
-                    cookies: {cookie ? cookie : "no token"}
-                    <button onClick={refreshCookie}>Refresh</button>
-                </div>
-            </div>
-        );
-    }
-
-
-    if (error) {
-        return <div className="text-center text-red-500 p-4">{error}</div>;
-    }
-
+    // Achievement badges
+    const badges = [
+        {
+            name: "First Login",
+            icon: <Rocket className="w-6 h-6" />,
+            earned: true,
+        },
+        {
+            name: "Profile Complete",
+            icon: <Users className="w-6 h-6" />,
+            earned: false,
+        },
+        {
+            name: "First Project",
+            icon: <Target className="w-6 h-6" />,
+            earned: false,
+        },
+        {
+            name: "Team Player",
+            icon: <Trophy className="w-6 h-6" />,
+            earned: false,
+        },
+    ];
 
     return (
-        <div className="p-6 space-y-6 bg-gradient-to-br from-purple-50 to-indigo-50 min-h-screen">
-            <header className="flex justify-between items-center">
-                <h1 className="text-3xl font-bold text-indigo-800">
-                    Your ProjectXplore Workspace
-                </h1>
-                <Button className="bg-indigo-600 hover:bg-indigo-700">
-                    <Bell className="h-4 w-4 mr-2" />
-                    Notifications
-                </Button>
-            </header>
+        <div className="min-h-screen bg-black/[0.96] relative overflow-hidden">
+            <BackgroundBeams />
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <Card className="bg-white shadow-lg hover:shadow-xl transition-shadow duration-300">
-                    <CardHeader className="flex flex-row items-center justify-between pb-2">
-                        <CardTitle className="text-lg font-semibold text-indigo-700">
-                            Your Projects
-                        </CardTitle>
-                        <Folder className="h-6 w-6 text-indigo-500" />
-                    </CardHeader>
-                    <CardContent>
-                        <div className="text-3xl font-bold text-indigo-900">
-                            {projectsCount}
-                        </div>
-                        <p className="text-sm text-indigo-600">
-                            Total projects
-                        </p>
-                        <Progress value={projectsCount * 10} className="mt-2" />
-                    </CardContent>
-                </Card>
+            <main className="max-w-7xl mx-auto px-6 pt-16 pb-12 relative z-10">
+                {/* Welcome Header */}
+                <div className="mb-12 relative">
+                    <TextGenerateEffect
+                        words="Welcome to Your Creative Space! 🚀"
+                        className="text-4xl font-bold text-white mb-4"
+                    />
+                    <p className="text-zinc-400 text-lg max-w-2xl">
+                        Get started on your journey by exploring project
+                        templates, joining a team, or creating something
+                        entirely new.
+                    </p>
+                    <SparklesCore
+                        background="transparent"
+                        minSize={0.4}
+                        maxSize={1}
+                        particleDensity={12}
+                        className="absolute right-0 top-0 w-32 h-32"
+                        particleColor="#FFFFFF"
+                    />
+                </div>
 
-                <Card className="bg-white shadow-lg hover:shadow-xl transition-shadow duration-300">
-                    <CardHeader className="flex flex-row items-center justify-between pb-2">
-                        <CardTitle className="text-lg font-semibold text-indigo-700">
-                            Your Teams
-                        </CardTitle>
-                        <Users className="h-6 w-6 text-indigo-500" />
-                    </CardHeader>
-                    <CardContent>
-                        <div className="text-3xl font-bold text-indigo-900">
-                            {teamsCount}
-                        </div>
-                        <p className="text-sm text-indigo-600">
-                            Total teams
-                        </p>
-                        <div className="flex -space-x-2 overflow-hidden mt-2">
-                            {[...Array(Math.min(5, teamsCount))].map((_, i) => (
-                                <Image
-                                width={32}
-                                height={32}
-                                    key={i}
-                                    className="inline-block h-8 w-8 rounded-full ring-2 ring-white"
-                                    src={`/api/placeholder/${30 + i}/30`}
-                                    alt={`Team member ${i + 1}`}
-                                />
-                            ))}
-                            {teamsCount > 5 && (
-                                <span className="flex items-center justify-center w-8 h-8 rounded-full bg-indigo-100 text-indigo-800 text-xs font-medium">
-                                    +{teamsCount - 5}
-                                </span>
-                            )}
-                        </div>
-                    </CardContent>
-                </Card>
-
-                <Card className="bg-white shadow-lg hover:shadow-xl transition-shadow duration-300">
-                    <CardHeader className="flex flex-row items-center justify-between pb-2">
-                        <CardTitle className="text-lg font-semibold text-indigo-700">
-                            Your Achievements
-                        </CardTitle>
-                        <Award className="h-6 w-6 text-indigo-500" />
-                    </CardHeader>
-                    <CardContent>
-                        <div className="text-3xl font-bold text-indigo-900">
-                            {achievementsCount}
-                        </div>
-                        <p className="text-sm text-indigo-600">
-                            Total achievements
-                        </p>
-                        <div className="flex space-x-1 mt-2">
-                            {[...Array(Math.min(5, achievementsCount))].map((_, i) => (
-                                <span
-                                    key={i}
-                                    className="w-2 h-2 rounded-full bg-indigo-400"
-                                ></span>
-                            ))}
-                        </div>
-                    </CardContent>
-                </Card>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <Card className="bg-white shadow-lg hover:shadow-xl transition-shadow duration-300">
-                    <CardHeader>
-                        <CardTitle className="text-xl font-semibold text-indigo-800">
-                            Quick Actions
-                        </CardTitle>
-                    </CardHeader>
-                    <CardContent className="space-y-3 flex flex-col">
-                      <Link href={"/project"} className="">
-                        <Button className="w-full bg-green-500 hover:bg-green-600 text-white">
-                            <PlusCircle className="h-4 w-4 mr-2" />
-                            Create New Project
+                {/* Quick Actions */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+                    <Link className="w-full h-full" href={"/room/create"}>
+                        <Button
+                            className="w-full h-24 bg-gradient-to-br from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700"
+                            onClick={() => setActiveTab("templates")}
+                        >
+                            <PlusCircle className="mr-2 h-5 w-5" />
+                            Start New Project
                         </Button>
-                      </Link>
-                        <Link href={"/room"}>
-                        <Button className="w-full bg-yellow-500 hover:bg-yellow-600 text-white">
-                            <RefreshCw className="h-4 w-4 mr-2" />
-                            Update Project Status
-                        </Button>
+                    </Link>
+                    <Link className="w-full h-full" href={"/teams"}>
+                    <Button
+                        className="w-full h-24 bg-gradient-to-br from-orange-600 to-red-600 hover:from-orange-700 hover:to-red-700"
+                        variant="outline"
+                    >
+                        <Users className="mr-2 h-5 w-5" />
+                        Join a Team
+                    </Button>
                         </Link>
-                        <Link href={"/teams"}>
-                        <Button className="w-full bg-blue-500 hover:bg-blue-600 text-white">
-                            <UserPlus className="h-4 w-4 mr-2" />
-                            Invite Team Member
-                        </Button>
+                        <Link className="w-full h-full" href={"/settings/createportfolio"}>
+                    <Button
+                        className="w-full h-24 bg-gradient-to-br from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700"
+                        variant="outline"
+                        >
+                        <Trophy className="mr-2 h-5 w-5" />
+                        Complete Profile
+                    </Button>
                         </Link>
-                    </CardContent>
-                </Card>
+                </div>
 
-                <Card className="bg-white shadow-lg hover:shadow-xl transition-shadow duration-300">
+                {/* Project Templates */}
+                <Card className="bg-zinc-900/50 border-white/10 mb-8">
                     <CardHeader>
-                        <CardTitle className="text-xl font-semibold text-indigo-800">
-                            Recent Activity
+                        <CardTitle className="text-xl font-bold text-white flex items-center justify-between">
+                            Popular Templates
+                            <Button variant="ghost" className="text-sm">
+                                View All <ArrowRight className="ml-2 h-4 w-4" />
+                            </Button>
                         </CardTitle>
                     </CardHeader>
                     <CardContent>
-                        <Notification url={FirebaseUrl}/>
-                    </CardContent>
-                </Card>
-            </div>
-
-            <Card className="bg-white shadow-lg hover:shadow-xl transition-shadow duration-300">
-                <CardHeader>
-                    <CardTitle className="text-xl font-semibold text-indigo-800">
-                        Your Active Projects
-                    </CardTitle>
-                </CardHeader>
-                <CardContent>
-                    {projects.length === 0 ? (
-                        <p className="text-center text-indigo-600">No projects found.</p>
-                    ) : (
-                        <ul className="space-y-4">
-                            {projects.map((project) => (
-                                <li key={project.id} className="flex justify-between items-center cursor-pointer" onClick={() => handleProjectClick(project.id as string)}>
-                                    <div>
-                                        <h3 className="font-semibold text-indigo-700">
-                                            {project.projectName}
-                                        </h3>
-                                        <p className="text-sm text-indigo-600">
-                                            {project.projectType}
-                                        </p>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            {projectTemplates.map((template, i) => (
+                                <div
+                                    key={i}
+                                    className="p-6 rounded-lg bg-black/40 hover:bg-black/60 transition-all transform hover:scale-102 cursor-pointer border border-white/5 hover:border-white/20"
+                                >
+                                    <h3 className="font-semibold text-white mb-2">
+                                        {template.name}
+                                    </h3>
+                                    <div className="flex items-center gap-4 text-sm text-zinc-400">
+                                        <span>{template.difficulty}</span>
+                                        <span>•</span>
+                                        <span>{template.duration}</span>
                                     </div>
-                                    <Progress value={Math.random() * 100} className="w-1/3" />
-                                </li>
+                                    <div className="mt-4">
+                                        <span className="px-3 py-1 rounded-full bg-zinc-800 text-xs text-white">
+                                            {template.category}
+                                        </span>
+                                    </div>
+                                </div>
                             ))}
-                        </ul>
-                    )}
-                </CardContent>
-            </Card>
-
-            <Card className="bg-white shadow-lg hover:shadow-xl transition-shadow duration-300">
-                <CardHeader>
-                    <CardTitle className="text-xl font-semibold text-indigo-800">
-                        Explore Projects
-                    </CardTitle>
-                </CardHeader>
-                <CardContent>
-                    <div className="flex items-center space-x-2">
-                        <div className="relative flex-grow">
-                            <Search className="h-5 w-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-                            <input
-                                type="text"
-                                placeholder="Search projects..."
-                                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-                            />
                         </div>
-                        <Button className="bg-indigo-600 hover:bg-indigo-700">
-                            Search
-                        </Button>
-                    </div>
-                </CardContent>
-            </Card>
+                    </CardContent>
+                </Card>
+
+                {/* Achievements Section */}
+                <Card className="bg-zinc-900/50 border-white/10">
+                    <CardHeader>
+                        <CardTitle className="text-xl font-bold text-white">
+                            Getting Started
+                        </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                            {badges.map((badge, i) => (
+                                <div
+                                    key={i}
+                                    className={`p-6 rounded-lg ${
+                                        badge.earned
+                                            ? "bg-green-900/20"
+                                            : "bg-black/40"
+                                    } border ${
+                                        badge.earned
+                                            ? "border-green-500/20"
+                                            : "border-white/5"
+                                    } text-center`}
+                                >
+                                    <div
+                                        className={`mx-auto w-12 h-12 rounded-full flex items-center justify-center ${
+                                            badge.earned
+                                                ? "bg-green-500/20 text-green-400"
+                                                : "bg-zinc-800/50 text-zinc-500"
+                                        } mb-3`}
+                                    >
+                                        {badge.icon}
+                                    </div>
+                                    <h3
+                                        className={`font-medium ${
+                                            badge.earned
+                                                ? "text-green-400"
+                                                : "text-zinc-400"
+                                        }`}
+                                    >
+                                        {badge.name}
+                                    </h3>
+                                </div>
+                            ))}
+                        </div>
+                    </CardContent>
+                </Card>
+            </main>
         </div>
     );
 };
