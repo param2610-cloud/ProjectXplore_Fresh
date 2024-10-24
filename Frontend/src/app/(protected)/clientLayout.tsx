@@ -173,12 +173,14 @@ export default function ClientLayout({
                 <div className="hidden border-r sidebar-bg md:block h-screen col-span-1  ">
                     <div className="flex h-full flex-col">
                         <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
-                            <Link
+                        <Link
                                 href="/"
-                                className="flex items-center gap-2 font-semibold"
+                                className="flex items-center gap-2 font-semibold text-white"
                             >
-                                <Package2 className="h-6 w-6" />
-                                <span className="">ProjectXplore</span>
+                                <Package2 className="h-6 w-6 text-blue-400" />
+                                <span className="bg-gradient-to-r from-blue-400 to-violet-400 bg-clip-text text-transparent">
+                                    ProjectXplore
+                                </span>
                             </Link>
                             <Popover>
                                 <PopoverTrigger className="ml-auto h-8 w-8" asChild>
@@ -216,11 +218,11 @@ export default function ClientLayout({
                                             inspection.
                                         </CardDescription>
                                     </CardHeader>
-                                    <CardContent className="p-2 pt-0 md:p-4 md:pt-0">
-                                        <Link href={"/moreinfo"}>
+                                    <CardContent className="p-4 pt-0">
+                                        <Link href="/moreinfo">
                                             <Button
-                                                size="sm"
-                                                className="w-full"
+                                                className="w-full bg-gradient-to-r from-purple-600 to-blue-600 
+                                                text-white hover:shadow-lg hover:scale-105 transition-all duration-300"
                                             >
                                                 Add Institution
                                             </Button>
