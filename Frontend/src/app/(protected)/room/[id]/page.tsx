@@ -36,7 +36,7 @@ import { useTheme } from "next-themes";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useRouter } from "next/navigation";
-import React, { useEffect, useRef, useState } from "react";
+import React, { use, useEffect, useRef, useState } from "react";
 import ProjectCreateComponent from "../../project/create/page";
 import ChatBasedProjectSubmit from "@/components/room/ChatBasedProjectComponent";
 import useFirebaseNotifications from "../../../../../lib/control/FirebaseNotification";
@@ -44,16 +44,18 @@ import userAtom from "../../../../../lib/atoms/UserAtom";
 import UseAuth from "../../../../../lib/hooks/UseAuth";
 import { Domain, FirebaseUrl } from "../../../../../lib/Domain";
 import Image from "next/image";
+import { motion } from "framer-motion";
+import { HeroHighlight } from "@/components/ui/hero-highlight";
 
 const Page = () => {
     const { loading, authenticated } = UseAuth();
     const [userId] = useAtom(userAtom);
     const router = useRouter();
-    useEffect(()=>{
-        if(!userId && !loading){
-            router.push("/auth/signin")
+    useEffect(() => {
+        if (!userId && !loading) {
+            router.push("/auth/signin");
         }
-    },[userId,loading,router])
+    }, [userId, loading, router]);
     const [DataLoading, setDataloading] = useState<boolean>(false);
     const [startupRender, setstartupRender] = useState<boolean>(true);
     const [CreateIdeaCard, setCreateIdeaCard] = useState<boolean>(false);
@@ -78,20 +80,20 @@ const Page = () => {
     const { notifications, error } = useFirebaseNotifications(`${FirebaseUrl}`);
 
     useEffect(() => {
-        if(userId === "d0e358f6-c0c7-41a0-8f4a-2687967431ad"){
-            router.push("/institution")
+        if (userId === "d0e358f6-c0c7-41a0-8f4a-2687967431ad") {
+            router.push("/institution");
         }
         const roomIdFromPath = parts[2];
         if (roomIdFromPath && roomIdFromPath !== roomId) {
             setroomId(roomIdFromPath);
         }
         console.log(roomId);
-    }, [pathname, roomId,userId,router,parts]);
+    }, [pathname, roomId, userId, router, parts]);
 
     useEffect(() => {
         const fetchIdeaData = async () => {
             try {
-                setDataloading(true)
+                setDataloading(true);
                 // toast({
                 //     title: "Data is Fetching",
                 //     description:
@@ -119,13 +121,12 @@ const Page = () => {
 
                 console.log(roomData.data.data.update);
                 setupdate_list(roomData.data.data.update);
-                
+
                 // toast({
                 //     title: "Data is Fetched",
                 //     description: "Continue your work",
                 // });
-                setDataloading(false)
-
+                setDataloading(false);
             } catch (error) {
                 toast({
                     title: "Error Fetching Data",
@@ -137,7 +138,7 @@ const Page = () => {
         if (roomId) {
             fetchIdeaData();
         }
-    }, [roomId,notifications,toast]);
+    }, [roomId, notifications, toast,setideaSubmitted]);
 
     useEffect(() => {
         if (ideaData) {
@@ -176,14 +177,12 @@ const Page = () => {
         console.log(update_list);
     }, [update_list]);
 
-
     return (
-        <div className="w-full h-full flex flex-col justify-start items-start bg-radial-grid bg-[length:20px_20px] overflow-hidden">
+        <div className="w-full h-full flex flex-col justify-start items-start  overflow-hidden">
+            <HeroHighlight className="w-full h-full flex flex-col justify-start items-start  overflow-hidden">
+
             <div className="absolute top-[70px] left-[300px]">
-                {
-                    DataLoading && 
-                        <Loader2 className="  w-4 h-4 animate-spin" />
-                }
+                {DataLoading && <Loader2 className="  w-4 h-4 animate-spin" />}
             </div>
             <div className="w-full h-full overflow-y-scroll">
                 <div className="flex justify-between items-center w-full p-4">
@@ -238,37 +237,65 @@ const Page = () => {
                     <div>Settings Component (to be implemented)</div>
                 )}
                 {startupRender && (
-                    <div className="flex w-full h-full flex-col justify-center items-center  p-8">
-                    <div
-                      className={`w-full max-w-3xl rounded-xl shadow-lg  flex flex-col justify-center items-center p-8 gap-6 transition-all duration-300 ${
-                        isFadingOut ? "opacity-0 scale-95" : "opacity-100 scale-100"
-                      }`}
-                    >
-                      <LightbulbIcon className="w-20 h-20 text-yellow-400" />
-                      <h1 className="font-extrabold text-4xl md:text-5xl text-center text-gray-800 leading-tight">
-                        Initialize Journey by Posting Idea
-                      </h1>
-                      <p className="text-center text-gray-600 max-w-xl">
-                        If you are looking to submit your project, the first step is to present your idea.
-                        Without a clear idea, your project lacks direction and purpose.
-                      </p>
-                      <Button 
-                        onClick={CreateButtonHandlerStartup}
-                        className="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-6 rounded-full transition-colors duration-300"
-                      >
-                        Create Idea
-                      </Button>
+                    <div className="relative w-full min-h-[600px] flex items-center justify-center p-8 bg-transparent overflow-hidden">
+                        <motion.div
+                            initial={{ opacity: 0, scale: 0.95 }}
+                            animate={{
+                                opacity: isFadingOut ? 0 : 1,
+                                scale: isFadingOut ? 0.95 : 1,
+                            }}
+                            transition={{ duration: 0.3 }}
+                            className="relative w-full max-w-3xl"
+                        >
+                            <div className="relative group rounded-xl bg-zinc-900/50 border border-white/10 p-8 hover:border-white/20 transition-all duration-300">
+                                <div className="absolute inset-0 bg-gradient-to-r from-blue-400/10 to-violet-400/10 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+
+                                <div className="relative flex flex-col items-center gap-6 text-center">
+                                    <motion.div
+                                        whileHover={{ scale: 1.1, rotate: 5 }}
+                                        transition={{
+                                            type: "spring",
+                                            stiffness: 400,
+                                            damping: 10,
+                                        }}
+                                        className="p-4 rounded-full bg-gradient-to-br from-yellow-400/20 to-orange-400/20 border border-yellow-400/20"
+                                    >
+                                        <LightbulbIcon className="w-16 h-16 text-yellow-400" />
+                                    </motion.div>
+
+                                    <h1 className="font-extrabold text-4xl md:text-5xl bg-gradient-to-r from-blue-400 to-violet-400 bg-clip-text text-transparent">
+                                        Initialize Journey by Posting Idea
+                                    </h1>
+
+                                    <p className="text-neutral-300 max-w-xl text-lg">
+                                        If you are looking to submit your
+                                        project, the first step is to present
+                                        your idea. Without a clear idea, your
+                                        project lacks direction and purpose.
+                                    </p>
+
+                                    <Button
+                                        onClick={CreateButtonHandlerStartup}
+                                        className="relative group px-8 py-4 bg-gradient-to-r from-purple-600 to-blue-600 rounded-xl text-white font-semibold hover:shadow-lg hover:scale-105 transition-all duration-300"
+                                    >
+                                        <span className="relative z-10">
+                                            Create Idea
+                                        </span>
+                                        <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-blue-600 opacity-0 group-hover:opacity-100 rounded-xl blur-xl transition-opacity duration-300" />
+                                    </Button>
+                                </div>
+                            </div>
+                        </motion.div>
                     </div>
-                  </div>
                 )}
-                {CreateIdeaCard && setideaSubmitted && (
+                {CreateIdeaCard && setideaSubmitted && userId && (
                     <div className="flex w-full h-full flex-col justify-center items-center">
                         <div className="flex items-center flex-col h-full lg:max-h-[calc(100vh-60px)]">
                             <div className="text-[40px] font-serif m-10">
                                 Idea Submission
                             </div>
                             <div className="w-[100%] h-full opacity-100 animate-fadeIn">
-                                <Formdata_ setSubmitted={setideaSubmitted} />
+                                <Formdata_ setSubmitted={setideaSubmitted} userId={userId} roomId={roomId}/>
                             </div>
                         </div>
                     </div>
@@ -287,21 +314,35 @@ const Page = () => {
                             </div>
                             <div className="px-4 text-blue-500">
                                 <div className="flex w-full">
-
-                                {
-                                    ideaData?.image_link && ideaData.image_link.map((link:string,index:number)=>{
-                                        return(
-                                            <Image alt="Image" width={50} height={0} layout="responsive" className="w-[60px]"  key={index} src={link}/>
-                                        )
-                                    })
-                                }
-                                {
-                                    ideaData?.video_link && ideaData.video_link.map((link:string,index:number)=>{
-                                        return(
-                                            <video className="w-[130px]" autoPlay  key={index} src={link}/>
-                                        )
-                                    })
-                                }
+                                    {ideaData?.image_link &&
+                                        ideaData.image_link.map(
+                                            (link: string, index: number) => {
+                                                return (
+                                                    <Image
+                                                        alt="Image"
+                                                        width={50}
+                                                        height={0}
+                                                        layout="responsive"
+                                                        className="w-[60px]"
+                                                        key={index}
+                                                        src={link}
+                                                    />
+                                                );
+                                            }
+                                        )}
+                                    {ideaData?.video_link &&
+                                        ideaData.video_link.map(
+                                            (link: string, index: number) => {
+                                                return (
+                                                    <video
+                                                        className="w-[130px]"
+                                                        autoPlay
+                                                        key={index}
+                                                        src={link}
+                                                    />
+                                                );
+                                            }
+                                        )}
                                 </div>
                                 {ideaData?.usefull_links &&
                                 Array.isArray(ideaData.usefull_links) ? (
@@ -406,6 +447,8 @@ const Page = () => {
                     </div>
                 )}
             </div>
+            </HeroHighlight>
+
         </div>
     );
 };

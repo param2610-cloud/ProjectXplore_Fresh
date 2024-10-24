@@ -15,7 +15,7 @@ export const createIdea = asyncHandler(async (req, res, next) => {
         userId,
         roomId,
     } = req.body;
-    // console.log(ideaName, ideaDescription, mediaLinks, userId);
+    console.log(ideaName, ideaDescription, mediaLinks, userId);
 
     try {
         if (!ideaDescription || !userId || !roomId) {
