@@ -47,6 +47,12 @@ app.use('/api/v1/room',roomRouter)
 app.use('/api/v1/update',updateRouter)
 app.use("/api/v1/portfolio",portfolioRouter)
 app.use("/api/v1/mentor",coordinator)
+
+
+
+// version 2
+app.use('/api/v2/rooms/')
+
 app.get("/", (req, res) => {
     res.json({ "message": "ProjectXplore backend" });
 });

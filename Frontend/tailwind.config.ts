@@ -60,6 +60,16 @@ const config = {
     			card: {
     				DEFAULT: 'hsl(var(--card))',
     				foreground: 'hsl(var(--card-foreground))'
+    			},
+    			sidebar: {
+    				DEFAULT: 'hsl(var(--sidebar-background))',
+    				foreground: 'hsl(var(--sidebar-foreground))',
+    				primary: 'hsl(var(--sidebar-primary))',
+    				'primary-foreground': 'hsl(var(--sidebar-primary-foreground))',
+    				accent: 'hsl(var(--sidebar-accent))',
+    				'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
+    				border: 'hsl(var(--sidebar-border))',
+    				ring: 'hsl(var(--sidebar-ring))'
     			}
     		},
     		borderRadius: {
@@ -68,14 +78,19 @@ const config = {
     			sm: 'calc(var(--radius) - 4px)'
     		},
     		keyframes: {
-				meteor: {
-					"0%": { transform: "rotate(215deg) translateX(0)", opacity: "1" },
-					"70%": { opacity: "1" },
-					"100%": {
-					  transform: "rotate(215deg) translateX(-500px)",
-					  opacity: "0",
-					},
-				  },
+    			meteor: {
+    				'0%': {
+    					transform: 'rotate(215deg) translateX(0)',
+    					opacity: '1'
+    				},
+    				'70%': {
+    					opacity: '1'
+    				},
+    				'100%': {
+    					transform: 'rotate(215deg) translateX(-500px)',
+    					opacity: '0'
+    				}
+    			},
     			'accordion-down': {
     				from: {
     					height: '0'
@@ -107,10 +122,10 @@ const config = {
     				'100%': {
     					opacity: '0'
     				}
-    			},
+    			}
     		},
     		animation: {
-				"meteor-effect": "meteor 5s linear infinite",
+    			'meteor-effect': 'meteor 5s linear infinite',
     			fadeIn: 'fadeIn 0.5s ease-in-out',
     			fadeOut: 'fadeOut 0.5s ease-in-out',
     			'accordion-down': 'accordion-down 0.2s ease-out',

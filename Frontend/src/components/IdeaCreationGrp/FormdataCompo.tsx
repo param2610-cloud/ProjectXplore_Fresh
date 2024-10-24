@@ -1,199 +1,269 @@
-"use client";
 import React, { useEffect, useState } from "react";
-import crypto from 'crypto';
-import { Loader } from "rsuite";
+import { z } from "zod";
+import { useForm, Controller } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/use-toast";
-import { Badge, CheckIcon, TrashIcon, Loader2 } from "lucide-react";
-import axios from "axios";
+import {
+    Badge,
+    Loader2,
+    Upload,
+    LinkIcon,
+    ImageIcon,
+    Video,
+    Trash2,
+} from "lucide-react";
+import axios, { AxiosError } from "axios";
 import { Card, CardContent, CardHeader } from "../ui/card";
 import {
     HoverCard,
     HoverCardContent,
     HoverCardTrigger,
 } from "../ui/hover-card";
-import { Domain } from "../../../lib/Domain";
+import { motion, AnimatePresence } from "framer-motion";
 import UploadOnCloudinary from "../../../lib/control/UploadOnCloudinary";
-import { useAtom } from "jotai";
-import userAtom from '../../../lib/atoms/UserAtom';
-import UseAuth from "../../../lib/hooks/UseAuth";
-import { usePathname } from "next/navigation";
-import useFirebaseNotifications from "../../../lib/control/FirebaseNotification";
-import Image from "next/image";
+import { Domain } from "../../../lib/Domain";
 
-const Formdata_ = ({setSubmitted}:{setSubmitted:React.Dispatch<React.SetStateAction<boolean>>}) => {
-    const { loading, authenticated } = UseAuth();
-    const [userId] = useAtom(userAtom);
-    const [roomId,setroomId] = useState<string>()
-    const pathname = usePathname();
-    const parts = pathname.split("/");
-
-    useEffect(() => {
-        if (parts[2]) {
-            setroomId(parts[2]);
+const getMediaStateUpdater = (
+    type: "image" | "video",
+    setPreviews: React.Dispatch<React.SetStateAction<FilePreview[]>>,
+    tempId: string
+): React.Dispatch<React.SetStateAction<string[]>> => {
+    return (newValue) => {
+        if (typeof newValue === "function") {
+            setPreviews((prev) => {
+                const currentUrls = prev
+                    .filter((p) => p.type === type)
+                    .map((p) => p.url);
+                const newUrls = newValue(currentUrls);
+                return prev.map((p) =>
+                    p.public_id === tempId
+                        ? { ...p, url: newUrls[newUrls.length - 1] }
+                        : p
+                );
+            });
+        } else {
+            setPreviews((prev) =>
+                prev.map((p) =>
+                    p.public_id === tempId
+                        ? { ...p, url: newValue[newValue.length - 1] }
+                        : p
+                )
+            );
         }
-    }, [pathname,parts]);
-    const [isloading, setisloading] = useState<boolean>(false);
-    const [ideaName, setIdeaName] = useState("");
-    const [ideaDescription, setIdeaDescription] = useState("");
-    const [mediaFiles, setMediaFiles] = useState<File[]>([]);
-    const [mediaLinks, setMediaLinks] = useState<string[]>([]);
-    const [uploadedImageMediaLinks, setuploadedImageMediaLinks] = useState<string[]>([]);
-    const [uploadedVideoMediaLinks, setuploadedVideoMediaLinks] = useState<string[]>([]);
-    const [previews, setpreviews] = useState<Array<{ type: string; url: string,public_id:string }>>([]);
-    const [fileType, setFileType] = useState("image");
-    const [singleMediaLink, setSingleMediaLink] = useState<string>("");
+        return []; // Return empty array to satisfy type
+    };
+};
+
+// Types
+interface FormDataProps {
+    setSubmitted: React.Dispatch<React.SetStateAction<boolean>>;
+    userId?: string;
+    roomId?: string;
+}
+
+interface FilePreview {
+    type: string;
+    url: string;
+    public_id: string;
+    file?: File;
+}
+
+// Validation schema
+const formSchema = z.object({
+    ideaName: z
+        .string()
+        .min(3, "Idea name must be at least 3 characters")
+        .max(100, "Idea name must not exceed 100 characters"),
+    ideaDescription: z
+        .string()
+        .min(10, "Description must be at least 10 characters")
+        .max(1000, "Description must not exceed 1000 characters"),
+    mediaLinks: z.array(z.string().url("Invalid URL")).optional(),
+});
+
+type FormValues = z.infer<typeof formSchema>;
+
+// Configuration
+const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
+const ALLOWED_FILE_TYPES = [
+    "image/jpeg",
+    "image/png",
+    "image/gif",
+    "video/mp4",
+    "video/quicktime",
+];
+const MAX_FILES = 5;
+
+const FormData: React.FC<FormDataProps> = ({
+    setSubmitted,
+    userId,
+    roomId,
+}) => {
+    // Form validation setup
+    const {
+        control,
+        handleSubmit,
+        formState: { errors },
+        reset,
+    } = useForm<FormValues>({
+        resolver: zodResolver(formSchema),
+        defaultValues: {
+            ideaName: "",
+            ideaDescription: "",
+            mediaLinks: [],
+        },
+    });
+
+    // State management
+    const [previews, setPreviews] = useState<FilePreview[]>([]);
+    const [isUploading, setIsUploading] = useState<{ [key: string]: boolean }>(
+        {}
+    );
+    const [isSubmitting, setIsSubmitting] = useState(false);
     const { toast } = useToast();
-    const CLOUD_NAME = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
-    const UPLOAD_PRESET = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET;
-    const API_KEY = process.env.NEXT_PUBLIC_CLOUDINARY_API_KEY;
-    const [isUploading, setIsUploading] = useState<{ [key: string]: boolean }>({});
 
-    const handleFileChange = async(e: React.ChangeEvent<HTMLInputElement>) => {
-        if (e.target.files && e.target.files[0] && UPLOAD_PRESET) {
-            const file = e.target.files[0];
-            const fileType = file.type.split("/")[0];
+    // File validation
+    const validateFile = (file: File): string | null => {
+        if (!ALLOWED_FILE_TYPES.includes(file.type)) {
+            return "Invalid file type. Only images and videos are allowed.";
+        }
+        if (file.size > MAX_FILE_SIZE) {
+            return "File size exceeds 10MB limit.";
+        }
+        if (previews.length >= MAX_FILES) {
+            return "Maximum number of files reached.";
+        }
+        return null;
+    };
+
+    const handleRemoveFile = (publicId: string) => {
+        setPreviews((prev) => prev.filter((p) => p.public_id !== publicId));
+        if (publicId.startsWith("blob:")) {
+            URL.revokeObjectURL(publicId);
+        }
+    };
+
+    // File upload handling
+    const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        try {
+            const files = e.target.files;
+            if (!files?.length) return;
+
+            const file = files[0];
+            const validationError = validateFile(file);
+
+            if (validationError) {
+                toast({
+                    title: "Error",
+                    description: validationError,
+                    variant: "destructive",
+                });
+                return;
+            }
+
+            const tempId = `temp_${Date.now()}`;
+            const fileType = file.type.split("/")[0] as "image" | "video";
             const previewUrl = URL.createObjectURL(file);
-            const tempId = Date.now().toString();
-            
-            setIsUploading(prev => ({ ...prev, [tempId]: true }));
-            setpreviews(prev => [...prev, { type: fileType, url: previewUrl, public_id: tempId }]);
+
+            setIsUploading((prev) => ({ ...prev, [tempId]: true }));
+
+            setPreviews((prev) => [
+                ...prev,
+                {
+                    type: fileType,
+                    url: previewUrl,
+                    public_id: tempId,
+                    file,
+                },
+            ]);
 
             try {
-                const formData = new FormData();
-                formData.append("file", file);
-                formData.append("upload_preset", UPLOAD_PRESET);
-                
-                const resourceType = file.type.startsWith("video/") ? "video" : "image";
-                const uploadUrl = `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/${resourceType}/upload`;
-
-                const response = await axios.post(uploadUrl, formData, {
-                    headers: {
-                        'Content-Type': 'multipart/form-data',
-                    },
+                const uploadResult = await UploadOnCloudinary({
+                    mediaFiles: [file],
+                    setuploadedImageMediaLinks: getMediaStateUpdater(
+                        "image",
+                        setPreviews,
+                        tempId
+                    ),
+                    setuploadedVideoMediaLinks: getMediaStateUpdater(
+                        "video",
+                        setPreviews,
+                        tempId
+                    ),
                 });
-            
-                if (response.status === 200) {
-                    const result = response.data;
-                    const uploadedUrl = result.secure_url;
-                    console.log(`Uploaded URL: ${uploadedUrl}`);
-                    
-                    if (resourceType === "image") {
-                        setuploadedImageMediaLinks(prevLinks => [...prevLinks, uploadedUrl]);
-                    } else if (resourceType === "video") {
-                        setuploadedVideoMediaLinks(prevLinks => [...prevLinks, uploadedUrl]);
-                    }
-                    setpreviews(prev => prev.map(p => p.public_id === tempId ? { ...p, public_id: result.public_id } : p));
-                } else {
-                    console.error("Failed to upload file:", response.statusText);
-                    setpreviews(prev => prev.filter(p => p.public_id !== tempId));
-                }
+
+                // Handle the upload result if needed
             } catch (error) {
-                console.log(error);
-                setpreviews(prev => prev.filter(p => p.public_id !== tempId));
+                handleUploadError(error, tempId);
             } finally {
-                setIsUploading(prev => ({ ...prev, [tempId]: false }));
+                setIsUploading((prev) => ({ ...prev, [tempId]: false }));
             }
+        } catch (error) {
+            console.error("File handling error:", error);
+            toast({
+                title: "Error",
+                description: "Failed to process file",
+                variant: "destructive",
+            });
         }
     };
-    const handleRemoveFile = async (index: number, public_id: string) => {
-        // Remove from previews
-        const updatedPreviews = previews.filter((_, i) => i !== index);
-        setpreviews(updatedPreviews);
 
-        // Remove from uploaded links
-        setuploadedImageMediaLinks(prev => prev.filter((_, i) => i !== index));
-        setuploadedVideoMediaLinks(prev => prev.filter((_, i) => i !== index));
+    // Form submission
+    const onSubmit = async (data: FormValues) => {
+        try {
+            setIsSubmitting(true);
 
-        // If it's a successfully uploaded file, delete from Cloudinary
-        if (public_id && !public_id.startsWith("temp_")) {
-            try {
-                const timestamp = Math.round((new Date()).getTime() / 1000);
-                const signature = await generateSignature(public_id, timestamp);
+            if (!userId || !roomId) {
+                throw new Error("Missing user or room information");
+            }
 
-                const formdata = new FormData();
-                formdata.append("public_id", public_id);
-                formdata.append("signature", signature);
-                formdata.append("api_key", API_KEY || "");
-                formdata.append("timestamp", timestamp.toString());
+            const mediaFiles = previews.map((p) => p.url);
 
-                const response = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/destroy`, {
-                    method: "POST",
-                    body: formdata,
+            const response = await axios.post(`${Domain}/api/v1/idea/create`, {
+                ...data,
+                mediaFiles,
+                userId,
+                roomId,
+            });
+
+            if (response.status === 200) {
+                toast({
+                    title: "Success",
+                    description: "Your idea has been submitted successfully!",
                 });
-
-                const result = await response.text();
-                console.log(result);
-            } catch (error) {
-                console.error("Error deleting file from Cloudinary:", error);
+                reset();
+                setPreviews([]);
+                setSubmitted(true);
             }
+        } catch (error) {
+            handleSubmissionError(error);
+        } finally {
+            setIsSubmitting(false);
         }
     };
-    const generateSignature =async (public_id: string, timestamp: number) => {
-        
-        const signature = await axios.get(`${Domain}/api/v1/self/get-signature`,{
-            params:{public_id:public_id,
-            timestamp:timestamp}
-        })
-        console.log(signature);
-        console.log(signature.data);
-        
-        return signature.data
+
+    // Error handlers
+    const handleUploadError = (error: any, tempId: string) => {
+        console.error("Upload error:", error);
+        setPreviews((prev) => prev.filter((p) => p.public_id !== tempId));
+        toast({
+            title: "Upload Failed",
+            description: "Failed to upload file. Please try again.",
+            variant: "destructive",
+        });
     };
 
+    const handleSubmissionError = (error: unknown) => {
+        console.error("Submission error:", error);
+        let errorMessage = "Failed to submit idea. Please try again.";
 
-    const handleMediaLinkChange = (
-        e: React.ChangeEvent<HTMLInputElement>,
-        index: number
-    ) => {
-        e.preventDefault();
-        const updatedLinks = [...mediaLinks];
-        updatedLinks[index] = e.target.value;
-        setMediaLinks(updatedLinks);
-    };
+        if (error instanceof AxiosError) {
+            errorMessage = error.response?.data?.message || errorMessage;
+        }
 
-    const handleSubmit = async (e: any) => {
-        e.preventDefault();
-
-            setisloading(true);
-            
-                if (userId && roomId) {
-                    if (
-                        uploadedImageMediaLinks &&
-                        uploadedVideoMediaLinks
-                    ) {
-                        const ideaData = {
-                            ideaName,
-                            ideaDescription,
-                            mediaLinks,
-                            uploadedImageMediaLinks,
-                            uploadedVideoMediaLinks,
-                            userId,
-                            roomId
-                        };
-                        console.log(ideaData);
-
-                        const response = await axios.post(
-                            `${Domain}/api/v1/idea/create`,
-                            ideaData
-                        );
-                        console.log(response);
-                        
-                        if (response.status === 200) {
-                            toast({
-                                title: "Success",
-                                description:
-                                    "Your idea has been submitted successfully!",
-                            });
-                            setSubmitted(true)
-                            setIdeaName("");
-                            setIdeaDescription("");
-                            setMediaFiles([]);
-                            setpreviews([]);
-                            setMediaLinks([]);
-                        }else{
 
                             toast({
                                 title: "Error",
@@ -201,208 +271,190 @@ const Formdata_ = ({setSubmitted}:{setSubmitted:React.Dispatch<React.SetStateAct
                                 variant: "destructive",
                             });
                         }else{
-                            toast({
-                                title: "Error",
-                                description: "There was an error submitting your idea.",
-                                variant: "destructive",
-                            });
-                        }
-                    }
+        toast({
+            title: "Error",
+            description: errorMessage,
+            variant: "destructive",
+        });
+    };
+
+    // Cleanup
+    useEffect(() => {
+        return () => {
+            // Cleanup preview URLs
+            previews.forEach((preview) => {
+                if (preview.url.startsWith("blob:")) {
+                    URL.revokeObjectURL(preview.url);
                 }
-            setisloading(false);
-            
-            setSubmitted(true)
-            setisloading(false);
-    };
-    if(!userId && !authenticated){
-        return(<div>
-            No Access
-        </div>)
+            });
+        };
+    }, [previews]);
+
+    if (!userId) {
+        return (
+            <div className="text-center p-4">Please sign in to continue</div>
+        );
     }
 
     return (
-        <form className="space-y-4 w-full flex flex-col items-center h-full">
-            <div className="w-1/2">
-                <label htmlFor="ideaName">Idea Name</label>
-                <Input
-                    id="ideaName"
-                    placeholder="Enter your idea name"
-                    value={ideaName}
-                    onChange={(e) => setIdeaName(e.target.value)}
-                    required
-                />
+        <motion.form
+            onSubmit={handleSubmit(onSubmit)}
+            className="w-full max-w-7xl mx-auto space-y-8 p-6"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+        >
+            {/* Form fields */}
+            <div className="grid gap-8 md:grid-cols-2">
+                <div className="space-y-2">
+                    <Controller
+                        name="ideaName"
+                        control={control}
+                        render={({ field }) => (
+                            <div>
+                                <label className="text-neutral-200 font-medium block">
+                                    Idea Name
+                                </label>
+                                <Input
+                                    {...field}
+                                    className="bg-zinc-900/50 border-white/10"
+                                    onError={() => errors.ideaName?.message}
+                                />
+                                {errors.ideaName && (
+                                    <span className="text-red-400 text-sm">
+                                        {errors.ideaName.message}
+                                    </span>
+                                )}
+                            </div>
+                        )}
+                    />
+                </div>
+
+                <div className="space-y-2">
+                    <Controller
+                        name="ideaDescription"
+                        control={control}
+                        render={({ field }) => (
+                            <div>
+                                <label className="text-neutral-200 font-medium block">
+                                    Description
+                                </label>
+                                <Textarea
+                                    {...field}
+                                    className="bg-zinc-900/50 border-white/10"
+                                    onError={() =>
+                                        errors.ideaDescription?.message
+                                    }
+                                />
+                                {errors.ideaDescription && (
+                                    <span className="text-red-400 text-sm">
+                                        {errors.ideaDescription.message}
+                                    </span>
+                                )}
+                            </div>
+                        )}
+                    />
+                </div>
             </div>
 
-            <div className="w-1/2">
-                <label htmlFor="ideaDescription">Idea Description</label>
-                <Textarea
-                    id="ideaDescription"
-                    placeholder="Describe your idea"
-                    value={ideaDescription}
-                    onChange={(e) => setIdeaDescription(e.target.value)}
-                    required
-                />
-            </div>
-            
-            <div className="w-full flex justify-center gap-4  h-[40%] px-5 overflow-hidden">
-            <div className="w-full h-full flex flex-col gap-4 overflow-hidden">
-                    <label htmlFor="mediaFile">
-                        Media File (Image/Video/Docs/Links) (If any)
-                    </label>
+            {/* File upload and preview section */}
+            <Card className="bg-zinc-900/50 border-white/10">
+                <CardHeader>
+                    <h3 className="text-lg font-semibold">Media Files</h3>
+                    <p className="text-sm text-neutral-400">
+                        Upload up to {MAX_FILES} files (max 10MB each)
+                    </p>
+                </CardHeader>
+                <CardContent>
                     <Input
                         type="file"
-                        accept="image/*, video/*"
-                        id="mediaFile"
+                        accept={ALLOWED_FILE_TYPES.join(",")}
                         onChange={handleFileChange}
-                        required={mediaFiles.length === 0}
+                        disabled={previews.length >= MAX_FILES}
+                        className="mb-4"
                     />
-                    <Card className="w-full overflow-y-scroll">
-                        <CardHeader>Links</CardHeader>
-                        <CardContent className=" flex flex-col gap-4 ">
-                            <div className="flex gap-3">
-                            <Input
-                                    placeholder="Enter media link"
-                                    value={singleMediaLink}
-                                    onChange={(e) => {
-                                        setSingleMediaLink(e.target.value);
-                                    }}
-                                />
-                                <Button
-                                    onClick={(e) => {
-                                        e.preventDefault();
-                                        setMediaLinks([
-                                            ...mediaLinks,
-                                            singleMediaLink,
-                                        ]);
-                                        setSingleMediaLink("");
-                                    }}
-                                >
-                                    Add
-                                </Button>
-                            </div>
-                            {mediaLinks.map((link, index) => (
-                                <div key={index}>
-                                    <label htmlFor={`mediaLink-${index}`}>
-                                        Media Link {index + 1}
-                                    </label>
-                                    <Input
-                                        id={`mediaLink-${index}`}
-                                        placeholder="Enter media link"
-                                        value={link}
-                                        onChange={(e) =>
-                                            handleMediaLinkChange(e, index)
+
+                    <AnimatePresence>
+                        {previews.map((preview) => (
+                            <motion.div
+                                key={preview.public_id}
+                                initial={{ opacity: 0, height: 0 }}
+                                animate={{ opacity: 1, height: "auto" }}
+                                exit={{ opacity: 0, height: 0 }}
+                                className="flex items-center gap-2 mb-2"
+                            >
+                                <Badge>
+                                    {preview.type === "image" ? (
+                                        <ImageIcon className="w-4 h-4" />
+                                    ) : (
+                                        <Video className="w-4 h-4" />
+                                    )}
+                                </Badge>
+
+                                <HoverCard>
+                                    <HoverCardTrigger>
+                                        <span className="truncate max-w-xs">
+                                            {preview.url.split("/").pop()}
+                                        </span>
+                                    </HoverCardTrigger>
+                                    <HoverCardContent>
+                                        {preview.type === "image" ? (
+                                            <img
+                                                src={preview.url}
+                                                alt="Preview"
+                                                className="max-w-[200px] rounded"
+                                            />
+                                        ) : (
+                                            <video
+                                                src={preview.url}
+                                                controls
+                                                className="max-w-[200px] rounded"
+                                            />
+                                        )}
+                                    </HoverCardContent>
+                                </HoverCard>
+
+                                {isUploading[preview.public_id] ? (
+                                    <Loader2 className="w-4 h-4 animate-spin" />
+                                ) : (
+                                    <Button
+                                        type="button"
+                                        variant="ghost"
+                                        size="sm"
+                                        onClick={() =>
+                                            handleRemoveFile(preview.public_id)
                                         }
-                                    />
-                                </div>
-                            ))}
-                        </CardContent>
-                    </Card>
-                </div>
-                <div className="w-full h-full">
-                    <Card className="w-full h-full">
-                        <CardHeader className="text-xl font-bold">
-                            Images (Hover To Preview)
-                        </CardHeader>
-                        <CardContent>
-                            {previews.map((preview, index) => {
-                                const parts = preview.url.split("/");
-                                const file_name = parts[parts.length - 1];
+                                    >
+                                        <Trash2 className="w-4 h-4" />
+                                    </Button>
+                                )}
+                            </motion.div>
+                        ))}
+                    </AnimatePresence>
+                </CardContent>
+            </Card>
 
-                                return (
-                                    preview.type === "image" && (
-                                        <div className="flex gap-3 justify-center items-start" key={index}>
-                                            <div>
-                                                <Badge></Badge>
-                                            </div>
-                                            <div className="relative">
-                                                <HoverCard>
-                                                    <HoverCardTrigger className="cursor-pointer hover:border-b border-white">
-                                                        {file_name}
-                                                    </HoverCardTrigger>
-                                                    <HoverCardContent>
-                                                        <Image
-                                                        width={128}
-                                                        height={128}
-                                                            src={preview.url}
-                                                            alt={`Preview ${index}`}
-                                                            className="w-32 h-32 object-cover"
-                                                        />
-                                                    </HoverCardContent>
-                                                </HoverCard>
-                                            </div>
-                                            <Button
-                                                variant="ghost"
-                                                className=""
-                                                onClick={() => handleRemoveFile(index, preview.public_id)}
-                                                disabled={isUploading[preview.public_id]}
-                                            >
-                                                {isUploading[preview.public_id] ? (
-                                                    <Loader2 className="h-5 w-5 animate-spin" />
-                                                ) : (
-                                                    <TrashIcon className="h-5 w-5 text-red-500" />
-                                                )}
-                                            </Button>
-                                        </div>
-                                    )
-                                );
-                            })}
-                        </CardContent>
-                    </Card>
-                </div>
-                <div className="w-full h-full">
-                    <Card className="w-full h-full">
-                        <CardHeader className="text-xl font-bold">
-                            Videos (Hover To Playback)
-                        </CardHeader>
-                        <CardContent>
-                            {previews.map((preview, index) => {
-                                const parts = preview.url.split("/");
-                                const file_name = parts[parts.length - 1];
-
-                                return (
-                                    preview.type === "video" && (
-                                        <div className="flex gap-3 justify-center items-start" key={index}>
-                                            <div>
-                                                <Badge></Badge>
-                                            </div>
-                                            <div className="relative">
-                                                <HoverCard>
-                                                    <HoverCardTrigger className="cursor-pointer hover:border-b border-white">
-                                                        {file_name}
-                                                    </HoverCardTrigger>
-                                                    <HoverCardContent>
-                                                        <video controls className="w-32 h-32">
-                                                            <source src={preview.url} type="video/mp4" />
-                                                            Your browser does not support the video tag.
-                                                        </video>
-                                                    </HoverCardContent>
-                                                </HoverCard>
-                                            </div>
-                                            <Button
-                                                variant="ghost"
-                                                className=""
-                                                onClick={() => handleRemoveFile(index, preview.public_id)}
-                                                disabled={isUploading[preview.public_id]}
-                                            >
-                                                {isUploading[preview.public_id] ? (
-                                                    <Loader2 className="h-5 w-5 animate-spin" />
-                                                ) : (
-                                                    <TrashIcon className="h-5 w-5 text-red-500" />
-                                                )}
-                                            </Button>
-                                        </div>
-                                    )
-                                );
-                            })}
-                        </CardContent>
-                    </Card>
-                </div>
+            {/* Submit button */}
+            <div className="flex justify-center">
+                <Button
+                    type="submit"
+                    disabled={
+                        isSubmitting ||
+                        Object.keys(isUploading).some((key) => isUploading[key])
+                    }
+                    className="min-w-[200px]"
+                >
+                    {isSubmitting ? (
+                        <>
+                            <Loader2 className="w-4 h-4 animate-spin mr-2" />
+                            Submitting...
+                        </>
+                    ) : (
+                        "Submit Idea"
+                    )}
+                </Button>
             </div>
-            <Button type="submit" onClick={handleSubmit}>
-                {isloading ? "Uploading" : "Submit"}
-            </Button>
-        </form>
+        </motion.form>
     );
 };
 
-export default Formdata_;
+export default FormData;
