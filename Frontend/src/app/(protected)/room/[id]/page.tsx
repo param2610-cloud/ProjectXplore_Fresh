@@ -291,7 +291,7 @@ const Page = () => {
                                 {
                                     ideaData?.image_link && ideaData.image_link.map((link:string,index:number)=>{
                                         return(
-                                            <Image alt="Image" width={130} height={0} layout="responsive" className="w-[130px]"  key={index} src={link}/>
+                                            <Image alt="Image" width={50} height={0} layout="responsive" className="w-[60px]"  key={index} src={link}/>
                                         )
                                     })
                                 }
