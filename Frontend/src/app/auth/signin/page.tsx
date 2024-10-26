@@ -139,7 +139,7 @@ export default function SignInPage() {
                                     Sign up
                                 </Link>
                             </div>
-                            <Meteors number={20} />
+                            {/* <Meteors number={20} /> */}
                         </CardContent>
                     </Card>
                 </div>
