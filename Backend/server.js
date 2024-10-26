@@ -51,7 +51,7 @@ app.use("/api/v1/mentor",coordinator)
 
 
 // version 2
-app.use('/api/v2/rooms/')
+// app.use('/api/v2/rooms/')
 
 app.get("/", (req, res) => {
     res.json({ "message": "ProjectXplore backend" });
