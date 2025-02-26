@@ -159,3 +159,7 @@
     border: 1px solid rgba(255, 255, 255, 0.2); /* Optional border */
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Soft shadow */
 }
+.canvas {
+  width: 100% !important;
+  height: 100% !important;
+}
