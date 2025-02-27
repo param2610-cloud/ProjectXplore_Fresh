@@ -56,7 +56,7 @@ export const HeroSection = () => {
                                 Now in Public Beta
                             </div>
 
-                            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight"> Connect Across the Globe to <span className="block mt-2 bg-gradient-to-r from-blue-400 via-indigo-400 to-purple-500 bg-clip-text text-transparent"> Build Tomorrow`&apos;`s Projects </span> </h1> <p className="text-lg text-gray-300 leading-relaxed"> ProjectXplore brings developers worldwide together to transform ideas into reality with collaborative tools, structured workflows, and portfolio showcases all in one powerful platform. </p>
+                            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight"> Connect Across the Globe to <span className="block mt-2 bg-gradient-to-r from-blue-400 via-indigo-400 to-purple-500 bg-clip-text text-transparent"> Build Tomorrow&apos;s Projects </span> </h1> <p className="text-lg text-gray-300 leading-relaxed"> ProjectXplore brings developers worldwide together to transform ideas into reality with collaborative tools, structured workflows, and portfolio showcases all in one powerful platform. </p>
 
                             <div className="flex flex-wrap gap-4">
                                 <Button onClick={()=>router.replace("/auth/signup")} size="lg" className="bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 gap-2">
