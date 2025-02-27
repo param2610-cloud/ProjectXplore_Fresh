@@ -9,6 +9,14 @@ import { inter } from "./fonts";
 export const metadata: Metadata = {
   title: "ProjectXplore",
   description: "Created BY by Parambrata Ghosh",
+  icons: {
+    icon: [
+      { url: '/icon.png' },
+      { url: '/icon.svg' },
+    ],
+    shortcut: '/favicon.ico',
+    apple: '/apple-icon.png',
+  },
 };
 
 export default function RootLayout({
