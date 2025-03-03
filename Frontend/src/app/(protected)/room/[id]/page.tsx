@@ -5,49 +5,29 @@ import ProjectUpdates from "@/components/ProjectUpdates";
 import MemberList from "@/components/room/MemberList";
 import RequestList from "@/components/room/RequestList";
 import TextInputWithCloudinary from "@/components/TextAreaStyle";
-import GeminiStyleInput from "@/components/TextAreaStyle";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import {
     Popover,
     PopoverContent,
     PopoverTrigger,
 } from "@/components/ui/popover";
-import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/use-toast";
-<<<<<<< HEAD
-import { userAtom } from '@/lib/atoms/UserAtom';
+import  userAtom  from '@/lib/atoms/UserAtom';
 import { Domain, FirebaseUrl } from "@/lib/Domain";
-import UseAuth from "@/lib/hooks/UseUser";
-=======
-import { userAtom } from '@/lib/atoms/UserAtom';
-import { Domain } from "@/lib/Domain";
 import UseAuth from "@/lib/hooks/UseAuth";
->>>>>>> 424c7fdf58032563af88996072e9526472fd67d1
 import { Ideas, update, Rooms } from "@/lib/interface/INTERFACE";
 import axios from "axios";
 import { useAtom } from "jotai";
 import {
-    ArrowRight,
-    ChevronLeft,
-    ChevronRight,
-    LightbulbIcon,
     LightbulbIcon,
     List,
     Loader2,
-    Loader2,
-    Paperclip,
-    Pin,
     Settings,
     Upload,
     Users,
 } from "lucide-react";
-import { useTheme } from "next-themes";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { useRouter } from "next/navigation";
-import React, { use, useEffect, useRef, useState } from "react";
-import ProjectCreateComponent from "../../project/create/page";
+import { usePathname, useRouter } from "next/navigation";
+import React, { useEffect, useRef, useState } from "react";
 import ChatBasedProjectSubmit from "@/components/room/ChatBasedProjectComponent";
 import useFirebaseNotifications from "@/lib/control/FirebaseNotification";
 
@@ -81,7 +61,6 @@ const Page = () => {
     const { toast } = useToast();
     const pathname = usePathname();
     const parts = pathname.split("/");
-    const { notifications, error } = useFirebaseNotifications(`${FirebaseUrl}`);
     const { notifications, error } = useFirebaseNotifications(`${FirebaseUrl}`);
 
     useEffect(() => {
@@ -275,7 +254,7 @@ const Page = () => {
                                 Idea Submission
                             </div>
                             <div className="w-[100%] h-full opacity-100 animate-fadeIn">
-                                <Formdata_ setSubmitted={setideaSubmitted} userId={userId} roomId={roomId}/>
+                                <Formdata_ setSubmitted={setideaSubmitted} userId={userId || undefined} roomId={roomId}/>
                             </div>
                         </div>
                     </div>
@@ -413,8 +392,6 @@ const Page = () => {
                     </div>
                 )}
             </div>
-            </HeroHighlight>
-
         </div>
     );
 };
