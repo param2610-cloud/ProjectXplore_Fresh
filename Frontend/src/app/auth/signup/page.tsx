@@ -104,7 +104,17 @@ function Signup() {
             if (selectedFile) {
                 await UploadOnCloudinary({
                     mediaFiles: [selectedFile],
-                    setuploadedImageMediaLinks: (links:any) => imageLinks.push(...links),
+                    setuploadedImageMediaLinks: (links:any) => {
+                        if(Array.isArray(links)) {
+                            setImageLinks(prev=>[...prev, ...links]);
+                            if(links.length > 0) {
+                                avatarUrl = links[0];
+                            }
+                        }else if(typeof links === "string") {
+                            setImageLinks(prev=>[...prev, links]);
+                            avatarUrl = links;
+                        }
+                    },
                     setuploadedVideoMediaLinks: () => {},
                 });
                 avatarUrl = imageLinks[0] || "";
